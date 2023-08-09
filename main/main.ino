@@ -65,7 +65,7 @@ char lcdtext[6][17];
 
 byte macaddr[6];
 IPAddress localIP,broadcastIP,subnetmaskIP,remoteIP;
-EthernetUDP Udp16520,Udp16529;
+EthernetUDP Udp16520,Udp16521,Udp16529;
 
 volatile int period1sec = 0;
 volatile int period10sec = 0;
@@ -285,26 +285,26 @@ void UserEvery10Seconds(void) {
   char *xmlDT PROGMEM = CCMFMT;
   char name[10],dtxt[17],tval[11],hval[4];
   int ia,cdsv,l,ti,tc;
-  long  w = scale.read_average(10);
-  float t = sht31.readTemperature();
-  float h = sht31.readHumidity();
+  //  long  w = scale.read_average(10);
+  //  float t = sht31.readTemperature();
+  //  float h = sht31.readHumidity();
 
-  ti = (int)t;
-  tc = (int)((float)(t-ti)*100.0);
+  //  ti = (int)t;
+  //  tc = (int)((float)(t-ti)*100.0);
   
-  if (! isnan(t)) {  // check if 'is not a number'
-    Serial.print("Temp *C = "); Serial.print(t); Serial.print("\t\t");
-  } else { 
-    Serial.println("Failed to read temperature");
-  }
-  sprintf(tval,"%d.%02d",ti,tc);
-  uecsSendData(1,xmlDT,tval,0); // InAirTemp
-  sprintf(hval,"%d",(int)h);
-  uecsSendData(2,xmlDT,hval,0); // InAirHumid
-  sprintf(lcdtext[2],"%sC/%s%%",tval,hval);
-  ltoa(w,tval,10);
-  uecsSendData(3,xmlDT,tval,0); // Weight
-  sprintf(lcdtext[3],"W=%s ",tval);
+  //  if (! isnan(t)) {  // check if 'is not a number'
+  //    Serial.print("Temp *C = "); Serial.print(t); Serial.print("\t\t");
+  //  } else { 
+  //    Serial.println("Failed to read temperature");
+  //  }
+  //  sprintf(tval,"%d.%02d",ti,tc);
+  //  uecsSendData(1,xmlDT,tval,0); // InAirTemp
+  //  sprintf(hval,"%d",(int)h);
+  //  uecsSendData(2,xmlDT,hval,0); // InAirHumid
+  //  sprintf(lcdtext[2],"%sC/%s%%",tval,hval);
+  //  ltoa(w,tval,10);
+  //  uecsSendData(3,xmlDT,tval,0); // Weight
+  //  sprintf(lcdtext[3],"W=%s ",tval);
   lcd.setCursor(0,1);
   lcd.print(lcdtext[2]);
   wdt_reset();
