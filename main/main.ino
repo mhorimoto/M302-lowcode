@@ -52,8 +52,8 @@ unsigned long cndVal;   // CCM cnd Value
 bool      ready,busy;
 uint8_t  regs[14];
 
-Adafruit_SHT31 sht31 = Adafruit_SHT31();
-HX711 scale;
+//Adafruit_SHT31 sht31 = Adafruit_SHT31();
+//HX711 scale;
 
 
 /////////////////////////////////////
