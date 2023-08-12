@@ -4,4 +4,6 @@
 書いているだけのディレクトリである。
 
 
-
+test1: HX711
+test2: HX711
+test3: Intel format checksum
