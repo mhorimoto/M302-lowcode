@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////
 // M302-lowcode
 //  MIT License
-//  Copyright (c) 2023 Masafumi Horimoto
+//  Copyright (c) 2024 Masafumi Horimoto
 //  Release on 
 //  
 ///////////////////////////////////////////////////////////////////
@@ -16,12 +16,10 @@
 #include <EEPROM.h>
 #include "LiquidCrystal_I2C.h"
 #include <Wire.h>
-//#include <Adafruit_I2CDevice.h>
-//#include <Adafruit_I2CRegister.h>
-//#include "Adafruit_SHT31.h"
-//#include "HX711.h"
+#include <DS18B20.h>
 
 
+char    text[40];
 
 uint8_t mcusr_mirror __attribute__ ((section (".noinit")));
 void get_mcusr(void)     \
@@ -40,11 +38,7 @@ void get_mcusr(void) {
 #define  pRADIATION  0xa0
 #define  delayMillis 5000UL // 5sec
 
-// HX711 circuit wiring
-#define LOADCELL_DOUT_PIN  6
-#define LOADCELL_SCK_PIN   7
-
-const char VERSION[16] PROGMEM = "%VERSION%";
+const char VERSION[16] PROGMEM = "PSYV-005";
 
 char uecsid[6], uecstext[180],strIP[16],linebuf[80];
 byte lineptr = 0;
@@ -52,14 +46,11 @@ unsigned long cndVal;   // CCM cnd Value
 bool      ready,busy;
 uint8_t  regs[14];
 
-//Adafruit_SHT31 sht31 = Adafruit_SHT31();
-//HX711 scale;
-
-
 /////////////////////////////////////
 // Hardware Define
 /////////////////////////////////////
 
+DS18B20   ds(6);
 LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 char lcdtext[6][17];
 
@@ -67,12 +58,16 @@ byte macaddr[6];
 IPAddress localIP,broadcastIP,subnetmaskIP,remoteIP;
 EthernetUDP Udp16520,Udp16521,Udp16529;
 
+uint8_t dry_address[8] = {0x28,0xaa,0x86,0x56,0x48,0x14,0x01,0x96};
+uint8_t wet_address[8] = {0x28,0xaa,0x95,0xba,0x47,0x14,0x01,0xa0};
+
 volatile int period1sec = 0;
 volatile int period10sec = 0;
 volatile int period60sec = 0;
 
 void setup(void) {
   int i;
+  char *dry_ds,*wet_ds;
   const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
   extern void lcdout(int,int,int);
   
@@ -82,6 +77,8 @@ void setup(void) {
   configure_wdt();
   EEPROM.get(pUECSID,uecsid);
   EEPROM.get(pMACADDR,macaddr);
+  sprintf(lcdtext[2],ids,"HW",
+          macaddr[0],macaddr[1],macaddr[2],macaddr[3],macaddr[4],macaddr[5]);
   for(i=0;i<16;i++) {
     lcdtext[0][i] = pgm_read_byte(&(VERSION[i]));
   }
@@ -89,13 +86,20 @@ void setup(void) {
   sprintf(lcdtext[1],ids,"ID",
           uecsid[0],uecsid[1],uecsid[2],uecsid[3],uecsid[4],uecsid[5]);
   lcdout(0,1,1);
+  delay(1000);
+  lcdout(0,2,1);
   Serial.begin(115200);
   Serial.println(lcdtext[0]);
   delay(500);
+  Serial.println("Ethernet");
   Ethernet.init(10);
+  Serial.println("Ethernet done");
+  wdt_reset();
   if (Ethernet.begin(macaddr)==0) {
     sprintf(lcdtext[1],"NFL");
+    Serial.println("NFL");
   } else {
+    Serial.println("NET begin OK");
     localIP = Ethernet.localIP();
     subnetmaskIP = Ethernet.subnetMask();
     for(i=0;i<4;i++) {
@@ -108,7 +112,19 @@ void setup(void) {
     lcdout(2,3,1);
     Udp16520.begin(16520);
   }
-
+  if (ds.select(dry_address)) {
+    dry_ds = "DRY OK";
+  } else {
+    dry_ds = "DRY NG";
+  }
+  if (ds.select(wet_address)) {
+    wet_ds = "WET OK";
+  } else {
+    wet_ds = "WET NG";
+  }
+  sprintf(lcdtext[4],"%s  %s",dry_ds,wet_ds);
+  lcdout(2,4,1);
+  delay(1000);
   //**********************************
   //
   //  Initialize of Sensor devices
@@ -119,6 +135,8 @@ void setup(void) {
   cndVal |= 0x00000001;  // Setup completed
   delay(1000);
   //
+
+
   // Setup Timer1 Interrupt
   //
   TCCR1A  = 0;
@@ -282,29 +300,30 @@ void UserEverySecond(void) {
 
 void UserEvery10Seconds(void) {
   extern void lcdout(int,int,int);
+  extern uint8_t dry_address[],wet_address[];
+  extern DS18B20 ds;
   char *xmlDT PROGMEM = CCMFMT;
-  char name[10],dtxt[17],tval[11],hval[4];
-  int ia,cdsv,l,ti,tc;
-  //  long  w = scale.read_average(10);
-  //  float t = sht31.readTemperature();
-  //  float h = sht31.readHumidity();
-
-  //  ti = (int)t;
-  //  tc = (int)((float)(t-ti)*100.0);
+  char dval[6],wval[6],difval[6],*dryres,*wetres;
+  float dryv,wetv,difv;
   
-  //  if (! isnan(t)) {  // check if 'is not a number'
-  //    Serial.print("Temp *C = "); Serial.print(t); Serial.print("\t\t");
-  //  } else { 
-  //    Serial.println("Failed to read temperature");
-  //  }
-  //  sprintf(tval,"%d.%02d",ti,tc);
-  //  uecsSendData(1,xmlDT,tval,0); // InAirTemp
-  //  sprintf(hval,"%d",(int)h);
-  //  uecsSendData(2,xmlDT,hval,0); // InAirHumid
-  //  sprintf(lcdtext[2],"%sC/%s%%",tval,hval);
-  //  ltoa(w,tval,10);
-  //  uecsSendData(3,xmlDT,tval,0); // Weight
-  //  sprintf(lcdtext[3],"W=%s ",tval);
+  if (ds.select(dry_address)) {
+    dryv = ds.getTempC();
+    dtostrf(dryv,0,1,dval);
+    dryres = "";
+  } else {
+    dryres = "DRY NG";
+  }
+  if (ds.select(wet_address)) {
+    wetv = ds.getTempC();
+    dtostrf(wetv,0,1,wval);
+    wetres = "";
+  } else {
+    wetres = "DRY NG";
+  }
+  difv = dryv - wetv;
+  dtostrf(difv,0,1,difval);
+  sprintf(lcdtext[2],"%s  %s  %s",dval,difval,wval);
+  sprintf(lcdtext[4],"%s  %s  %s",dval,difval,wval);
   lcd.setCursor(0,1);
   lcd.print(lcdtext[2]);
   wdt_reset();
