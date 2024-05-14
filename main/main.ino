@@ -38,7 +38,7 @@ void get_mcusr(void) {
 #define  pRADIATION  0xa0
 #define  delayMillis 5000UL // 5sec
 
-const char VERSION[16] PROGMEM = "PSYV-005";
+const char VERSION[16] PROGMEM = "PSYV-1.0.0";
 
 char uecsid[6], uecstext[180],strIP[16],linebuf[80];
 byte lineptr = 0;
@@ -305,6 +305,7 @@ void UserEvery10Seconds(void) {
   char *xmlDT PROGMEM = CCMFMT;
   char dval[6],wval[6],difval[6],*dryres,*wetres;
   float dryv,wetv,difv;
+  byte  rh;
   
   if (ds.select(dry_address)) {
     dryv = ds.getTempC();
@@ -321,11 +322,16 @@ void UserEvery10Seconds(void) {
     wetres = "DRY NG";
   }
   difv = dryv - wetv;
+  rh = calc_humid(dryv,wetv);
   dtostrf(difv,0,1,difval);
-  sprintf(lcdtext[2],"%s  %s  %s",dval,difval,wval);
-  sprintf(lcdtext[4],"%s  %s  %s",dval,difval,wval);
+  sprintf(lcdtext[2],"%sC %2d%% %sC",dval,rh,wval);
+  sprintf(lcdtext[4],"%sC %2d%% %sC",dval,rh,wval);
+  itoa(rh,difval,10);
   lcd.setCursor(0,1);
   lcd.print(lcdtext[2]);
+  uecsSendData(1,xmlDT,dval,0);
+  uecsSendData(2,xmlDT,wval,0);
+  uecsSendData(3,xmlDT,difval,0);
   wdt_reset();
 }
 
@@ -334,3 +340,11 @@ void UserEveryMinute(void) {
   char *xmlDT PROGMEM = CCMFMT;
 }
 
+byte calc_humid(float d,float w) {
+  int df,a;
+  byte rh;
+  df = (int)(d - w);
+  a  = (int)(d-6)*0x10+0x100+df;
+  EEPROM.get(a,rh);
+  return(rh);
+}
