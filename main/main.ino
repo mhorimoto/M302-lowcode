@@ -21,7 +21,9 @@
 //#include "Adafruit_SHT31.h"
 //#include "HX711.h"
 
-
+#ifndef W5500SS
+#define W5500SS 10
+#endif
 
 uint8_t mcusr_mirror __attribute__ ((section (".noinit")));
 void get_mcusr(void)     \
@@ -44,7 +46,7 @@ void get_mcusr(void) {
 #define LOADCELL_DOUT_PIN  6
 #define LOADCELL_SCK_PIN   7
 
-const char VERSION[16] PROGMEM = "%VERSION%";
+const char VERSION[16] PROGMEM = "M302-0.01-003";
 
 char uecsid[6], uecstext[180],strIP[16],linebuf[80];
 byte lineptr = 0;
@@ -92,7 +94,7 @@ void setup(void) {
   Serial.begin(115200);
   Serial.println(lcdtext[0]);
   delay(500);
-  Ethernet.init(10);
+  Ethernet.init(W5500SS);
   if (Ethernet.begin(macaddr)==0) {
     sprintf(lcdtext[1],"NFL");
   } else {
@@ -160,6 +162,14 @@ void lcd_display_loop(void) {
   }
 }
 
+float sens_ana(int aport,int map_low,int map_high,float slope) {
+  int sval,vol;
+  float r;
+  sval = analogRead(aport);
+  vol  = map(sval,0,1023,map_low,map_high);
+  r    = vol * slope;
+  return r;
+}
 
 /////////////////////////////////
 void loop() {
@@ -282,9 +292,15 @@ void UserEverySecond(void) {
 
 void UserEvery10Seconds(void) {
   extern void lcdout(int,int,int);
+  extern float sens_ana(int,int,int,float);
   char *xmlDT PROGMEM = CCMFMT;
-  char name[10],dtxt[17],tval[11],hval[4];
+  char dtxt[17],tval[11],hval[4];
   int ia,cdsv,l,ti,tc;
+  float co2;
+
+  co2 = sens_ana(A2,10,5000,0.6);
+  sprintf(tval,"%d",int(co2));
+  uecsSendData(1,xmlDT,tval,0);
   //  long  w = scale.read_average(10);
   //  float t = sht31.readTemperature();
   //  float h = sht31.readHumidity();
