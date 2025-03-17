@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////
 // M302-lowcode
 //  MIT License
-//  Copyright (c) 2023 Masafumi Horimoto
+//  Copyright (c) 2025 Masafumi Horimoto
 //  Release on 
 //  
 ///////////////////////////////////////////////////////////////////
@@ -41,18 +41,21 @@ void get_mcusr(void) {
 #define  pCND        0x80
 #define  pRADIATION  0xa0
 #define  delayMillis 5000UL // 5sec
+#define  LED2        3
+
 
 // HX711 circuit wiring
 #define LOADCELL_DOUT_PIN  6
 #define LOADCELL_SCK_PIN   7
 
-const char VERSION[16] PROGMEM = "M302-0.01-003";
+const char VERSION[16] PROGMEM = "M302N 0.06";
 
 char uecsid[6], uecstext[180],strIP[16],linebuf[80];
 byte lineptr = 0;
 unsigned long cndVal;   // CCM cnd Value
 bool      ready,busy;
 uint8_t  regs[14];
+char val[16];
 
 //Adafruit_SHT31 sht31 = Adafruit_SHT31();
 //HX711 scale;
@@ -77,7 +80,16 @@ void setup(void) {
   int i;
   const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
   extern void lcdout(int,int,int);
-  
+
+  pinMode(LED2,OUTPUT);
+  digitalWrite(LED2,LOW);
+  pinMode(4,INPUT_PULLUP);
+  pinMode(5,INPUT_PULLUP);
+  pinMode(6,INPUT_PULLUP);
+  pinMode(7,OUTPUT);
+  pinMode(8,OUTPUT);
+  pinMode(9,OUTPUT);
+
   cndVal = 0L;    // Reset cnd value
   lcd.init();
   lcd.backlight();
@@ -91,9 +103,13 @@ void setup(void) {
   sprintf(lcdtext[1],ids,"ID",
           uecsid[0],uecsid[1],uecsid[2],uecsid[3],uecsid[4],uecsid[5]);
   lcdout(0,1,1);
-  Serial.begin(115200);
-  Serial.println(lcdtext[0]);
-  delay(500);
+  if (digitalRead(4)==HIGH) { // 通常運転
+    Serial.begin(19200);
+  } else {
+    Serial.begin(115200);
+    Serial.println(lcdtext[0]);
+    delay(500);
+  }
   Ethernet.init(W5500SS);
   if (Ethernet.begin(macaddr)==0) {
     sprintf(lcdtext[1],"NFL");
@@ -171,6 +187,36 @@ float sens_ana(int aport,int map_low,int map_high,float slope) {
   return r;
 }
 
+float getM252(void) {
+  char *xmlDT PROGMEM = CCMFMT;
+  char val[16];
+  float fval;
+  digitalWrite(LED2,HIGH);
+  Serial.write('a');
+  delay(100);
+  if (Serial.available() > 0) {
+    // 受信データを読み込む
+    String receivedData = Serial.readStringUntil(0x0a); // 改行コードが来るまで読み込む (外部装置の送信形式によります)
+    receivedData.trim(); // 前後の空白を削除
+    receivedData.replace("\r", ""); // 改行コードを削除
+    receivedData.replace("\n", ""); // 改行コードを削除
+    receivedData.toCharArray(val,16);
+    strcpy(lcdtext[0],val);
+    // 受信したデータを表示
+    uecsSendData(0,xmlDT,val,0);
+
+    // 受信した文字列をfloat型に変換
+    float floatValue = receivedData.toFloat();
+    digitalWrite(LED2,LOW);
+    return floatValue;
+//    Serial.print("float型に変換: ");
+//    Serial.println(floatValue);
+  }
+
+  // 少し待つ (外部装置の処理時間などを考慮)
+  delay(1000);
+
+}
 /////////////////////////////////
 void loop() {
   static int k=0;
@@ -252,7 +298,7 @@ void uecsSendData(int id,char *xmlDT,char *val,int z) {
   byte room,region,priority,interval;
   int  order,i,a;
   char name[20],dname[21]; // ,val[6];
-  a = id*0x20 + 0x80;
+  a = id*0x20 + pCND;
   EEPROM.get(a+0x01,room);
   EEPROM.get(a+0x02,region);
   EEPROM.get(a+0x03,order);
@@ -292,15 +338,15 @@ void UserEverySecond(void) {
 
 void UserEvery10Seconds(void) {
   extern void lcdout(int,int,int);
-  extern float sens_ana(int,int,int,float);
+  extern float sens_ana(int,int,int,float),getM252(void);
   char *xmlDT PROGMEM = CCMFMT;
   char dtxt[17],tval[11],hval[4];
   int ia,cdsv,l,ti,tc;
-  float co2;
-
+  float co2,irri;
+  irri = getM252();
   co2 = sens_ana(A2,10,5000,0.6);
   sprintf(tval,"%d",int(co2));
-  uecsSendData(1,xmlDT,tval,0);
+//  uecsSendData(1,xmlDT,tval,0);
   //  long  w = scale.read_average(10);
   //  float t = sht31.readTemperature();
   //  float h = sht31.readHumidity();
