@@ -48,7 +48,7 @@ void get_mcusr(void) {
 #define LOADCELL_DOUT_PIN  6
 #define LOADCELL_SCK_PIN   7
 
-const char VERSION[16] PROGMEM = "M302N 0.06";
+const char VERSION[16] PROGMEM = "TB2N 0.01";
 
 char uecsid[6], uecstext[180],strIP[16],linebuf[80];
 byte lineptr = 0;
