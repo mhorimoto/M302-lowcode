@@ -47,7 +47,7 @@ void get_mcusr(void) {
 #define LOADCELL_DOUT_PIN  6
 #define LOADCELL_SCK_PIN   7
 
-const char VERSION[16] PROGMEM = "LY9302 0.02";
+const char VERSION[16] PROGMEM = "LY9302 0.03";
 
 char uecsid[6], uecstext[180],strIP[16],linebuf[80];
 byte lineptr = 0;
@@ -82,6 +82,7 @@ void setup(void) {
 
   pinMode(LED2,OUTPUT);
   digitalWrite(LED2,LOW);
+  pinMode(A2,INPUT);
   pinMode(4,INPUT_PULLUP);
   pinMode(5,INPUT_PULLUP);
   pinMode(6,INPUT_PULLUP);
