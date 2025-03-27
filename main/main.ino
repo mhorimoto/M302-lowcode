@@ -39,7 +39,6 @@ void get_mcusr(void) {
 #define  pUECSID      0
 #define  pMACADDR     6
 #define  pCND        0x80
-#define  pRADIATION  0xa0
 #define  delayMillis 5000UL // 5sec
 #define  LED2        3
 
@@ -48,7 +47,11 @@ void get_mcusr(void) {
 #define LOADCELL_DOUT_PIN  6
 #define LOADCELL_SCK_PIN   7
 
+<<<<<<< HEAD
 const char VERSION[16] PROGMEM = "TB2N 0.01";
+=======
+const char VERSION[16] PROGMEM = "LY9302 0.03";
+>>>>>>> 5c51fd26ec334f233d1dfb6bb96e78f3b7fef2d1
 
 char uecsid[6], uecstext[180],strIP[16],linebuf[80];
 byte lineptr = 0;
@@ -83,6 +86,7 @@ void setup(void) {
 
   pinMode(LED2,OUTPUT);
   digitalWrite(LED2,LOW);
+  pinMode(A2,INPUT);
   pinMode(4,INPUT_PULLUP);
   pinMode(5,INPUT_PULLUP);
   pinMode(6,INPUT_PULLUP);
@@ -187,36 +191,6 @@ float sens_ana(int aport,int map_low,int map_high,float slope) {
   return r;
 }
 
-float getM252(void) {
-  char *xmlDT PROGMEM = CCMFMT;
-  char val[16];
-  float fval;
-  digitalWrite(LED2,HIGH);
-  Serial.write('a');
-  delay(100);
-  if (Serial.available() > 0) {
-    // 受信データを読み込む
-    String receivedData = Serial.readStringUntil(0x0a); // 改行コードが来るまで読み込む (外部装置の送信形式によります)
-    receivedData.trim(); // 前後の空白を削除
-    receivedData.replace("\r", ""); // 改行コードを削除
-    receivedData.replace("\n", ""); // 改行コードを削除
-    receivedData.toCharArray(val,16);
-    strcpy(lcdtext[0],val);
-    // 受信したデータを表示
-    uecsSendData(0,xmlDT,val,0);
-
-    // 受信した文字列をfloat型に変換
-    float floatValue = receivedData.toFloat();
-    digitalWrite(LED2,LOW);
-    return floatValue;
-//    Serial.print("float型に変換: ");
-//    Serial.println(floatValue);
-  }
-
-  // 少し待つ (外部装置の処理時間などを考慮)
-  delay(1000);
-
-}
 /////////////////////////////////
 void loop() {
   static int k=0;
@@ -226,6 +200,7 @@ void loop() {
   int  inchar ;
   float ther,humi;
   char name[10],dname[11],val[6];
+  float co2;
 
   //  extern void lcdout(int,int,int);
   //  extern int setParam(char *);
@@ -240,7 +215,7 @@ void loop() {
      UserEvery10Seconds();
      lcd_display_loop();
      period10sec=0;
-   }
+    }
    // 1 min interval
    if (period60sec==1) {
      period60sec = 0;
@@ -298,6 +273,8 @@ void uecsSendData(int id,char *xmlDT,char *val,int z) {
   byte room,region,priority,interval;
   int  order,i,a;
   char name[20],dname[21]; // ,val[6];
+  const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
+
   a = id*0x20 + pCND;
   EEPROM.get(a+0x01,room);
   EEPROM.get(a+0x02,region);
@@ -322,6 +299,7 @@ void UserEverySecond(void) {
   char val[6];
   int ia,l;
   char *xmlDT PROGMEM = CCMFMT;
+  const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
 
   cndVal &= 0xfffffffe;            // Clear setup completed flag
   if (aaa) {
@@ -339,34 +317,15 @@ void UserEverySecond(void) {
 void UserEvery10Seconds(void) {
   extern void lcdout(int,int,int);
   extern float sens_ana(int,int,int,float),getM252(void);
-  char *xmlDT PROGMEM = CCMFMT;
   char dtxt[17],tval[11],hval[4];
   int ia,cdsv,l,ti,tc;
-  float co2,irri;
-  irri = getM252();
+  float co2;
+  char *xmlDT PROGMEM = CCMFMT;
+  const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
+
   co2 = sens_ana(A2,10,5000,0.6);
   sprintf(tval,"%d",int(co2));
-//  uecsSendData(1,xmlDT,tval,0);
-  //  long  w = scale.read_average(10);
-  //  float t = sht31.readTemperature();
-  //  float h = sht31.readHumidity();
-
-  //  ti = (int)t;
-  //  tc = (int)((float)(t-ti)*100.0);
-  
-  //  if (! isnan(t)) {  // check if 'is not a number'
-  //    Serial.print("Temp *C = "); Serial.print(t); Serial.print("\t\t");
-  //  } else { 
-  //    Serial.println("Failed to read temperature");
-  //  }
-  //  sprintf(tval,"%d.%02d",ti,tc);
-  //  uecsSendData(1,xmlDT,tval,0); // InAirTemp
-  //  sprintf(hval,"%d",(int)h);
-  //  uecsSendData(2,xmlDT,hval,0); // InAirHumid
-  //  sprintf(lcdtext[2],"%sC/%s%%",tval,hval);
-  //  ltoa(w,tval,10);
-  //  uecsSendData(3,xmlDT,tval,0); // Weight
-  //  sprintf(lcdtext[3],"W=%s ",tval);
+  uecsSendData(1,xmlDT,tval,0);
   lcd.setCursor(0,1);
   lcd.print(lcdtext[2]);
   wdt_reset();
@@ -375,5 +334,6 @@ void UserEvery10Seconds(void) {
 void UserEveryMinute(void) {
   static byte a=0 ;
   char *xmlDT PROGMEM = CCMFMT;
+  const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
 }
 
