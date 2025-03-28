@@ -1,8 +1,8 @@
 ifndef TTY
-TTY=ttyUSB0
+TTY=ttyACM0
 endif
 ifndef BOARD
-BOARD=uno
+BOARD=nano:cpu=atmega328old
 endif
 ifndef W5500SS
 W5500SS=10

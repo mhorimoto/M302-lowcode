@@ -6,7 +6,8 @@
 //  
 ///////////////////////////////////////////////////////////////////
 
-
+#include "M302.h"
+/* 
 #include <stdio.h>
 #include <SPI.h>
 #include <Ethernet2.h>
@@ -16,6 +17,7 @@
 #include <EEPROM.h>
 #include "LiquidCrystal_I2C.h"
 #include <Wire.h>
+ */
 //#include <Adafruit_I2CDevice.h>
 //#include <Adafruit_I2CRegister.h>
 //#include "Adafruit_SHT31.h"
@@ -48,7 +50,7 @@ void get_mcusr(void) {
 #define LOADCELL_DOUT_PIN  6
 #define LOADCELL_SCK_PIN   7
 
-const char VERSION[16] PROGMEM = "TB2N 0.01";
+const char VERSION[16] PROGMEM = "TB2N 0.03";
 
 char uecsid[6], uecstext[180],strIP[16],linebuf[80];
 byte lineptr = 0;
@@ -187,7 +189,7 @@ float sens_ana(int aport,int map_low,int map_high,float slope) {
   return r;
 }
 
-float getM252(void) {
+void getM252(int ccmid) {
   char *xmlDT PROGMEM = CCMFMT;
   char val[16];
   float fval;
@@ -201,22 +203,12 @@ float getM252(void) {
     receivedData.replace("\r", ""); // 改行コードを削除
     receivedData.replace("\n", ""); // 改行コードを削除
     receivedData.toCharArray(val,16);
-    strcpy(lcdtext[0],val);
-    // 受信したデータを表示
-    uecsSendData(0,xmlDT,val,0);
-
     // 受信した文字列をfloat型に変換
     float floatValue = receivedData.toFloat();
     digitalWrite(LED2,LOW);
-    return floatValue;
-//    Serial.print("float型に変換: ");
-//    Serial.println(floatValue);
   }
-
-  // 少し待つ (外部装置の処理時間などを考慮)
-  delay(1000);
-
 }
+
 /////////////////////////////////
 void loop() {
   static int k=0;
@@ -338,14 +330,17 @@ void UserEverySecond(void) {
 
 void UserEvery10Seconds(void) {
   extern void lcdout(int,int,int);
-  extern float sens_ana(int,int,int,float),getM252(void);
+  extern float sens_ana(int,int,int,float);
   char *xmlDT PROGMEM = CCMFMT;
   char dtxt[17],tval[11],hval[4];
   int ia,cdsv,l,ti,tc;
   float co2,irri;
-  irri = getM252();
-  co2 = sens_ana(A2,10,5000,0.6);
-  sprintf(tval,"%d",int(co2));
+  strcpy(lcdtext[0],val);
+  // 受信したデータを表示
+  uecsSendData(0,xmlDT,val,0);
+
+//  co2 = sens_ana(A2,10,5000,0.6);
+//  sprintf(tval,"%d",int(co2));
 //  uecsSendData(1,xmlDT,tval,0);
   //  long  w = scale.read_average(10);
   //  float t = sht31.readTemperature();
@@ -375,5 +370,7 @@ void UserEvery10Seconds(void) {
 void UserEveryMinute(void) {
   static byte a=0 ;
   char *xmlDT PROGMEM = CCMFMT;
+  extern void getM252(int);
+  getM252(1);
 }
 
