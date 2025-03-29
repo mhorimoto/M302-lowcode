@@ -37,7 +37,7 @@ void get_mcusr(void) {
   wdt_disable();
 }
 
-#define  UECS_PORT  16520
+
 #define  pUECSID      0
 #define  pMACADDR     6
 #define  pCND        0x80

@@ -12,7 +12,7 @@
 #define _M302_H_
 #define _M302_H_V  100
 
-#define  UECS_PORT  16520
+#define UECS_PORT  16520
 #define LC_SEND_START       0x80  // CCM for data sending (for example cnd.aMC)
 #define LC_SEND_REC_SIZE    0x30  // reserve to 0x2f step by 0x30
 #define   LC_SEND_VALID     0x00  // (00) Valid Flag (0x01:valid, 0xff:invalid)
@@ -25,7 +25,7 @@
 #define   LC_SEND_CCMTYPE   0x08  // (08-27) char[20] CCM Type Name
 #define   LC_SEND_UNIT      0x1c  // (28-37) char[10] Unit Name
 #define   LC_SEND_FUNC      0x28  // (38)  Function Number (1-254)
-#define   LC_SEND_PARAM     0x29  // (39-3f) char[6] Parameter Name
+#define   LC_SEND_PARAM     0x29  // (39-3f) byte[6] Parameter Name
 
 typedef struct uecsM302Send {
     byte valid;        // 0x00
@@ -37,7 +37,7 @@ typedef struct uecsM302Send {
     byte cast;         // 0x07
     char ccmtype[20];  // 0x08
     char unit[10];     // 0x1c
-    byte func;        // 0x28
+    byte func;         // 0x28
     char param[6];     // 0x29
 } uecsM302Send_t;
 
