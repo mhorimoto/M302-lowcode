@@ -13,6 +13,34 @@
 #define _M302_H_V  100
 
 #define UECS_PORT  16520
+
+/*** EEPROM LOWCORE ASSIGN ***/
+#define LC_UECS_ID        0x00
+#define LC_MAC            0x06
+#define FIX_DHCP_FLAG     0x0c
+#define FIXED_IPADDRESS   0x10
+#define FIXED_NETMASK     0x14
+#define FIXED_DEFGW       0x18
+#define FIXED_DNS         0x1c
+#define VENDER_NAME       0x40
+#define NODE_NAME         0x50
+#define LC_DBGMSG         0x60  /* bit pos 0x80: Serial out, 0x40: LCD out, 0x20: Info Serial out */
+#define   SO_MSG    0x80
+#define   LCD_MSG   0x40
+#define   SO_INFO   0x02
+#define LC_CMODE          0x62  /* Force CMODE Change */
+
+typedef struct stM302 {
+  byte mac[6];
+  bool dhcpflag=true;
+  byte set_ip[4];
+  IPAddress ip;
+  IPAddress gw;
+  IPAddress dns;
+  IPAddress subnet;
+  int cidr;
+} stM302_t ;
+
 #define LC_SEND_START       0x80  // CCM for data sending (for example cnd.aMC)
 #define LC_SEND_REC_SIZE    0x30  // reserve to 0x2f step by 0x30
 #define   LC_SEND_VALID     0x00  // (00) Valid Flag (0x01:valid, 0xff:invalid)
@@ -64,5 +92,13 @@ typedef struct uecsM302Send {
 #define FUNC_HWINT3  7
 #define FUNC_IMG_CA0012 8
 #define FUNC_SLT5006 9
+
+/*** Mode via httpd ***/
+
+#define MD_HT_IGNORE  0
+#define MD_HT_STORE   1
+#define MD_HT_FETCH   2
+#define MD_HT_END     3
+#define MD_HT_REMOCON 4
 
 #endif

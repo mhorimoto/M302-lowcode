@@ -7,21 +7,6 @@
 ///////////////////////////////////////////////////////////////////
 
 #include "M302.h"
-/* 
-#include <stdio.h>
-#include <SPI.h>
-#include <Ethernet2.h>
-#include <EthernetUdp2.h> // UDP library from: bjoern@cs.stanford.edu 12/30/2008
-#include <avr/pgmspace.h>
-#include <avr/wdt.h>
-#include <EEPROM.h>
-#include "LiquidCrystal_I2C.h"
-#include <Wire.h>
- */
-//#include <Adafruit_I2CDevice.h>
-//#include <Adafruit_I2CRegister.h>
-//#include "Adafruit_SHT31.h"
-//#include "HX711.h"
 
 #ifndef W5500SS
 #define W5500SS 10
@@ -38,26 +23,20 @@ void get_mcusr(void) {
 }
 
 
-#define  pUECSID      0
-#define  pMACADDR     6
 #define  pCND        0x80
 #define  pRADIATION  0xa0
 #define  delayMillis 5000UL // 5sec
 #define  LED2        3
 
 
-// HX711 circuit wiring
-#define LOADCELL_DOUT_PIN  6
-#define LOADCELL_SCK_PIN   7
+const char VERSION[16] PROGMEM = "TB2N 0.0J";
 
-const char VERSION[16] PROGMEM = "TB2N 0.03";
-
-char uecsid[6], uecstext[180],strIP[16],linebuf[80];
-byte lineptr = 0;
+char uecsid[6], uecstext[180],strIP[16];//,linebuf[80];
+//byte lineptr = 0;
 unsigned long cndVal;   // CCM cnd Value
-bool      ready,busy;
-uint8_t  regs[14];
-char val[16];
+//bool      ready,busy;
+//uint8_t  regs[14];
+char     val[16];
 
 //Adafruit_SHT31 sht31 = Adafruit_SHT31();
 //HX711 scale;
@@ -68,18 +47,21 @@ char val[16];
 /////////////////////////////////////
 
 LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
-char lcdtext[6][17];
+char     lcdtext[2][17];
+stM302_t st_m302;
 
-byte macaddr[6];
-IPAddress localIP,broadcastIP,subnetmaskIP,remoteIP;
-EthernetUDP Udp16520,Udp16521,Udp16529;
+//byte macaddr[6];
+IPAddress broadcastIP,networkADDR;
+EthernetUDP Udp16520,Udp16521,Udp16528,Udp16529;
 
 volatile int period1sec = 0;
 volatile int period10sec = 0;
 volatile int period60sec = 0;
 
+//int packetSize;
+
 void setup(void) {
-  int i;
+  int i,er;
   const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
   extern void lcdout(int,int,int);
 
@@ -96,11 +78,22 @@ void setup(void) {
   lcd.init();
   lcd.backlight();
   configure_wdt();
-  EEPROM.get(pUECSID,uecsid);
-  EEPROM.get(pMACADDR,macaddr);
+  EEPROM.get(LC_UECS_ID,uecsid);
+  EEPROM.get(LC_MAC,st_m302.mac);
+  if (EEPROM.read(FIX_DHCP_FLAG)==0) {
+    st_m302.dhcpflag = false;
+    EEPROM.get(FIXED_IPADDRESS,st_m302.set_ip);
+    for(i=0;i<4;i++) {
+      st_m302.subnet[i] = EEPROM.read(FIXED_NETMASK+i);
+      st_m302.gw[i]     = EEPROM.read(FIXED_DEFGW+i);
+      st_m302.dns[i]    = EEPROM.read(FIXED_DNS+i);
+    }
+  }
+
   for(i=0;i<16;i++) {
     lcdtext[0][i] = pgm_read_byte(&(VERSION[i]));
   }
+  wdt_reset();
   lcdtext[0][i] = 0;
   sprintf(lcdtext[1],ids,"ID",
           uecsid[0],uecsid[1],uecsid[2],uecsid[3],uecsid[4],uecsid[5]);
@@ -110,23 +103,34 @@ void setup(void) {
   } else {
     Serial.begin(115200);
     Serial.println(lcdtext[0]);
-    delay(500);
+    delay(50);
   }
   Ethernet.init(W5500SS);
-  if (Ethernet.begin(macaddr)==0) {
+  wdt_reset();
+  if (st_m302.dhcpflag) {
+    er = Ethernet.begin(st_m302.mac);
+    st_m302.subnet = Ethernet.subnetMask();
+  } else {
+    Ethernet.begin(st_m302.mac,st_m302.set_ip,st_m302.dns,st_m302.gw,st_m302.subnet);
+    er = 1;
+  }
+  if (er==0) {
     sprintf(lcdtext[1],"NFL");
   } else {
-    localIP = Ethernet.localIP();
-    subnetmaskIP = Ethernet.subnetMask();
+    st_m302.ip = Ethernet.localIP();
     for(i=0;i<4;i++) {
-      broadcastIP[i] = ~subnetmaskIP[i]|localIP[i];
+      networkADDR[i] = st_m302.subnet[i] & st_m302.ip[i];
+      broadcastIP[i] = ~st_m302.subnet[i]|networkADDR[i];
     }
-    sprintf(lcdtext[2],ids,"HW",
-            macaddr[0],macaddr[1],macaddr[2],macaddr[3],macaddr[4],macaddr[5]);
-    sprintf(strIP,"%d.%d.%d.%d",localIP[0],localIP[1],localIP[2],localIP[3]);
-    sprintf(lcdtext[3],"%s",strIP);
-    lcdout(2,3,1);
+
+    //sprintf(lcdtext[2],ids,"HW",
+    //            st_m302.mac[0],st_m302.mac[1],st_m302.mac[2],st_m302.mac[3],st_m302.mac[4],st_m302.mac[5]);
+    //    sprintf(lcdtext[3],"%d.%d.%d.%d",st_m302.ip[0],st_m302.ip[1],st_m302.ip[2],st_m302.ip[3]);
+    //    lcdout(2,3,1);
+    wdt_reset();
+    delay(100);
     Udp16520.begin(16520);
+    Udp16528.begin(16528);
   }
 
   //**********************************
@@ -218,23 +222,24 @@ void loop() {
   int  inchar ;
   float ther,humi;
   char name[10],dname[11],val[6];
-
-  //  extern void lcdout(int,int,int);
-  //  extern int setParam(char *);
-  //  extern void dumpLowCore(void);
-
+  extern void recv16528port(void);
+  
   char *xmlDT PROGMEM = CCMFMT;
   const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
   
-   wdt_reset();
-   // 10 sec interval
-   if (period10sec==1) {
-     UserEvery10Seconds();
-     lcd_display_loop();
-     period10sec=0;
-   }
+  recv16528port();
+  wdt_reset();
+  
+  // 10 sec interval
+  if (period10sec==1) {
+    UserEvery10Seconds();
+    //    lcd_display_loop();
+    period10sec=0;
+    wdt_reset();
+  }
    // 1 min interval
    if (period60sec==1) {
+     UserEveryMinute();
      period60sec = 0;
      wdt_reset();
    }
@@ -363,12 +368,11 @@ void UserEvery10Seconds(void) {
   //  uecsSendData(3,xmlDT,tval,0); // Weight
   //  sprintf(lcdtext[3],"W=%s ",tval);
   lcd.setCursor(0,1);
-  lcd.print(lcdtext[2]);
+  lcd.print(lcdtext[1]);
   wdt_reset();
 }
 
 void UserEveryMinute(void) {
-  static byte a=0 ;
   char *xmlDT PROGMEM = CCMFMT;
   extern void getM252(int);
   getM252(1);
