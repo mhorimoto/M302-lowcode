@@ -13,6 +13,7 @@
 #define _M302_H_V  100
 
 #define UECS_PORT  16520
+#define CCMFMT "<?xml version=\"1.0\"?><UECS ver=\"1.00-E10\"><DATA type=\"%s\" room=\"%d\" region=\"%d\" order=\"%d\" priority=\"%d\">%s</DATA><IP>%s</IP></UECS>";
 
 /*** EEPROM LOWCORE ASSIGN ***/
 #define LC_UECS_ID        0x00

@@ -6,6 +6,8 @@
 //  
 ///////////////////////////////////////////////////////////////////
 
+const char VERSION[16] PROGMEM = "TB2N V1.00";
+
 #include "M302.h"
 
 #ifndef W5500SS
@@ -23,18 +25,14 @@ void get_mcusr(void) {
 }
 
 
-#define  pCND        0x80
-#define  pRADIATION  0xa0
 #define  delayMillis 5000UL // 5sec
 #define  LED2        3
 
-
-const char VERSION[16] PROGMEM = "TB2N 0.13";
-
 char          uecsid[6], uecstext[180];
 unsigned long cndVal;   // CCM cnd Value
-char     val[16];
+char          val[16];
 
+extern void lcdout(int,int,int);
 
 /////////////////////////////////////
 // Hardware Define
@@ -54,6 +52,7 @@ volatile int period60sec = 0;
 //int packetSize;
 
 void setup(void) {
+  char *xmlDT PROGMEM = CCMFMT;
   int i,er;
   const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
   extern void lcdout(int,int,int);
@@ -65,8 +64,12 @@ void setup(void) {
   pinMode(6,INPUT_PULLUP);
   pinMode(7,OUTPUT);
   pinMode(8,OUTPUT);
-  pinMode(9,OUTPUT);
+  pinMode(9,OUTPUT);  // Reset for M252 normally HIGH
 
+  digitalWrite(9,LOW);
+  delay(50);
+  digitalWrite(9,HIGH);
+  
   cndVal = 0L;    // Reset cnd value
   lcd.init();
   lcd.backlight();
@@ -88,8 +91,9 @@ void setup(void) {
   }
   wdt_reset();
   lcdtext[0][i] = 0;
-  sprintf(lcdtext[1],ids,"ID",
-          uecsid[0],uecsid[1],uecsid[2],uecsid[3],uecsid[4],uecsid[5]);
+  sprintf(lcdtext[1],"%d/%d/%d  %sL",
+          EEPROM.read(LC_SEND_START+LC_SEND_ROOM),EEPROM.read(LC_SEND_START+LC_SEND_REGION),
+	  EEPROM.read(LC_SEND_START+LC_SEND_ORDER),val);
   lcdout(0,1,1);
   if (digitalRead(4)==HIGH) { // 通常運転
     Serial.begin(19200);
@@ -129,7 +133,7 @@ void setup(void) {
   //**********************************
 
   wdt_reset();
-  cndVal |= 0x00000001;  // Setup completed
+  uecsSendData(0,xmlDT,"395264",0);     // start cnd
   delay(100);
   //
   // Setup Timer1 Interrupt
@@ -141,36 +145,6 @@ void setup(void) {
   TIMSK1 |= (1 << OCIE1A);
 }
 
-/////////////////////////////////
-// Reset Function goto Address 0
-/////////////////////////////////
-void(*resetFunc)(void) = 0;
-
-extern void lcdout(int,int,int);
-extern int setParam(char *);
-extern void dumpLowCore(void);
-  
-#define CCMFMT "<?xml version=\"1.0\"?><UECS ver=\"1.00-E10\"><DATA type=\"%s\" room=\"%d\" region=\"%d\" order=\"%d\" priority=\"%d\">%s</DATA><IP>%s</IP></UECS>";
-
-int dk=0;
-
-void lcd_display_loop(void) {
-  dk++;
-  switch(dk) {
-  case 3:
-    lcdout(0,2,1);
-    break;
-  case 4:
-    lcdout(0,3,1);
-    break;
-  case 5:
-    dk = 0;
-    lcdout(0,4,1);
-    break;
-  default:
-    lcdout(dk,4,1);
-  }
-}
 
 float sens_ana(int aport,int map_low,int map_high,float slope) {
   int sval,vol;
@@ -179,33 +153,6 @@ float sens_ana(int aport,int map_low,int map_high,float slope) {
   vol  = map(sval,0,1023,map_low,map_high);
   r    = vol * slope;
   return r;
-}
-
-void getM252(int ccmid,bool f) {
-  char *xmlDT PROGMEM = CCMFMT;
-  extern char val[];
-  if (f==false) {
-    digitalWrite(LED2,HIGH);
-    if (digitalRead(4)==HIGH) {
-      Serial.write('a');
-      delay(100);
-      if (Serial.available() > 0) { // 受信データを読み込む
-        String receivedData = Serial.readStringUntil(0x0a); // 改行コードが来るまで読み込む
-        receivedData.trim(); // 前後の空白を削除
-        receivedData.replace("\r", ""); // 改行コードを削除
-        receivedData.replace("\n", ""); // 改行コードを削除
-        receivedData.toCharArray(val,16);
-      }
-    } else {
-      val[0] = 'N';
-      val[1] = 'a';
-      val[2] = 'N';
-      val[3] = 0;
-    }
-    digitalWrite(LED2,LOW);
-  } else {
-    uecsSendData(ccmid,xmlDT,val,0);
-  }
 }
 
 /////////////////////////////////
@@ -299,11 +246,6 @@ void uecsSendData(int id,char *xmlDT,char *tval,int z) {
   EEPROM.get(a+LC_SEND_PRIORITY,priority);
   EEPROM.get(a+LC_SEND_LV,interval);
   EEPROM.get(a+LC_SEND_CCMTYPE,name);
-  //  for(i=0;i<10;i++) {
-  //    dname[i] = name[i];
-  //    if (name[i]==NULL) break;
-  //  }
-  //  dname[i] = NULL;
   sprintf(strIP,"%d.%d.%d.%d",st_m302.ip[0],st_m302.ip[1],st_m302.ip[2],st_m302.ip[3]);
   sprintf(uecstext,xmlDT,name,room,region,order,priority+z,tval,strIP);
   Udp16520.beginPacket(broadcastIP,16520);
