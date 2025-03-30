@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////
-// M302-lowcode
+// M302-lowcode for TB2N
 //  MIT License
 //  Copyright (c) 2025 Masafumi Horimoto
 //  Release on 
@@ -29,17 +29,11 @@ void get_mcusr(void) {
 #define  LED2        3
 
 
-const char VERSION[16] PROGMEM = "TB2N 0.0J";
+const char VERSION[16] PROGMEM = "TB2N 0.13";
 
-char uecsid[6], uecstext[180],strIP[16];//,linebuf[80];
-//byte lineptr = 0;
+char          uecsid[6], uecstext[180];
 unsigned long cndVal;   // CCM cnd Value
-//bool      ready,busy;
-//uint8_t  regs[14];
 char     val[16];
-
-//Adafruit_SHT31 sht31 = Adafruit_SHT31();
-//HX711 scale;
 
 
 /////////////////////////////////////
@@ -47,11 +41,10 @@ char     val[16];
 /////////////////////////////////////
 
 LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
-char     lcdtext[2][17];
-stM302_t st_m302;
+char              lcdtext[2][17];
+stM302_t          st_m302;
 
-//byte macaddr[6];
-IPAddress broadcastIP,networkADDR;
+IPAddress   broadcastIP,networkADDR;
 EthernetUDP Udp16520,Udp16521,Udp16528,Udp16529;
 
 volatile int period1sec = 0;
@@ -123,10 +116,6 @@ void setup(void) {
       broadcastIP[i] = ~st_m302.subnet[i]|networkADDR[i];
     }
 
-    //sprintf(lcdtext[2],ids,"HW",
-    //            st_m302.mac[0],st_m302.mac[1],st_m302.mac[2],st_m302.mac[3],st_m302.mac[4],st_m302.mac[5]);
-    //    sprintf(lcdtext[3],"%d.%d.%d.%d",st_m302.ip[0],st_m302.ip[1],st_m302.ip[2],st_m302.ip[3]);
-    //    lcdout(2,3,1);
     wdt_reset();
     delay(100);
     Udp16520.begin(16520);
@@ -141,7 +130,7 @@ void setup(void) {
 
   wdt_reset();
   cndVal |= 0x00000001;  // Setup completed
-  delay(1000);
+  delay(100);
   //
   // Setup Timer1 Interrupt
   //
@@ -162,7 +151,6 @@ extern int setParam(char *);
 extern void dumpLowCore(void);
   
 #define CCMFMT "<?xml version=\"1.0\"?><UECS ver=\"1.00-E10\"><DATA type=\"%s\" room=\"%d\" region=\"%d\" order=\"%d\" priority=\"%d\">%s</DATA><IP>%s</IP></UECS>";
-//char *ids = "%s:%02X%02X%02X%02X%02X%02X";
 
 int dk=0;
 
@@ -193,23 +181,30 @@ float sens_ana(int aport,int map_low,int map_high,float slope) {
   return r;
 }
 
-void getM252(int ccmid) {
+void getM252(int ccmid,bool f) {
   char *xmlDT PROGMEM = CCMFMT;
-  char val[16];
-  float fval;
-  digitalWrite(LED2,HIGH);
-  Serial.write('a');
-  delay(100);
-  if (Serial.available() > 0) {
-    // 受信データを読み込む
-    String receivedData = Serial.readStringUntil(0x0a); // 改行コードが来るまで読み込む (外部装置の送信形式によります)
-    receivedData.trim(); // 前後の空白を削除
-    receivedData.replace("\r", ""); // 改行コードを削除
-    receivedData.replace("\n", ""); // 改行コードを削除
-    receivedData.toCharArray(val,16);
-    // 受信した文字列をfloat型に変換
-    float floatValue = receivedData.toFloat();
+  extern char val[];
+  if (f==false) {
+    digitalWrite(LED2,HIGH);
+    if (digitalRead(4)==HIGH) {
+      Serial.write('a');
+      delay(100);
+      if (Serial.available() > 0) { // 受信データを読み込む
+        String receivedData = Serial.readStringUntil(0x0a); // 改行コードが来るまで読み込む
+        receivedData.trim(); // 前後の空白を削除
+        receivedData.replace("\r", ""); // 改行コードを削除
+        receivedData.replace("\n", ""); // 改行コードを削除
+        receivedData.toCharArray(val,16);
+      }
+    } else {
+      val[0] = 'N';
+      val[1] = 'a';
+      val[2] = 'N';
+      val[3] = 0;
+    }
     digitalWrite(LED2,LOW);
+  } else {
+    uecsSendData(ccmid,xmlDT,val,0);
   }
 }
 
@@ -221,7 +216,8 @@ void loop() {
   int  order;
   int  inchar ;
   float ther,humi;
-  char name[10],dname[11],val[6];
+  char name[10],dname[11];
+  extern char val[];
   extern void recv16528port(void);
   
   char *xmlDT PROGMEM = CCMFMT;
@@ -233,7 +229,6 @@ void loop() {
   // 10 sec interval
   if (period10sec==1) {
     UserEvery10Seconds();
-    //    lcd_display_loop();
     period10sec=0;
     wdt_reset();
   }
@@ -248,7 +243,7 @@ void loop() {
       period1sec = 0;
       ia = 0; // cnd
       sprintf(val,"%u",cndVal);
-      uecsSendData(ia,xmlDT,val,0);
+      uecsSendData(0,xmlDT,val,0);     // cnd
       cndVal &= 0xfffffffe;            // Clear setup completed flag
       UserEverySecond();
    }
@@ -291,23 +286,26 @@ void configure_wdt(void) {
                                    //  8 seconds: 0b100001
 }
 
-void uecsSendData(int id,char *xmlDT,char *val,int z) {
+void uecsSendData(int id,char *xmlDT,char *tval,int z) {
   byte room,region,priority,interval;
   int  order,i,a;
-  char name[20],dname[21]; // ,val[6];
-  a = id*0x20 + pCND;
-  EEPROM.get(a+0x01,room);
-  EEPROM.get(a+0x02,region);
-  EEPROM.get(a+0x03,order);
-  EEPROM.get(a+0x05,priority);
-  EEPROM.get(a+  26,interval);
-  EEPROM.get(a+0x06,name);
-  for(i=0;i<10;i++) {
-    dname[i] = name[i];
-    if (name[i]==NULL) break;
-  }
-  dname[i] = NULL;
-  sprintf(uecstext,xmlDT,dname,room,region,order,priority+z,val,strIP);
+  char name[20],dname[21],strIP[17];
+  extern stM302_t st_m302;
+
+  a = id * LC_SEND_REC_SIZE + LC_SEND_START;
+  EEPROM.get(a+LC_SEND_ROOM,room);
+  EEPROM.get(a+LC_SEND_REGION,region);
+  EEPROM.get(a+LC_SEND_ORDER,order);
+  EEPROM.get(a+LC_SEND_PRIORITY,priority);
+  EEPROM.get(a+LC_SEND_LV,interval);
+  EEPROM.get(a+LC_SEND_CCMTYPE,name);
+  //  for(i=0;i<10;i++) {
+  //    dname[i] = name[i];
+  //    if (name[i]==NULL) break;
+  //  }
+  //  dname[i] = NULL;
+  sprintf(strIP,"%d.%d.%d.%d",st_m302.ip[0],st_m302.ip[1],st_m302.ip[2],st_m302.ip[3]);
+  sprintf(uecstext,xmlDT,name,room,region,order,priority+z,tval,strIP);
   Udp16520.beginPacket(broadcastIP,16520);
   Udp16520.write(uecstext);
   Udp16520.endPacket();
@@ -334,47 +332,20 @@ void UserEverySecond(void) {
 }
 
 void UserEvery10Seconds(void) {
-  extern void lcdout(int,int,int);
-  extern float sens_ana(int,int,int,float);
   char *xmlDT PROGMEM = CCMFMT;
-  char dtxt[17],tval[11],hval[4];
-  int ia,cdsv,l,ti,tc;
-  float co2,irri;
-  strcpy(lcdtext[0],val);
-  // 受信したデータを表示
-  uecsSendData(0,xmlDT,val,0);
+  extern void lcdout(int,int,int);
+  extern void getM252(int,bool);
 
-//  co2 = sens_ana(A2,10,5000,0.6);
-//  sprintf(tval,"%d",int(co2));
-//  uecsSendData(1,xmlDT,tval,0);
-  //  long  w = scale.read_average(10);
-  //  float t = sht31.readTemperature();
-  //  float h = sht31.readHumidity();
-
-  //  ti = (int)t;
-  //  tc = (int)((float)(t-ti)*100.0);
-  
-  //  if (! isnan(t)) {  // check if 'is not a number'
-  //    Serial.print("Temp *C = "); Serial.print(t); Serial.print("\t\t");
-  //  } else { 
-  //    Serial.println("Failed to read temperature");
-  //  }
-  //  sprintf(tval,"%d.%02d",ti,tc);
-  //  uecsSendData(1,xmlDT,tval,0); // InAirTemp
-  //  sprintf(hval,"%d",(int)h);
-  //  uecsSendData(2,xmlDT,hval,0); // InAirHumid
-  //  sprintf(lcdtext[2],"%sC/%s%%",tval,hval);
-  //  ltoa(w,tval,10);
-  //  uecsSendData(3,xmlDT,tval,0); // Weight
-  //  sprintf(lcdtext[3],"W=%s ",tval);
-  lcd.setCursor(0,1);
-  lcd.print(lcdtext[1]);
+  getM252(1,false);
   wdt_reset();
 }
 
 void UserEveryMinute(void) {
   char *xmlDT PROGMEM = CCMFMT;
-  extern void getM252(int);
-  getM252(1);
+  extern void lcdout(int,int,int);
+  extern void getM252(int,bool);
+
+  getM252(1,true);
+  wdt_reset();
 }
 

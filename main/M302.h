@@ -82,16 +82,17 @@ typedef struct uecsM302Send {
 #define LV_S1M0   10      // S-1M-0
 
 /*** FUNC LIST define ***/
-#define FUNC_NULL    0
-#define FUNC_ANA     1
-#define FUNC_DIG     2
-#define FUNC_SHT3    3
-#define FUNC_SHT4    4
-#define FUNC_SHT5    5
-#define FUNC_HWINT2  6
-#define FUNC_HWINT3  7
+#define FUNC_NULL       0
+#define FUNC_ANA        1
+#define FUNC_DIG        2
+#define FUNC_SHT3       3
+#define FUNC_SHT4       4
+#define FUNC_SHT5       5
+#define FUNC_HWINT2     6
+#define FUNC_HWINT3     7
 #define FUNC_IMG_CA0012 8
-#define FUNC_SLT5006 9
+#define FUNC_SLT5006    9
+#define FUNC_M252      10
 
 /*** Mode via httpd ***/
 
