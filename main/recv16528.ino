@@ -11,7 +11,7 @@ void recv16528port(void) {
   int packetSize,i,iaddr,idata;
   char eaddr[4],edata[3];
   const char *EEPROMIMG PROGMEM = "%03X=%02X";
-  extern void clrM252(int);
+//  extern void clrM252(int);
   extern char val[];
   
   wdt_reset();
@@ -22,29 +22,29 @@ void recv16528port(void) {
     uecsbuf[packetSize] = NULL;
     for(i=0;i<LEN_UECS_BUFFER;i++) {
       if (uecsbuf[i]<(char)0x20) {
-	val[i] = (char)NULL;
+        val[i] = (char)NULL;
       } else {
-	val[i] = uecsbuf[i];
+        val[i] = uecsbuf[i];
       }
     }
     if (!strcmp(val,"R77")) {
       resetFunc();
     }
-    if (!strcmp(val,"R71")) {
-      clrM252(1);
-    }
-    if (!strcmp(val,"R72")) {
-      digitalWrite(9,LOW);
-      delay(50);
-      digitalWrite(9,HIGH);
-    }
+//    if (!strcmp(val,"R71")) {
+//      clrM252(1);
+//    }
+//    if (!strcmp(val,"R72")) {
+//      digitalWrite(9,LOW);
+//      delay(50);
+//      digitalWrite(9,HIGH);
+//    }
     if (val[0]=='S') {
       for(i=0;i<3;i++) {
-	eaddr[i]=val[i+1];
+        eaddr[i]=val[i+1];
       }
       eaddr[i] = (char)NULL;
       for(i=0;i<2;i++) {
-	edata[i]=val[i+4];
+        edata[i]=val[i+4];
       }
       edata[i]=(char)NULL;
       iaddr = strtol(eaddr, NULL, 16);
@@ -55,7 +55,7 @@ void recv16528port(void) {
     }
     if (val[0]=='D') {
       for(i=0;i<3;i++) {
-	eaddr[i]=val[i+1];
+        eaddr[i]=val[i+1];
       }
       eaddr[i] = (char)NULL;
       iaddr = strtol(eaddr, NULL, 16);

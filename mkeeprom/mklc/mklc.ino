@@ -5,23 +5,23 @@
 
 #define INPUT_LINE_SIZE  30
 
-char *pgname = "M302 mklc V1.00 ";
+char *pgname = "M302 mklc V1.10 ";
 char inputbuf[INPUT_LINE_SIZE],*ptr_inputbuf;
 int  cnt;
 
-LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+//LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
 void setup(void) {
-  String linebuf[2],inputbuf;
+  String linebuf,inputbuf;
 
   Serial.begin(115200);
-  lcd.init();
-  lcd.backlight();
-  lcd.clear();
-  linebuf[1] = String(pgname);
-  lcd.print(linebuf[1]);
-  lcd.setCursor(0,1);
-  lcd.print(F("SERIAL 115200bps"));
+//  lcd.init();
+//  lcd.backlight();
+//  lcd.clear();
+  linebuf = String(pgname);
+//  lcd.print(linebuf[1]);
+//  lcd.setCursor(0,1);
+//  lcd.print(F("SERIAL 115200bps"));
   Serial.println(pgname);
   ptr_inputbuf = &inputbuf[0];
   cnt = 0;
@@ -112,6 +112,54 @@ void loop(void) {
     if ( !strncmp(ptr_inputbuf,"clearpage ",10) ) {
       ptr_inputbuf += 10;
       clearpage(ptr_inputbuf);
+    }
+    if ( !strncmp(ptr_inputbuf,"setvalid ",9) ) {
+      ptr_inputbuf += 9;
+      setCommand(ptr_inputbuf,2,LC_SEND_VALID);
+    }
+    if ( !strncmp(ptr_inputbuf,"setroom ",8) ) {
+      ptr_inputbuf += 8;
+      setCommand(ptr_inputbuf,2,LC_SEND_ROOM);
+    }
+    if ( !strncmp(ptr_inputbuf,"setregion ",10) ) {
+      ptr_inputbuf += 10;
+      setCommand(ptr_inputbuf,2,LC_SEND_REGION);
+    }
+    if ( !strncmp(ptr_inputbuf,"setorder ",9) ) {
+      ptr_inputbuf += 9;
+      setCommand(ptr_inputbuf,4,LC_SEND_ORDER);
+    }
+    if ( !strncmp(ptr_inputbuf,"setpriority ",12) ) {
+      ptr_inputbuf += 12;
+      setCommand(ptr_inputbuf,2,LC_SEND_PRIORITY);
+    }
+    if ( !strncmp(ptr_inputbuf,"setlv ",6) ) {
+      ptr_inputbuf += 6;
+      setCommand(ptr_inputbuf,2,LC_SEND_LV);
+    }
+    if ( !strncmp(ptr_inputbuf,"setcast ",8) ) {
+      ptr_inputbuf += 8;
+      setCommand(ptr_inputbuf,2,LC_SEND_CAST);
+    }
+    if ( !strncmp(ptr_inputbuf,"setccmtype ",11) ) {
+      ptr_inputbuf += 11;
+      setCommand(ptr_inputbuf,20,LC_SEND_CCMTYPE);
+    }
+    if ( !strncmp(ptr_inputbuf,"setccmcast ",11) ) {
+      ptr_inputbuf += 11;
+      setCommand(ptr_inputbuf,20,LC_SEND_CAST);
+    }
+    if ( !strncmp(ptr_inputbuf,"setfunc ",8) ) {
+      ptr_inputbuf += 8;
+      setCommand(ptr_inputbuf,2,LC_SEND_FUNC);
+    }
+    if ( !strncmp(ptr_inputbuf,"setparam ",9) ) {
+      ptr_inputbuf += 9;
+      setCommand(ptr_inputbuf,12,LC_SEND_PARAM);
+    }
+    if ( !strncmp(ptr_inputbuf,"setunit ",8) ) {
+      ptr_inputbuf += 8;
+      setCommand(ptr_inputbuf,12,LC_SEND_UNIT);
     }
     if ( !strncmp(ptr_inputbuf,"help",4)) {
       help();

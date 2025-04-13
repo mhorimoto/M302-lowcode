@@ -2,7 +2,7 @@
 
 void setCommand(char *p,int c,int a) {
   byte r,d[4];
-  int l,i;
+  int l,i,ccmid;
   char sc[3],tc[17],*ptc;
   while( *p == 0x20 ) {
     p++;
@@ -30,8 +30,8 @@ void setCommand(char *p,int c,int a) {
     while(ptc!=NULL) {
       ptc = strtok(NULL,".");
       if (ptc!=NULL) {
-	i++;
-	d[i] = (byte)(atoi(ptc)&0xff);
+        i++;
+        d[i] = (byte)(atoi(ptc)&0xff);
       }
     }
     for (i=0;i<4;i++) {
@@ -51,15 +51,47 @@ void setCommand(char *p,int c,int a) {
       EEPROM.write(a+i,tc[i]);
     }
     break;
+  case LC_SEND_VALID:
+  case LC_SEND_ROOM:
+  case LC_SEND_REGION:
+  case LC_SEND_ORDER:
+  case LC_SEND_PRIORITY:
+  case LC_SEND_LV:
+  case LC_SEND_CAST:
+  case LC_SEND_CCMTYPE:
+  case LC_SEND_UNIT:
+  case LC_SEND_FUNC:
+  case LC_SEND_PARAM:
+    if (c==2) {
+      strncpy(sc,p,2);
+      sc[2]=(char)NULL;
+      r = (byte)(strtol(sc,0,16)&0xff);
+      EEPROM.write(a,r);
+      Serial.print(r,HEX);
+    } else if (c==4) {
+      strncpy(sc,p,4);
+      sc[4]=(char)NULL;
+      r = (byte)(strtol(sc,0,16)&0xffff);
+      EEPROM.put(a,r);
+      Serial.print(r,HEX);
+    } else if (c==6) {
+      strncpy(sc,p,6);
+      sc[6]=(char)NULL;
+      r = (byte)(strtol(sc,0,16)&0xffffff);
+      EEPROM.put(a,r);
+      Serial.print(r,HEX);
+    }
+    Serial.println();
+    break;
   default:
     if (l==c) {
       for(i=0;i<l;i+=2) {
-	strncpy(sc,p+i,2);
-	sc[2]=(char)NULL;
-	r = (byte)(strtol(sc,0,16)&0xff);
-	EEPROM.write(a,r);
-	a++;
-	Serial.print(r,HEX);
+        strncpy(sc,p+i,2);
+        sc[2]=(char)NULL;
+        r = (byte)(strtol(sc,0,16)&0xff);
+        EEPROM.write(a,r);
+        a++;
+        Serial.print(r,HEX);
       }
       Serial.println();
     }

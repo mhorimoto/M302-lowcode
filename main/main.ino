@@ -1,14 +1,15 @@
 ///////////////////////////////////////////////////////////////////
-// M302-lowcode for TB2N
+// M302-lowcode for SHT4x
 //  MIT License
 //  Copyright (c) 2025 Masafumi Horimoto
 //  Release on 
 //  
 ///////////////////////////////////////////////////////////////////
 
-const char VERSION[16] PROGMEM = "TB2N V1.00";
+const char VERSION[16] PROGMEM = "M302 V1.00";
 
 #include "M302.h"
+#include "Adafruit_SHT4x.h"
 
 #ifndef W5500SS
 #define W5500SS 10
@@ -38,9 +39,11 @@ extern void lcdout(int,int,int);
 // Hardware Define
 /////////////////////////////////////
 
-LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
-char              lcdtext[2][17];
+//LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+//char              lcdtext[2][17];
 stM302_t          st_m302;
+
+Adafruit_SHT4x sht4 = Adafruit_SHT4x();
 
 IPAddress   broadcastIP,networkADDR;
 EthernetUDP Udp16520,Udp16521,Udp16528,Udp16529;
@@ -55,7 +58,7 @@ void setup(void) {
   char *xmlDT PROGMEM = CCMFMT;
   int i,er;
   const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
-  extern void lcdout(int,int,int);
+//  extern void lcdout(int,int,int);
 
   pinMode(LED2,OUTPUT);
   digitalWrite(LED2,LOW);
@@ -64,15 +67,15 @@ void setup(void) {
   pinMode(6,INPUT_PULLUP);
   pinMode(7,OUTPUT);
   pinMode(8,OUTPUT);
-  pinMode(9,OUTPUT);  // Reset for M252 normally HIGH
+  pinMode(9,OUTPUT);
 
-  digitalWrite(9,LOW);
-  delay(50);
-  digitalWrite(9,HIGH);
+//  digitalWrite(9,LOW);
+//  delay(50);
+//  digitalWrite(9,HIGH);
   
   cndVal = 0L;    // Reset cnd value
-  lcd.init();
-  lcd.backlight();
+//  lcd.init();
+//  lcd.backlight();
   configure_wdt();
   EEPROM.get(LC_UECS_ID,uecsid);
   EEPROM.get(LC_MAC,st_m302.mac);
@@ -86,20 +89,20 @@ void setup(void) {
     }
   }
 
-  for(i=0;i<16;i++) {
-    lcdtext[0][i] = pgm_read_byte(&(VERSION[i]));
-  }
+//  for(i=0;i<16;i++) {
+//    lcdtext[0][i] = pgm_read_byte(&(VERSION[i]));
+//  }
   wdt_reset();
-  lcdtext[0][i] = 0;
-  sprintf(lcdtext[1],"%d/%d/%d  %sL",
-          EEPROM.read(LC_SEND_START+LC_SEND_ROOM),EEPROM.read(LC_SEND_START+LC_SEND_REGION),
-	  EEPROM.read(LC_SEND_START+LC_SEND_ORDER),val);
-  lcdout(0,1,1);
+//  lcdtext[0][i] = 0;
+//  sprintf(lcdtext[1],"%d/%d/%d  %sL",
+//          EEPROM.read(LC_SEND_START+LC_SEND_ROOM),EEPROM.read(LC_SEND_START+LC_SEND_REGION),
+//	  EEPROM.read(LC_SEND_START+LC_SEND_ORDER),val);
+//  lcdout(0,1,1);
   if (digitalRead(4)==HIGH) { // 通常運転
     Serial.begin(19200);
   } else {
     Serial.begin(115200);
-    Serial.println(lcdtext[0]);
+    Serial.println(VERSION);
     delay(50);
   }
   Ethernet.init(W5500SS);
@@ -112,7 +115,7 @@ void setup(void) {
     er = 1;
   }
   if (er==0) {
-    sprintf(lcdtext[1],"NFL");
+    Serial.println("NFL");
   } else {
     st_m302.ip = Ethernet.localIP();
     for(i=0;i<4;i++) {
@@ -131,7 +134,18 @@ void setup(void) {
   //  Initialize of Sensor devices
   //
   //**********************************
-
+  if (! sht4.begin()) {
+    Serial.println(F("NO SHT4x"));
+    while (1) {
+      uecsSendData(0,xmlDT,"67108865",0);     // NO SHT cnd
+      digitalWrite(LED2,HIGH);
+      delay(500);
+      digitalWrite(LED2,LOW);
+      delay(500);
+    }
+  }
+  sht4.setPrecision(SHT4X_HIGH_PRECISION);
+  sht4.setHeater(SHT4X_NO_HEATER);
   wdt_reset();
   uecsSendData(0,xmlDT,"395264",0);     // start cnd
   delay(100);
@@ -262,32 +276,43 @@ void UserEverySecond(void) {
 
   cndVal &= 0xfffffffe;            // Clear setup completed flag
   if (aaa) {
-    lcd.setCursor(15,0);
+    digitalWrite(LED2,HIGH);
     aaa=false;
-    lcd.print(">");
+//    lcd.setCursor(15,0);
+//    lcd.print(">");
   } else {
-    lcd.setCursor(15,0);
+    digitalWrite(LED2,LOW);
     aaa=true;
-    lcd.print("<");
+//    lcd.setCursor(15,0);
+//    lcd.print("<");
   }
   wdt_reset();
 }
 
 void UserEvery10Seconds(void) {
   char *xmlDT PROGMEM = CCMFMT;
-  extern void lcdout(int,int,int);
-  extern void getM252(int,bool);
+//  extern void lcdout(int,int,int);
+//  extern void getM252(int,bool);
 
-  getM252(1,false);
+//  getM252(1,false);
+  sht4.getEvent(&ther,&humi);
+  sprintf(val,"%d",int(ther*100));
+  uecsSendData(0,xmlDT,val,0);     // cnd
+  sprintf(val,"%d",int(humi*100));
+  uecsSendData(0,xmlDT,val,1);     // cnd
+  sprintf(val,"%d",int(sht4.readSerial()));
+  uecsSendData(0,xmlDT,val,2);     // cnd
+  sprintf(val,"%d",int(sht4.readSerial()));
+  uecsSendData(0,xmlDT,val,3);     // cnd
   wdt_reset();
 }
 
 void UserEveryMinute(void) {
   char *xmlDT PROGMEM = CCMFMT;
-  extern void lcdout(int,int,int);
-  extern void getM252(int,bool);
+//  extern void lcdout(int,int,int);
+//  extern void getM252(int,bool);
 
-  getM252(1,true);
+//  getM252(1,true);
   wdt_reset();
 }
 
