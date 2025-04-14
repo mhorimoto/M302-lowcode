@@ -9,164 +9,158 @@ char *pgname = "M302 mklc V1.10 ";
 char inputbuf[INPUT_LINE_SIZE],*ptr_inputbuf;
 int  cnt;
 
+const int BUFFER_SIZE = 64;
+char inputBuffer[BUFFER_SIZE];
+int bufferIndex = 0;
+
+
 //LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
 void setup(void) {
-  String linebuf,inputbuf;
-
-  Serial.begin(115200);
-//  lcd.init();
-//  lcd.backlight();
-//  lcd.clear();
-  linebuf = String(pgname);
-//  lcd.print(linebuf[1]);
-//  lcd.setCursor(0,1);
-//  lcd.print(F("SERIAL 115200bps"));
-  Serial.println(pgname);
-  ptr_inputbuf = &inputbuf[0];
-  cnt = 0;
+    String linebuf,inputbuf;
+    
+    Serial.begin(115200);
+    //  lcd.init();
+    //  lcd.backlight();
+    //  lcd.clear();
+    linebuf = String(pgname);
+    //  lcd.print(linebuf[1]);
+    //  lcd.setCursor(0,1);
+    //  lcd.print(F("SERIAL 115200bps"));
+    Serial.println(pgname);
+    ptr_inputbuf = &inputbuf[0];
+    cnt = 0;
+    Serial.print(F("# "));
 }
 
 
 void loop(void) {
-  char ch,sc[3];
-  byte r;
-  int  sl,i;
-  static bool cr = true;
-  extern void listCommand(void);
-  extern void setCommand(char *,int,int);
-  extern void clearpage(char *);
-  extern void help(void);
-  
-  if ((cnt==0) && cr) {
-    Serial.print(F("$ "));
-    cr = false;
-  }
-  if (Serial.available() > 0) {
-    ch = Serial.read();
-    if ((ch=='\r')||(ch=='\n')) {
-      cr = true;
-      Serial.println();
-    } else if ((ch==(char)0x08)||(ch==(char)0x7f)) {
-      if (cnt>0) {
-	cnt--;
-	Serial.print(ch);
-	Serial.print(" ");
-	Serial.print(ch);
-      }
-    } else if ((ch>=(char)0x20)&&(ch<(char)0x7f)) {
-      Serial.print(ch);
-      inputbuf[cnt] = ch;
-      cnt++;
+    while (Serial.available() > 0) {
+        char ch = Serial.read();
+        if (ch == '\b' || ch == 0x7F) {
+            if (bufferIndex > 0) {
+                bufferIndex--;
+                Serial.print("\b \b");
+            }
+            continue;
+        }
+        Serial.print(ch);
+        if (ch == '\n' || ch == '\r') {
+            Serial.println();
+            if (bufferIndex > 0) {
+                inputBuffer[bufferIndex] = '\0';
+                parseCommand(inputBuffer);
+                bufferIndex = 0;
+            }
+            Serial.print(F("# "));
+        } else if (bufferIndex < BUFFER_SIZE - 1) {
+            inputBuffer[bufferIndex++] = ch;
+        } else {
+            Serial.println(F("\nInput buffer overflow!"));
+        }
     }
-    inputbuf[cnt] = (char)NULL;
-    if (cnt>=INPUT_LINE_SIZE) {
-      Serial.println(F("OV"));
-      cnt=0;
-    }
-  }
+}
 
-  // Command operation
-  if (cr) {
-    ptr_inputbuf = &inputbuf[0];
-    if ( !strncmp(ptr_inputbuf,"list",INPUT_LINE_SIZE-1) ) {
-      Serial.println(F("LIST COMMAND"));
-      listCommand();
+void parseCommand(char* input) {
+    extern void listCommand(void);
+    extern void setCommand(char *,int,int);
+    extern void clearpage(char *);
+    extern void help(void);
+    
+    // トークン分解
+    char* token = strtok(input, " ");
+    if (token == NULL) return;
+    
+    // コマンド名
+    if (strcmp(token, "set") == 0) {
+        handleSetCommand();
+    } else if (strcmp(token, "get") == 0) {
+        handleGetCommand();
+    } else if (strcmp(token, "list") == 0) {
+        listCommand();
+    } else if (strcmp(token, "clearpage") == 0) {
+    //    clearpage(page);
+    } else if (strcmp(token, "help") == 0) {
+        help();
+    } else {
+        Serial.print("Unknown command: ");
+        Serial.println(token);
     }
-    if ( !strncmp(ptr_inputbuf,"setid ",6) ) {
-      ptr_inputbuf += 6;
-      setCommand(ptr_inputbuf,12,LC_UECS_ID);
+}
+
+void handleSetCommand() {
+    extern void setCommand(char *,int,int);
+    extern void setCCMCommand(char *,int,int,int);
+    extern void help(void);
+    char* target = strtok(NULL, " ");  // 例: "led"
+    char* value  = strtok(NULL, " ");  // 例: "on"
+
+    if ( !strcmp(target,"uecsid") ) {
+        setCommand(value,12,LC_UECS_ID);
+    } else if ( !strcmp(target,"mac") ) {
+        setCommand(value,12,LC_MAC);
+    } else if ( !strcmp(target,"dhcp") ) {
+        setCommand(value,1,FIX_DHCP_FLAG);
+    } else if ( !strcmp(target,"ip") ) {
+        setCommand(value,15,FIXED_IPADDRESS);
+    } else if ( !strcmp(target,"netmask") ) {
+        setCommand(value,15,FIXED_NETMASK);
+    } else if ( !strcmp(target ,"gw") ) {
+        setCommand(value,15,FIXED_DEFGW);
+    } else if ( !strcmp(target,"dns") ) {
+        setCommand(value,15,FIXED_DNS);
+    } else if ( !strcmp(target,"vender") ) {
+        setCommand(value,16,VENDER_NAME);
+    } else if ( !strcmp(target,"nodename") ) {
+        setCommand(value,16,NODE_NAME);
+    } else if ( !strcmp(target,"ccm") ) {
+        int ccmid = atoi(value);  // set ccm ccmid ccmsubcom 
+        char *ccmsubcom = strtok(NULL, " ");
+        char *ccmValue = strtok(NULL, " ");
+        if ( !strcmp(ccmsubcom,"valid")) {
+            setCCMCommand(ccmValue,2,LC_SEND_VALID,ccmid); // value = ccmid
+        } else if ( !strcmp(ccmsubcom,"room")) {
+            setCCMCommand(ccmValue,2,LC_SEND_ROOM,ccmid);
+        } else if ( !strcmp(ccmsubcom,"region")) {
+            setCCMCommand(ccmValue,2,LC_SEND_REGION,ccmid);
+        } else if ( !strcmp(ccmsubcom,"order")) {
+            setCCMCommand(ccmValue,4,LC_SEND_ORDER,ccmid);
+        } else if ( !strcmp(ccmsubcom,"priority")) {
+            setCCMCommand(ccmValue,2,LC_SEND_PRIORITY,ccmid);
+        } else if ( !strcmp(ccmsubcom,"lv")) {
+            setCCMCommand(ccmValue,2,LC_SEND_LV,ccmid);
+        } else if ( !strcmp(ccmsubcom,"cast")) {
+            setCCMCommand(ccmValue,2,LC_SEND_CAST,ccmid);
+        } else if ( !strcmp(ccmsubcom,"ccmtype")) {
+            setCCMCommand(ccmValue,20,LC_SEND_CCMTYPE,ccmid);
+        } else if ( !strcmp(ccmsubcom,"cast")) {
+            setCCMCommand(ccmValue,20,LC_SEND_CAST,ccmid);
+        } else if ( !strcmp(ccmsubcom,"unit")) {
+            setCCMCommand(ccmValue,12,LC_SEND_UNIT,ccmid);
+        } else if ( !strcmp(ccmsubcom,"func")) {
+            setCCMCommand(ccmValue,2,LC_SEND_FUNC,ccmid);
+        } else if ( !strcmp(ccmsubcom,"param")) {
+            setCCMCommand(ccmValue,12,LC_SEND_PARAM,ccmid);
+        }
+    } else if ( !strcmp(target,"help") ) {
+        help();
+    } else {
+        Serial.print("Unknown target: ");
+        Serial.println(target);
+        Serial.println("Usage: set <target> <value>");
     }
-    if ( !strncmp(ptr_inputbuf,"setmac ",7) ) {
-      ptr_inputbuf += 7;
-      setCommand(ptr_inputbuf,12,LC_MAC);
+}
+
+void handleGetCommand() {
+    char* target = strtok(NULL, " ");  // 例: "temp"
+    
+    if (target) {
+        Serial.print("Getting value of ");
+        Serial.println(target);
+        // 例: センサー読み取りや状態報告
+    } else {
+        Serial.println("Usage: get <target>");
     }
-    if ( !strncmp(ptr_inputbuf,"setdhcp ",8) ) {
-      ptr_inputbuf += 8;
-      setCommand(ptr_inputbuf,1,FIX_DHCP_FLAG);
-    }
-    if ( !strncmp(ptr_inputbuf,"setip ",6) ) {
-      ptr_inputbuf += 6;
-      setCommand(ptr_inputbuf,15,FIXED_IPADDRESS);
-    }
-    if ( !strncmp(ptr_inputbuf,"setmask ",8) ) {
-      ptr_inputbuf += 8;
-      setCommand(ptr_inputbuf,15,FIXED_NETMASK);
-    }
-    if ( !strncmp(ptr_inputbuf,"setgw ",6) ) {
-      ptr_inputbuf += 6;
-      setCommand(ptr_inputbuf,15,FIXED_DEFGW);
-    }
-    if ( !strncmp(ptr_inputbuf,"setdns ",7) ) {
-      ptr_inputbuf += 7;
-      setCommand(ptr_inputbuf,15,FIXED_DNS);
-    }
-    if ( !strncmp(ptr_inputbuf,"setvender ",10) ) {
-      ptr_inputbuf += 10;
-      setCommand(ptr_inputbuf,16,VENDER_NAME);
-    }
-    if ( !strncmp(ptr_inputbuf,"setnodename ",12) ) {
-      ptr_inputbuf += 12;
-      setCommand(ptr_inputbuf,16,NODE_NAME);
-    }
-    if ( !strncmp(ptr_inputbuf,"clearpage ",10) ) {
-      ptr_inputbuf += 10;
-      clearpage(ptr_inputbuf);
-    }
-    if ( !strncmp(ptr_inputbuf,"setvalid ",9) ) {
-      ptr_inputbuf += 9;
-      setCommand(ptr_inputbuf,2,LC_SEND_VALID);
-    }
-    if ( !strncmp(ptr_inputbuf,"setroom ",8) ) {
-      ptr_inputbuf += 8;
-      setCommand(ptr_inputbuf,2,LC_SEND_ROOM);
-    }
-    if ( !strncmp(ptr_inputbuf,"setregion ",10) ) {
-      ptr_inputbuf += 10;
-      setCommand(ptr_inputbuf,2,LC_SEND_REGION);
-    }
-    if ( !strncmp(ptr_inputbuf,"setorder ",9) ) {
-      ptr_inputbuf += 9;
-      setCommand(ptr_inputbuf,4,LC_SEND_ORDER);
-    }
-    if ( !strncmp(ptr_inputbuf,"setpriority ",12) ) {
-      ptr_inputbuf += 12;
-      setCommand(ptr_inputbuf,2,LC_SEND_PRIORITY);
-    }
-    if ( !strncmp(ptr_inputbuf,"setlv ",6) ) {
-      ptr_inputbuf += 6;
-      setCommand(ptr_inputbuf,2,LC_SEND_LV);
-    }
-    if ( !strncmp(ptr_inputbuf,"setcast ",8) ) {
-      ptr_inputbuf += 8;
-      setCommand(ptr_inputbuf,2,LC_SEND_CAST);
-    }
-    if ( !strncmp(ptr_inputbuf,"setccmtype ",11) ) {
-      ptr_inputbuf += 11;
-      setCommand(ptr_inputbuf,20,LC_SEND_CCMTYPE);
-    }
-    if ( !strncmp(ptr_inputbuf,"setccmcast ",11) ) {
-      ptr_inputbuf += 11;
-      setCommand(ptr_inputbuf,20,LC_SEND_CAST);
-    }
-    if ( !strncmp(ptr_inputbuf,"setfunc ",8) ) {
-      ptr_inputbuf += 8;
-      setCommand(ptr_inputbuf,2,LC_SEND_FUNC);
-    }
-    if ( !strncmp(ptr_inputbuf,"setparam ",9) ) {
-      ptr_inputbuf += 9;
-      setCommand(ptr_inputbuf,12,LC_SEND_PARAM);
-    }
-    if ( !strncmp(ptr_inputbuf,"setunit ",8) ) {
-      ptr_inputbuf += 8;
-      setCommand(ptr_inputbuf,12,LC_SEND_UNIT);
-    }
-    if ( !strncmp(ptr_inputbuf,"help",4)) {
-      help();
-    }
-    Serial.println(F("OK"));
-    cnt = 0;
-  }
 }
 
 
