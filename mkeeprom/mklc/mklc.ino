@@ -19,7 +19,7 @@ int bufferIndex = 0;
 void setup(void) {
     String linebuf,inputbuf;
     
-    Serial.begin(115200);
+    Serial.begin(19200);
     //  lcd.init();
     //  lcd.backlight();
     //  lcd.clear();
