@@ -9,7 +9,7 @@
 const char VERSION[16] PROGMEM = "M302 V1.00";
 
 #include "M302.h"
-#include "Adafruit_SHT4x.h"
+//#include "Adafruit_SHT4x.h"
 
 #ifndef W5500SS
 #define W5500SS 10
@@ -34,7 +34,7 @@ unsigned long cndVal;   // CCM cnd Value
 char          val[16];
 bool          useSerial = false;
 
-extern void lcdout(int,int,int);
+//extern void lcdout(int,int,int);
 
 /////////////////////////////////////
 // Hardware Define
@@ -44,7 +44,7 @@ extern void lcdout(int,int,int);
 //char              lcdtext[2][17];
 stM302_t          st_m302;
 
-Adafruit_SHT4x sht4 = Adafruit_SHT4x();
+//Adafruit_SHT4x sht4 = Adafruit_SHT4x();
 
 IPAddress   broadcastIP,networkADDR;
 EthernetUDP Udp16520,Udp16521,Udp16528,Udp16529;
@@ -59,7 +59,7 @@ void setup(void) {
     char *xmlDT PROGMEM = CCMFMT;
     int i,er;
     const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
-    //  extern void lcdout(int,int,int);
+    extern unsigned short crc16(int,byte *);
     
     pinMode(LED2,OUTPUT);
     digitalWrite(LED2,LOW);
@@ -101,10 +101,10 @@ void setup(void) {
     //  lcdout(0,1,1);
     if (digitalRead(4)==HIGH) { // 通常運転
         useSerial = false;
-        //Serial.begin(19200);
+        Serial.begin(9600);
     } else {
         useSerial = true;
-        Serial.begin(115200);
+        Serial.begin(19200);
         Serial.println(VERSION);
         delay(50);
     }
@@ -142,21 +142,51 @@ void setup(void) {
     //  Initialize of Sensor devices
     //
     //**********************************
-    if (! sht4.begin()) {
-        Serial.println(F("NO SHT4x"));
-        while (1) {
-            uecsSendData(0,xmlDT,"67108865",0);     // NO SHT cnd
-            digitalWrite(LED2,HIGH);
-            delay(500);
-            digitalWrite(LED2,LOW);
-            delay(500);
-        }
-    }
-    sht4.setPrecision(SHT4X_HIGH_PRECISION);
-    sht4.setHeater(SHT4X_NO_HEATER);
+//    if (! sht4.begin()) {
+//        Serial.println(F("NO SHT4x"));
+//        while (1) {
+//            uecsSendData(0,xmlDT,"67108865",0);     // NO SHT cnd
+//            digitalWrite(LED2,HIGH);
+//            delay(500);
+//            digitalWrite(LED2,LOW);
+//            delay(500);
+//        }
+//    }
+//    sht4.setPrecision(SHT4X_HIGH_PRECISION);
+//    sht4.setHeater(SHT4X_NO_HEATER);
     wdt_reset();
     uecsSendData(0,xmlDT,"395264",0);     // start cnd
     delay(100);
+
+    byte data[] = {0x02,0x07,0x01,0x01,0x00,0x00};
+    unsigned short crc = crc16(4,data);
+    data[4] = (crc >> 8) & 0x00FF;
+    data[5] = crc & 0x00FF;
+    Serial.write(data,6);
+    Udp16520.beginPacket(broadcastIP,16520);
+    Udp16520.write(data,6);
+    Udp16520.endPacket();
+    delay(100);
+    data[0] = 0x01;
+    data[1] = 0x08;
+    data[2] = 0x01;
+    data[3] = 0x00;
+    data[4] = 0xe6;
+    Serial.write(data,5);
+    Udp16520.beginPacket(broadcastIP,16520);
+    Udp16520.write(data,5);
+    Udp16520.endPacket();
+    while(1) {
+        if (Serial.available() >= 6) {
+            for(i=0;i<6;i++) {
+                data[i] = Serial.read();
+            }
+            Udp16520.beginPacket(broadcastIP,16520);
+            Udp16520.write(data,6);
+            Udp16520.endPacket();
+        }
+        delay(100);
+    }
     //
     // Setup Timer1 Interrupt
     //
@@ -167,6 +197,21 @@ void setup(void) {
     TIMSK1 |= (1 << OCIE1A);
 }
 
+unsigned short crc16(int size,byte* data) {
+    unsigned short crc = 0xFFFF;
+    int i,j;
+    for (i=0;i<size;i++) {
+        crc ^= data[i];
+        for (j=0;j<8;j++) {
+            if (crc & 0x0001) {
+                crc = (crc >> 1) ^ 0xA001;
+            } else {
+                crc >>= 1;
+            }
+        }
+    }
+    return crc;
+}
 
 float sens_ana(int aport,int map_low,int map_high,float slope) {
     int sval,vol;
@@ -301,32 +346,32 @@ void UserEverySecond(void) {
 void UserEvery10Seconds(void) {
     char *xmlDT PROGMEM = CCMFMT;
     int i;
-    sensors_event_t ther,humi;
+//    sensors_event_t ther,humi;
     //  extern void lcdout(int,int,int);
     //  extern void getM252(int,bool);
     
     //  getM252(1,false);
-    sht4.getEvent(&humi,&ther);
-    dtostrf(ther.temperature,-6,2,val);
-    for(i=0;i<7;i++) {
-        if (val[i]==' ') {
-            val[i] = 0;
-            break;
-        }
-    }
-    uecsSendData(1,xmlDT,val,0);   // cnd
-    dtostrf(humi.relative_humidity,-6,2,val);
-    for(i=0;i<7;i++) {
-        if (val[i]==' ') {
-            val[i] = 0;
-            break;
-        }
-    }
-    uecsSendData(2,xmlDT,val,0);     // cnd
-    sprintf(val,"%d",int(sht4.readSerial()));
-    uecsSendData(3,xmlDT,val,0);     // cnd
-    sprintf(val,"%d",int(sht4.readSerial()));
-    uecsSendData(3,xmlDT,val,0);     // cnd
+//    sht4.getEvent(&humi,&ther);
+//    dtostrf(ther.temperature,-6,2,val);
+//    for(i=0;i<7;i++) {
+//        if (val[i]==' ') {
+//            val[i] = 0;
+//            break;
+//        }
+//    }
+//    uecsSendData(1,xmlDT,val,0);   // cnd
+//    dtostrf(humi.relative_humidity,-6,2,val);
+//    for(i=0;i<7;i++) {
+//        if (val[i]==' ') {
+//            val[i] = 0;
+//            break;
+//        }
+//    }
+//    uecsSendData(2,xmlDT,val,0);     // cnd
+//    sprintf(val,"%d",int(sht4.readSerial()));
+//    uecsSendData(3,xmlDT,val,0);     // cnd
+//    sprintf(val,"%d",int(sht4.readSerial()));
+//    uecsSendData(3,xmlDT,val,0);     // cnd
     wdt_reset();
 }
 
