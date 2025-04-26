@@ -1,15 +1,15 @@
 ///////////////////////////////////////////////////////////////////
-// M302-lowcode for SHT4x
+// M302-lowcode for IMG-CA0012
 //  MIT License
 //  Copyright (c) 2025 Masafumi Horimoto
 //  Release on 
 //  
 ///////////////////////////////////////////////////////////////////
 
-const char VERSION[16] PROGMEM = "M302 V1.00";
+const char VERSION[16] PROGMEM = "M302 V3.00";
 
 #include "M302.h"
-#include "Adafruit_SHT4x.h"
+//#include "Adafruit_SHT4x.h"
 
 #ifndef W5500SS
 #define W5500SS 10
@@ -44,7 +44,7 @@ extern void lcdout(int,int,int);
 //char              lcdtext[2][17];
 stM302_t          st_m302;
 
-Adafruit_SHT4x sht4 = Adafruit_SHT4x();
+//Adafruit_SHT4x sht4 = Adafruit_SHT4x();
 
 IPAddress   broadcastIP,networkADDR;
 EthernetUDP Udp16520,Udp16521,Udp16528,Udp16529;
@@ -142,18 +142,18 @@ void setup(void) {
     //  Initialize of Sensor devices
     //
     //**********************************
-    if (! sht4.begin()) {
-        Serial.println(F("NO SHT4x"));
-        while (1) {
-            uecsSendData(0,xmlDT,"67108865",0);     // NO SHT cnd
-            digitalWrite(LED2,HIGH);
-            delay(500);
-            digitalWrite(LED2,LOW);
-            delay(500);
-        }
-    }
-    sht4.setPrecision(SHT4X_HIGH_PRECISION);
-    sht4.setHeater(SHT4X_NO_HEATER);
+    //    if (! sht4.begin()) {
+    //        Serial.println(F("NO SHT4x"));
+    //        while (1) {
+    //            uecsSendData(0,xmlDT,"67108865",0);     // NO SHT cnd
+    //            digitalWrite(LED2,HIGH);
+    //            delay(500);
+    //            digitalWrite(LED2,LOW);
+    //            delay(500);
+    //        }
+    //    }
+    //    sht4.setPrecision(SHT4X_HIGH_PRECISION);
+    //    sht4.setHeater(SHT4X_NO_HEATER);
     wdt_reset();
     uecsSendData(0,xmlDT,"395264",0);     // start cnd
     delay(100);
@@ -279,7 +279,7 @@ void uecsSendData(int id,char *xmlDT,char *tval,int z) {
 void UserEverySecond(void) {
     volatile bool aaa;
     volatile byte a=0 ;
-    char val[7];
+    char val[7],tval[11];
     int ia,l;
     char *xmlDT PROGMEM = CCMFMT;
     
@@ -301,32 +301,23 @@ void UserEverySecond(void) {
 void UserEvery10Seconds(void) {
     char *xmlDT PROGMEM = CCMFMT;
     int i;
-    sensors_event_t ther,humi;
+    float co2;
+    char tval[7];
     //  extern void lcdout(int,int,int);
     //  extern void getM252(int,bool);
     
     //  getM252(1,false);
-    sht4.getEvent(&humi,&ther);
-    dtostrf(ther.temperature,-6,2,val);
-    for(i=0;i<7;i++) {
-        if (val[i]==' ') {
-            val[i] = 0;
-            break;
-        }
-    }
-    uecsSendData(1,xmlDT,val,0);   // cnd
-    dtostrf(humi.relative_humidity,-6,2,val);
-    for(i=0;i<7;i++) {
-        if (val[i]==' ') {
-            val[i] = 0;
-            break;
-        }
-    }
-    uecsSendData(2,xmlDT,val,0);     // cnd
-    sprintf(val,"%d",int(sht4.readSerial()));
-    uecsSendData(3,xmlDT,val,0);     // cnd
-    sprintf(val,"%d",int(sht4.readSerial()));
-    uecsSendData(3,xmlDT,val,0);     // cnd
+    //    sht4.getEvent(&humi,&ther);
+    //    dtostrf(ther.temperature,-6,2,val);
+    //    for(i=0;i<7;i++) {
+    //        if (val[i]==' ') {
+    //            val[i] = 0;
+    //            break;
+    //        }
+    //    }
+    co2 = sens_ana(A7,0,5000,0.6);
+    sprintf(tval,"%d",int(co2));
+    uecsSendData(1,xmlDT,tval,0);   // co2
     wdt_reset();
 }
 
