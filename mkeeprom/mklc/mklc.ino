@@ -5,7 +5,7 @@
 
 #define INPUT_LINE_SIZE  30
 
-char *pgname = "M302 mklc V1.10 ";
+char *pgname = "M302 mklc V1.20 ";
 char inputbuf[INPUT_LINE_SIZE],*ptr_inputbuf;
 int  cnt;
 

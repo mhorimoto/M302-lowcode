@@ -94,6 +94,7 @@ typedef struct uecsM302Send {
 #define FUNC_IMG_CA0012 8
 #define FUNC_SLT5006    9
 #define FUNC_M252      10
+#define FUNC_ADC1115   11
 
 /*** Mode via httpd ***/
 

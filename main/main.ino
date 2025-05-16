@@ -1,14 +1,16 @@
 ///////////////////////////////////////////////////////////////////
-// M302-lowcode for IMG-CA0012
+// M302-lowcode for IMG-CA0012 and ADS1115
 //  MIT License
 //  Copyright (c) 2025 Masafumi Horimoto
 //  Release on 
 //  
 ///////////////////////////////////////////////////////////////////
 
-const char VERSION[16] PROGMEM = "M302 V3.00";
+const char VERSION[16] PROGMEM = "M302 V3.10";
 
 #include "M302.h"
+#include <Adafruit_ADS1X15.h>
+
 //#include "Adafruit_SHT4x.h"
 
 #ifndef W5500SS
@@ -45,6 +47,8 @@ extern void lcdout(int,int,int);
 stM302_t          st_m302;
 
 //Adafruit_SHT4x sht4 = Adafruit_SHT4x();
+Adafruit_ADS1115 ads;
+bool ads_flag = true;
 
 IPAddress   broadcastIP,networkADDR;
 EthernetUDP Udp16520,Udp16521,Udp16528,Udp16529;
@@ -142,21 +146,15 @@ void setup(void) {
     //  Initialize of Sensor devices
     //
     //**********************************
-    //    if (! sht4.begin()) {
-    //        Serial.println(F("NO SHT4x"));
-    //        while (1) {
-    //            uecsSendData(0,xmlDT,"67108865",0);     // NO SHT cnd
-    //            digitalWrite(LED2,HIGH);
-    //            delay(500);
-    //            digitalWrite(LED2,LOW);
-    //            delay(500);
-    //        }
-    //    }
-    //    sht4.setPrecision(SHT4X_HIGH_PRECISION);
-    //    sht4.setHeater(SHT4X_NO_HEATER);
+
+    ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
     wdt_reset();
     uecsSendData(0,xmlDT,"395264",0);     // start cnd
     delay(100);
+    if (!ads.begin()) {
+      uecsSendData(0,xmlDT,"111111",0);   // ADS1115 fail
+      ads_flag = false;
+    }
     //
     // Setup Timer1 Interrupt
     //
@@ -301,20 +299,18 @@ void UserEverySecond(void) {
 void UserEvery10Seconds(void) {
     char *xmlDT PROGMEM = CCMFMT;
     int i;
-    float co2;
+    float co2,radvolts,radiation;
+    int16_t adc0;
     char tval[7];
-    //  extern void lcdout(int,int,int);
-    //  extern void getM252(int,bool);
+
+    adc0 = ads.readADC_SingleEnded(0);
+    radvolts = ads.computeVolts(adc0) * 1000.0;
+    radiation= radvolts * 10.0;
+    sprintf(tval,"%d",int(radiation));  // Radiation μmol/m^2*sec
+    uecsSendData(2,xmlDT,tval,0);
+    sprintf(tval,"%d",int(radvolts));
+    uecsSendData(3,xmlDT,tval,0);   // Radiation Raw volts
     
-    //  getM252(1,false);
-    //    sht4.getEvent(&humi,&ther);
-    //    dtostrf(ther.temperature,-6,2,val);
-    //    for(i=0;i<7;i++) {
-    //        if (val[i]==' ') {
-    //            val[i] = 0;
-    //            break;
-    //        }
-    //    }
     co2 = sens_ana(A7,0,5000,0.6);
     sprintf(tval,"%d",int(co2));
     uecsSendData(1,xmlDT,tval,0);   // co2

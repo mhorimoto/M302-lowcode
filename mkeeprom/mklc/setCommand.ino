@@ -162,10 +162,10 @@ void setCCMCommand(char *p,int c,int a,int ccmid) {
             }
             break;
         case LC_SEND_FUNC:
-            if (atoi(p)>=0 && atoi(p)<=10) {
+            if (atoi(p)>=0 && atoi(p)<=250) {
                 EEPROM.write(LC_SEND_FUNC+ccmoffset,(byte)(atoi(p)));
             } else {
-                Serial.println(F("Error: argument is 0-10."));
+                Serial.println(F("Error: argument is 0-250."));
             }
             break;
         case LC_SEND_PARAM:
