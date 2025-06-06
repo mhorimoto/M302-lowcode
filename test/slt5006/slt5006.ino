@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h> // SoftwareSerialライブラリをインクルード
 
+const char *ver = "2.14";
+
 // SoftwareSerialのピン設定
 // RXピン (Arduinoがデータを受信するピン) をデジタルピン2に
 // TXピン (Arduinoがデータを送信するピン) をデジタルピン3に
@@ -21,11 +23,23 @@ struct SLT5006DATA {
   float ec_pore;
 } sltdata;
 
+byte start_mesure[] = {0x02,0x07,0x01,0x01,0x0D,0x70};
+byte check_mesure[] = {0x01,0x08,0x01,0x00,0xe6};
+byte read_result[]  = {0x01,0x13,0x10,0xfc,0x2c};
+byte check_ver[]    = {0x01,0x00,0x07,0xc2,0x61};
+
 void dataConv(char *rdt) {
   extern SLT5006DATA sltdata;
+  byte dth,dtl;
   int idt;
-  idt = (((*(rdt+4))&0xff)<<8)+(*(rdt+3))&0xff;
+  dth = (*(rdt+4))&0xff;
+  dtl = (*(rdt+3))&0xff;
+  idt = dth*0x100+dtl;
   Serial.print(" <<");
+  Serial.print(dth);
+  Serial.print(",");
+  Serial.print(dtl);
+  Serial.print(",");
   Serial.print(idt);
   Serial.print(">> ");
   sltdata.temp = (float)(idt * 0.0625);
@@ -117,6 +131,31 @@ void byteArrayToHexStringSoft(const byte* byteArray, int length) {
   MySerial.println();
 }
 
+void rx_data(void) {
+// SoftwareSerialからの応答を受信
+  long startTime = millis();
+  const long timeout = 1000; // タイムアウト1秒
+  byte receiveData[64];
+  int receivedBytes = 0;
+
+  delay(100);
+  // SoftwareSerialからデータが来るのを待つ
+  while (millis() - startTime < timeout && receivedBytes < sizeof(receiveData)) {
+    if (MySerial.available()) {
+      receiveData[receivedBytes++] = MySerial.read();
+    }
+  }
+
+  if (receivedBytes > 0) {
+    Serial.print(F("Receive from SoftwareSerial: "));
+    byteArrayToHexString(receiveData, receivedBytes);
+    Serial.print(F("DATA="));
+    dataConv(receiveData);
+    Serial.println(sltdata.temp);
+  } else {
+    Serial.println(F("No data from SoftwareSerial"));
+  }
+}
 
 void setup() {
   // 標準シリアルポート（USB経由でPCと通信）
@@ -124,17 +163,30 @@ void setup() {
   while (!Serial) {
     ; // シリアルポートが接続されるまで待機 (Leonardo, Micro など用)
   }
-  Serial.println(F("SLT5006 TEST"));
+  Serial.print(F("SLT5006 TEST v"));
+  Serial.println(ver);
   Serial.println(F("Enter the hexadecimal number you want to send into the serial monitor."));
 
   // SoftwareSerialポート（別のデバイスと通信）
   MySerial.begin(9600); // 接続するデバイスのボーレートに合わせて設定
   MySerial.println(F("Initialize SoftwareSerial"));
+  delay(500);
+  MySerial.write(check_ver,5);
+  rx_data();
 }
 
 void loop() {
   extern SLT5006DATA sltdata;
-  // 標準シリアルポートからのデータを受信（PCからの入力）
+  delay(500);
+  MySerial.write(start_mesure,6);
+  rx_data();
+  delay(100);
+  MySerial.write(check_mesure,5);
+  rx_data();
+  delay(400);
+  MySerial.write(read_result,5);
+  rx_data();
+  delay(1000);
   while (Serial.available()) {
     char inChar = Serial.read();
     
