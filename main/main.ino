@@ -1,15 +1,14 @@
 ///////////////////////////////////////////////////////////////////
-// M302-lowcode for SHT4x
+// M302-lowcode for SLT5006
 //  MIT License
 //  Copyright (c) 2025 Masafumi Horimoto
 //  Release on 
 //  
 ///////////////////////////////////////////////////////////////////
 
-const char VERSION[16] PROGMEM = "M302 V1.00";
+const char VERSION[16] PROGMEM = "M302 V2.22";
 
 #include "M302.h"
-//#include "Adafruit_SHT4x.h"
 
 #ifndef W5500SS
 #define W5500SS 10
@@ -40,20 +39,23 @@ bool          useSerial = false;
 // Hardware Define
 /////////////////////////////////////
 
-//LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
-//char              lcdtext[2][17];
 stM302_t          st_m302;
-
-//Adafruit_SHT4x sht4 = Adafruit_SHT4x();
 
 IPAddress   broadcastIP,networkADDR;
 EthernetUDP Udp16520,Udp16521,Udp16528,Udp16529;
+
+// volatile bool period1sec =  false;
+// volatile bool period10sec = false;
+// volatile bool period60sec = false;
+// volatile int  count10sec = 0;
+// volatile int  count60sec = 0;
 
 volatile int period1sec = 0;
 volatile int period10sec = 0;
 volatile int period60sec = 0;
 
-//int packetSize;
+unsigned long previousMillis = 0; // 前回の時刻を記録
+const unsigned long interval = 1000; // 1秒（1000ms）間隔
 
 void setup(void) {
     char *xmlDT PROGMEM = CCMFMT;
@@ -70,13 +72,7 @@ void setup(void) {
     pinMode(8,OUTPUT);
     pinMode(9,OUTPUT);
     
-    //  digitalWrite(9,LOW);
-    //  delay(50);
-    //  digitalWrite(9,HIGH);
-    
     cndVal = 0L;    // Reset cnd value
-    //  lcd.init();
-    //  lcd.backlight();
     configure_wdt();
     EEPROM.get(LC_UECS_ID,uecsid);
     EEPROM.get(LC_MAC,st_m302.mac);
@@ -90,18 +86,11 @@ void setup(void) {
         }
     }
     
-    //  for(i=0;i<16;i++) {
-    //    lcdtext[0][i] = pgm_read_byte(&(VERSION[i]));
-    //  }
     wdt_reset();
-    //  lcdtext[0][i] = 0;
-    //  sprintf(lcdtext[1],"%d/%d/%d  %sL",
-    //          EEPROM.read(LC_SEND_START+LC_SEND_ROOM),EEPROM.read(LC_SEND_START+LC_SEND_REGION),
-    //	  EEPROM.read(LC_SEND_START+LC_SEND_ORDER),val);
-    //  lcdout(0,1,1);
     if (digitalRead(4)==HIGH) { // 通常運転
         useSerial = false;
         Serial.begin(9600);
+        Serial.println(VERSION);
     } else {
         useSerial = true;
         Serial.begin(19200);
@@ -109,7 +98,7 @@ void setup(void) {
         delay(50);
     }
     Ethernet.init(W5500SS);
-    delay(500);
+    delay(300);
     wdt_reset();
     if (st_m302.dhcpflag) {
         er = Ethernet.begin(st_m302.mac);
@@ -142,51 +131,12 @@ void setup(void) {
     //  Initialize of Sensor devices
     //
     //**********************************
-//    if (! sht4.begin()) {
-//        Serial.println(F("NO SHT4x"));
-//        while (1) {
-//            uecsSendData(0,xmlDT,"67108865",0);     // NO SHT cnd
-//            digitalWrite(LED2,HIGH);
-//            delay(500);
-//            digitalWrite(LED2,LOW);
-//            delay(500);
-//        }
-//    }
-//    sht4.setPrecision(SHT4X_HIGH_PRECISION);
-//    sht4.setHeater(SHT4X_NO_HEATER);
+
+    slt5006_setup();
+    
     wdt_reset();
     uecsSendData(0,xmlDT,"395264",0);     // start cnd
     delay(100);
-
-    byte data[] = {0x02,0x07,0x01,0x01,0x00,0x00};
-    unsigned short crc = crc16(4,data);
-    data[4] = (crc >> 8) & 0x00FF;
-    data[5] = crc & 0x00FF;
-    Serial.write(data,6);
-    Udp16520.beginPacket(broadcastIP,16520);
-    Udp16520.write(data,6);
-    Udp16520.endPacket();
-    delay(100);
-    data[0] = 0x01;
-    data[1] = 0x08;
-    data[2] = 0x01;
-    data[3] = 0x00;
-    data[4] = 0xe6;
-    Serial.write(data,5);
-    Udp16520.beginPacket(broadcastIP,16520);
-    Udp16520.write(data,5);
-    Udp16520.endPacket();
-    while(1) {
-        if (Serial.available() >= 6) {
-            for(i=0;i<6;i++) {
-                data[i] = Serial.read();
-            }
-            Udp16520.beginPacket(broadcastIP,16520);
-            Udp16520.write(data,6);
-            Udp16520.endPacket();
-        }
-        delay(100);
-    }
     //
     // Setup Timer1 Interrupt
     //
@@ -224,61 +174,84 @@ float sens_ana(int aport,int map_low,int map_high,float slope) {
 
 /////////////////////////////////
 void loop() {
-    static int k=0;
-    int i,ia,ta,tb,cdsv;
-    byte room,region,priority,interval;
-    int  order;
-    int  inchar ;
-    float ther,humi;
-    char name[10],dname[11];
-    extern char val[];
-    extern void recv16528port(void);
+  static int k=0;
+  int i,ia,ta,tb,cdsv;
+  extern void recv16528port(void);
     
-    char *xmlDT PROGMEM = CCMFMT;
-    const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
+  recv16528port();
+  wdt_reset();
     
-    recv16528port();
+  // unsigned long currentMillis = millis();
+  // if (currentMillis - previousMillis >= interval) { // 1秒カウント
+  //   previousMillis = currentMillis;
+  //   period1sec = true; // 1秒ごとにフラグを立てる
+  //   count10sec++;
+  //   if (count10sec > 9) {
+  //     period10sec = true;
+  //     count10sec = 0;
+  //   } else {
+  //     period10sec = false;
+  //   }
+  //   count60sec++;
+  //   if (count60sec > 59) {
+  //     period60sec = true;
+  //     count60sec = 0;
+  //   } else {
+  //     period60sec = false;
+  //   }
+  // }
+
+  // // 10 sec interval
+  // if (period10sec) {
+  //   UserEvery10Seconds();
+  //   period10sec=false;
+  //   wdt_reset();
+  // }
+  // // 1 min interval
+  // if (period60sec) {
+  //       UserEveryMinute();
+  //       period60sec = false;
+  //       wdt_reset();
+  //   }
+  //   //1 sec interval
+  //   if (period1sec) {
+  //       period1sec = false;
+  //       UserEverySecond();
+  //   }
+  // 10 sec interval
+  if (period10sec==1) {
+    UserEvery10Seconds();
+    period10sec=0;
     wdt_reset();
-    
-    // 10 sec interval
-    if (period10sec==1) {
-        UserEvery10Seconds();
-        period10sec=0;
-        wdt_reset();
-    }
-    // 1 min interval
-    if (period60sec==1) {
-        UserEveryMinute();
-        period60sec = 0;
-        wdt_reset();
-    }
-    //1 sec interval
-    if (period1sec==1) {
-        period1sec = 0;
-        ia = 0; // cnd
-        sprintf(val,"%u",cndVal);
-        uecsSendData(0,xmlDT,val,0);     // cnd
-        cndVal &= 0xfffffffe;            // Clear setup completed flag
-        UserEverySecond();
-    }
+  }
+  // 1 min interval
+  if (period60sec==1) {
+    UserEveryMinute();
+    period60sec = 0;
     wdt_reset();
+  }
+  //1 sec interval
+  if (period1sec==1) {
+    period1sec = 0;
+    UserEverySecond();
+  }
+  wdt_reset();
 }
 
 ISR(TIMER1_COMPA_vect) {
-    static byte cnt10,cnt60;
-    cnt10++;
-    cnt60++;
-    period1sec = 1;
-    if (cnt10 >= 10) {
-        cnt10 = 0;
-        period10sec = 1;
-    }
-    if (cnt60 >= 60) {
-        cnt60 = 0;
-        period60sec = 1;
-    }
+  static byte cnt10,cnt60;
+  cnt10++;
+  cnt60++;
+  period1sec = 1;
+  if (cnt10 >= 10) {
+    cnt10 = 0;
+    period10sec = 1;
+  }
+  if (cnt60 >= 60) {
+    cnt60 = 0;
+    period60sec = 1;
+  }
 }
-
 
 void configure_wdt(void) {
     cli();                           // disable interrupts for changing the registers
@@ -301,7 +274,7 @@ void configure_wdt(void) {
 }
 
 void uecsSendData(int id,char *xmlDT,char *tval,int z) {
-    byte room,region,priority,interval;
+    byte room,region,priority;
     int  order,i,a;
     char name[20],dname[21],strIP[17];
     extern stM302_t st_m302;
@@ -325,58 +298,46 @@ void UserEverySecond(void) {
     volatile bool aaa;
     volatile byte a=0 ;
     char val[7];
-    int ia,l;
     char *xmlDT PROGMEM = CCMFMT;
-    
+    Serial.println("UserEverySecond");
     cndVal &= 0xfffffffe;            // Clear setup completed flag
     if (aaa) {
         digitalWrite(LED2,HIGH);
         aaa=false;
-        //    lcd.setCursor(15,0);
-        //    lcd.print(">");
     } else {
         digitalWrite(LED2,LOW);
         aaa=true;
-        //    lcd.setCursor(15,0);
-        //    lcd.print("<");
     }
+    sprintf(val,"%u",cndVal);
+    uecsSendData(0,xmlDT,val,0);     // cnd
     wdt_reset();
 }
 
 void UserEvery10Seconds(void) {
     char *xmlDT PROGMEM = CCMFMT;
-    int i;
-//    sensors_event_t ther,humi;
-    //  extern void lcdout(int,int,int);
-    //  extern void getM252(int,bool);
-    
-    //  getM252(1,false);
-//    sht4.getEvent(&humi,&ther);
-//    dtostrf(ther.temperature,-6,2,val);
-//    for(i=0;i<7;i++) {
-//        if (val[i]==' ') {
-//            val[i] = 0;
-//            break;
-//        }
-//    }
-//    uecsSendData(1,xmlDT,val,0);   // cnd
-//    dtostrf(humi.relative_humidity,-6,2,val);
-//    for(i=0;i<7;i++) {
-//        if (val[i]==' ') {
-//            val[i] = 0;
-//            break;
-//        }
-//    }
-//    uecsSendData(2,xmlDT,val,0);     // cnd
-//    sprintf(val,"%d",int(sht4.readSerial()));
-//    uecsSendData(3,xmlDT,val,0);     // cnd
-//    sprintf(val,"%d",int(sht4.readSerial()));
-//    uecsSendData(3,xmlDT,val,0);     // cnd
+
+    slt5006_loop();
+    Serial.print(F("Temp="));
+    Serial.println(sltdata.temp);
+    dtostrf(sltdata.temp,-6,3,val);
+    uecsSendData(1,xmlDT,val,0);
+    dtostrf(sltdata.ec_bulk,-6,3,val);
+    uecsSendData(2,xmlDT,val,0);
+    dtostrf(sltdata.vwc_rock,-5,1,val);
+    uecsSendData(3,xmlDT,val,0);
+    dtostrf(sltdata.vwc,-5,1,val);
+    uecsSendData(4,xmlDT,val,0);
+    dtostrf(sltdata.vwc_coco,-5,1,val);
+    uecsSendData(5,xmlDT,val,0);
+    dtostrf(sltdata.ec_pore,-6,3,val);
+    uecsSendData(6,xmlDT,val,0);
     wdt_reset();
 }
 
 void UserEveryMinute(void) {
     char *xmlDT PROGMEM = CCMFMT;
+    Serial.println("UserEveryMinute");
+
     //  extern void lcdout(int,int,int);
     //  extern void getM252(int,bool);
     

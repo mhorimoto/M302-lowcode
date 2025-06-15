@@ -5,8 +5,11 @@
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>
 #include <EEPROM.h>
+
+#ifndef NO_I2C
 #include "LiquidCrystal_I2C.h"
 #include <Wire.h>
+#endif
 
 #ifndef _M302_H_
 #define _M302_H_
@@ -14,6 +17,17 @@
 
 #define UECS_PORT  16520
 #define CCMFMT "<?xml version=\"1.0\"?><UECS ver=\"1.00-E10\"><DATA type=\"%s\" room=\"%d\" region=\"%d\" order=\"%d\" priority=\"%d\">%s</DATA><IP>%s</IP></UECS>";
+
+
+typedef  struct {
+  float temp;
+  float ec_bulk;
+  float vwc_rock;
+  float vwc;
+  float vwc_coco;
+  float ec_pore;
+} SLT5006DATA ;
+extern SLT5006DATA sltdata;
 
 /*** EEPROM LOWCORE ASSIGN ***/
 #define LC_UECS_ID        0x00

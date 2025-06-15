@@ -58,7 +58,7 @@ void listCommand(void) {
     sprintf(lbf,"Node Name: %s",sbf);
     Serial.println(lbf);
     // CCM Send
-    for (i=0;i<5;i++) {
+    for (i=0;i<10;i++) {
         ccmoffset = LC_SEND_START + LC_SEND_VALID + (i * LC_SEND_REC_SIZE);
         if (EEPROM.read(ccmoffset)==0x01) {
             lc_valid = 'E';
