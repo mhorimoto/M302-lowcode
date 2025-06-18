@@ -17,13 +17,13 @@ void dataConv(char *rdt) {
   dtl = (*(rdt+3))&0xff;
   idt = dth*0x100+dtl;
   sltdata.temp = (float)(idt * 0.0625);
-  Serial.print(" <<");
-  Serial.print(dth);
-  Serial.print(",");
-  Serial.print(dtl);
-  Serial.print(",");
-  Serial.print(idt);
-  Serial.print(">> ");
+  // Serial.print(" <<");
+  // Serial.print(dth);
+  // Serial.print(",");
+  // Serial.print(dtl);
+  // Serial.print(",");
+  // Serial.print(idt);
+  // Serial.print(">> ");
   dth = (*(rdt+6))&0xff;
   dtl = (*(rdt+5))&0xff;
   idt = dth*0x100+dtl;
@@ -135,7 +135,7 @@ void byteArrayToHexStringSoft(const byte* byteArray, int length) {
 void rx_data(void) {
 // SoftwareSerialからの応答を受信
   unsigned long startTime = millis();
-  const long timeout = 1000; // タイムアウト1秒
+  const long timeout = 500; // タイムアウト1秒
   byte receiveData[64];
   int receivedBytes = 0;
 
@@ -147,11 +147,11 @@ void rx_data(void) {
     }
   }
   if (receivedBytes > 0) {
-    Serial.print(F("Receive from SoftwareSerial: "));
-    byteArrayToHexString(receiveData, receivedBytes);
-    Serial.print(F("DATA="));
+    //Serial.print(F("Receive from SoftwareSerial: "));
+    //byteArrayToHexString(receiveData, receivedBytes);
+    //Serial.print(F("DATA="));
     dataConv(receiveData);
-    Serial.println(sltdata.temp);
+    //Serial.println(sltdata.temp);
   } else {
     Serial.println(F("No data from SoftwareSerial"));
   }
@@ -176,14 +176,14 @@ void slt5006_loop() {
   extern SLT5006DATA sltdata;
 
   MySerial.write(start_mesure,6);
-  byteArrayToHexString(start_mesure,6);
+  //  byteArrayToHexString(start_mesure,6);
   rx_data();
   delay(20);
   MySerial.write(check_mesure,5);
-  byteArrayToHexString(check_mesure,5);
+  //  byteArrayToHexString(check_mesure,5);
   rx_data();
-  delay(40);
+  delay(20);
   MySerial.write(read_result,5);
-  byteArrayToHexString(read_result,5);
+  //  byteArrayToHexString(read_result,5);
   rx_data();
 }
