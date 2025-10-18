@@ -1,17 +1,18 @@
 ///////////////////////////////////////////////////////////////////
-// M302-lowcode for SLT5006
+// M302-lowcode
 //  MIT License
 //  Copyright (c) 2025 Masafumi Horimoto
 //  Release on 
-//  
 ///////////////////////////////////////////////////////////////////
 
-const char VERSION[16] PROGMEM = "M302 V2.30";
+const char VERSION[16] PROGMEM = "M302 V3.xx";
 
 #include "M302.h"
+#include <Adafruit_SHT4x.h>
+#include <Adafruit_ADS1X15.h>
 
 #ifndef W5500SS
-#define W5500SS 10
+#define W5500SS SS
 #endif
 
 uint8_t mcusr_mirror __attribute__ ((section (".noinit")));
@@ -26,7 +27,6 @@ void get_mcusr(void) {
 
 
 #define  delayMillis 5000UL // 5sec
-#define  LED2        3
 
 char          uecsid[6], uecstext[180];
 unsigned long cndVal;   // CCM cnd Value
@@ -40,6 +40,10 @@ bool          useSerial = false;
 /////////////////////////////////////
 
 stM302_t          st_m302;
+
+Adafruit_SHT4x sht4 = Adafruit_SHT4x();
+Adafruit_ADS1115 ads;
+bool ads_flag = true;
 
 IPAddress   broadcastIP,networkADDR;
 EthernetUDP Udp16520,Udp16521,Udp16528,Udp16529;
@@ -63,14 +67,16 @@ void setup(void) {
     const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
     extern unsigned short crc16(int,byte *);
     
-    pinMode(LED2,OUTPUT);
-    digitalWrite(LED2,LOW);
-    pinMode(4,INPUT_PULLUP);
-    pinMode(5,INPUT_PULLUP);
-    pinMode(6,INPUT_PULLUP);
-    pinMode(7,OUTPUT);
-    pinMode(8,OUTPUT);
-    pinMode(9,OUTPUT);
+    pinMode(LED1,OUTPUT);
+    digitalWrite(LED1,LOW);
+    pinMode(PORT_D2,INPUT_PULLUP);
+    pinMode(PORT_D3,INPUT_PULLUP);
+    pinMode(PORT_D4,INPUT_PULLUP);
+    pinMode(PORT_D5,INPUT_PULLUP);
+    pinMode(PORT_D6,INPUT_PULLUP);
+    pinMode(PORT_D7,INPUT_PULLUP);
+    pinMode(ADC_IN1,INPUT);
+    pinMode(ADC_IN2,INPUT);
     
     cndVal = 0L;    // Reset cnd value
     configure_wdt();
@@ -133,10 +139,27 @@ void setup(void) {
     //**********************************
 
     slt5006_setup();
-    
+    if (! sht4.begin()) {
+        Serial.println(F("NO SHT4x"));
+        while (1) {
+            uecsSendData(0,xmlDT,"67108865",0);     // NO SHT cnd
+            digitalWrite(LED2,HIGH);
+            delay(500);
+            digitalWrite(LED2,LOW);
+            delay(500);
+        }
+    }
+    sht4.setPrecision(SHT4X_HIGH_PRECISION);
+    sht4.setHeater(SHT4X_NO_HEATER);
     wdt_reset();
     uecsSendData(0,xmlDT,"395264",0);     // start cnd
-    delay(100);
+    delay(100);    
+    wdt_reset();
+    ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
+    if (!ads.begin()) {
+      uecsSendData(0,xmlDT,"111111",0);   // ADS1115 fail
+      ads_flag = false;
+    }
     //
     // Setup Timer1 Interrupt
     //
@@ -181,32 +204,7 @@ void loop() {
   recv16528port();
   wdt_reset();
     
-  // unsigned long currentMillis = millis();
-  // if (currentMillis - previousMillis >= interval) { // 1秒カウント
-  //   previousMillis = currentMillis;
-  //   period1sec = true; // 1秒ごとにフラグを立てる
-  //   count10sec++;
-  //   if (count10sec > 9) {
-  //     period10sec = true;
-  //     count10sec = 0;
-  //   } else {
-  //     period10sec = false;
-  //   }
-  //   count60sec++;
-  //   if (count60sec > 59) {
-  //     period60sec = true;
-  //     count60sec = 0;
-  //   } else {
-  //     period60sec = false;
-  //   }
-  // }
 
-  // // 10 sec interval
-  // if (period10sec) {
-  //   UserEvery10Seconds();
-  //   period10sec=false;
-  //   wdt_reset();
-  // }
   // // 1 min interval
   // if (period60sec) {
   //       UserEveryMinute();
@@ -302,10 +300,10 @@ void UserEverySecond(void) {
     Serial.println("UserEverySecond");
     cndVal &= 0xfffffffe;            // Clear setup completed flag
     if (aaa) {
-        digitalWrite(LED2,HIGH);
+        digitalWrite(LED1,HIGH);
         aaa=false;
     } else {
-        digitalWrite(LED2,LOW);
+        digitalWrite(LED1,LOW);
         aaa=true;
     }
     sprintf(val,"%u",cndVal);
@@ -345,3 +343,35 @@ void UserEveryMinute(void) {
     wdt_reset();
 }
 
+ope_SHT4(void) {
+  sensors_event_t ther,humi;
+  sht4.getEvent(&humi,&ther);
+  dtostrf(ther.temperature,-6,2,val);
+  for(i=0;i<7;i++) {
+    if (val[i]==' ') {
+      val[i] = 0;
+      break;
+    }
+  }
+  uecsSendData(1,xmlDT,val,0);   // cnd
+  dtostrf(humi.relative_humidity,-6,2,val);
+  for(i=0;i<7;i++) {
+    if (val[i]==' ') {
+      val[i] = 0;
+      break;
+    }
+  }
+  uecsSendData(2,xmlDT,val,0);     // cnd
+  sprintf(val,"%d",int(sht4.readSerial()));
+  uecsSendData(3,xmlDT,val,0);     // cnd
+  sprintf(val,"%d",int(sht4.readSerial()));
+  uecsSendData(3,xmlDT,val,0);     // cnd
+  wdt_reset();
+}
+
+ope_CO2(void) {
+  float co2;
+  co2 = sens_ana(ADC_IN1,0,5000,0.6);
+  uecsSendData(1,xmlDT,tval,0);   // co2
+  wdt_reset();
+}

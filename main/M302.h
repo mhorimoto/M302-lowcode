@@ -13,7 +13,7 @@
 
 #ifndef _M302_H_
 #define _M302_H_
-#define _M302_H_V  100
+#define _M302_H_V  300
 
 #define UECS_PORT  16520
 #define CCMFMT "<?xml version=\"1.0\"?><UECS ver=\"1.00-E10\"><DATA type=\"%s\" room=\"%d\" region=\"%d\" order=\"%d\" priority=\"%d\">%s</DATA><IP>%s</IP></UECS>";
@@ -116,5 +116,24 @@ typedef struct uecsM302Send {
 #define MD_HT_FETCH   2
 #define MD_HT_END     3
 #define MD_HT_REMOCON 4
+
+/*** define port ***/
+
+#define PORT_D2   2
+#define PORT_D3   3
+#define PORT_D3   4
+#define PORT_D3   5
+#define PORT_D3   6
+#define PORT_D3   7
+#define UART_RX   8
+#define UART_TX   9
+#define SS       10
+#define MOSI     11
+#define MISO     12
+#define LED1     A0
+#define ADC_IN2  A3
+#define I2C_SDA  A4
+#define I2C_SCL  A5
+#define ADC_IN1  A7
 
 #endif

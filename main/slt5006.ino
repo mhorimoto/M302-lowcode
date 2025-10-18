@@ -2,9 +2,9 @@
 #include <SoftwareSerial.h> // SoftwareSerialライブラリをインクルード
 
 // SoftwareSerialのピン設定
-// RXピン (Arduinoがデータを受信するピン) をデジタルピン2に
-// TXピン (Arduinoがデータを送信するピン) をデジタルピン3に
-SoftwareSerial MySerial(A5, A4); // RX, TX
+// RXピン (Arduinoがデータを受信するピン) をデジタルピン8に
+// TXピン (Arduinoがデータを送信するピン) をデジタルピン9に
+SoftwareSerial MySerial(UART_RX, UART_TX); // RX, TX
 
 // Data
 SLT5006DATA  sltdata;
@@ -17,13 +17,6 @@ void dataConv(char *rdt) {
   dtl = (*(rdt+3))&0xff;
   idt = dth*0x100+dtl;
   sltdata.temp = (float)(idt * 0.0625);
-  // Serial.print(" <<");
-  // Serial.print(dth);
-  // Serial.print(",");
-  // Serial.print(dtl);
-  // Serial.print(",");
-  // Serial.print(idt);
-  // Serial.print(">> ");
   dth = (*(rdt+6))&0xff;
   dtl = (*(rdt+5))&0xff;
   idt = dth*0x100+dtl;
