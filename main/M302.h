@@ -8,6 +8,8 @@
 
 #ifndef NO_I2C
 #include "LiquidCrystal_I2C.h"
+#include <SensirionI2cSht4x.h>
+#include <Adafruit_ADS1X15.h>
 #include <Wire.h>
 #endif
 

@@ -8,8 +8,6 @@
 const char VERSION[16] PROGMEM = "M302 V3.xx";
 
 #include "M302.h"
-#include <Adafruit_SHT4x.h>
-#include <Adafruit_ADS1X15.h>
 
 #ifndef W5500SS
 #define W5500SS SS
@@ -41,7 +39,7 @@ bool          useSerial = false;
 
 stM302_t          st_m302;
 
-Adafruit_SHT4x sht4 = Adafruit_SHT4x();
+SensirionI2cSht4x sht4x;
 Adafruit_ADS1115 ads;
 bool ads_flag = true;
 
@@ -77,7 +75,8 @@ void setup(void) {
     pinMode(PORT_D7,INPUT_PULLUP);
     pinMode(ADC_IN1,INPUT);
     pinMode(ADC_IN2,INPUT);
-    
+
+    Wire.begin();
     cndVal = 0L;    // Reset cnd value
     configure_wdt();
     EEPROM.get(LC_UECS_ID,uecsid);
@@ -138,8 +137,7 @@ void setup(void) {
     //
     //**********************************
 
-    slt5006_setup();
-    if (! sht4.begin()) {
+    if (! sht4x.begin(Wire,SHT40_I2C_ADDR_44)) {
         Serial.println(F("NO SHT4x"));
         while (1) {
             uecsSendData(0,xmlDT,"67108865",0);     // NO SHT cnd
@@ -149,17 +147,12 @@ void setup(void) {
             delay(500);
         }
     }
-    sht4.setPrecision(SHT4X_HIGH_PRECISION);
-    sht4.setHeater(SHT4X_NO_HEATER);
+    sht4x.softReset();
+    delay(10);
     wdt_reset();
     uecsSendData(0,xmlDT,"395264",0);     // start cnd
     delay(100);    
     wdt_reset();
-    ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
-    if (!ads.begin()) {
-      uecsSendData(0,xmlDT,"111111",0);   // ADS1115 fail
-      ads_flag = false;
-    }
     //
     // Setup Timer1 Interrupt
     //
@@ -314,7 +307,6 @@ void UserEverySecond(void) {
 void UserEvery10Seconds(void) {
     char *xmlDT PROGMEM = CCMFMT;
 
-    slt5006_loop();
     Serial.print(F("Temp="));
     Serial.println(sltdata.temp);
     dtostrf(sltdata.temp,-6,3,val);
@@ -344,7 +336,8 @@ void UserEveryMinute(void) {
 }
 
 ope_SHT4(void) {
-  sensors_event_t ther,humi;
+  float aTemperature = 0.0;
+  float aHumidity = 0.0;
   sht4.getEvent(&humi,&ther);
   dtostrf(ther.temperature,-6,2,val);
   for(i=0;i<7;i++) {
