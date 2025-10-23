@@ -9,10 +9,11 @@
 #ifndef NO_I2C
 #include "LiquidCrystal_I2C.h"
 #include <SensirionI2cSht4x.h>
-#include <Adafruit_ADS1X15.h>
+/* #include <Adafruit_ADS1X15.h> */
 #include <Wire.h>
 #endif
 
+/* #ifndef _M302_H_ */
 #ifndef _M302_H_
 #define _M302_H_
 #define _M302_H_V  300
@@ -123,10 +124,10 @@ typedef struct uecsM302Send {
 
 #define PORT_D2   2
 #define PORT_D3   3
-#define PORT_D3   4
-#define PORT_D3   5
-#define PORT_D3   6
-#define PORT_D3   7
+#define PORT_D4   4
+#define PORT_D5   5
+#define PORT_D6   6
+#define PORT_D7   7
 #define UART_RX   8
 #define UART_TX   9
 #define SS       10
