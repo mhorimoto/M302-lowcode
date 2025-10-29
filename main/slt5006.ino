@@ -9,6 +9,18 @@ SoftwareSerial MySerial(A5, A4); // RX, TX
 // Data
 SLT5006DATA  sltdata;
 
+void dataConvDebugMsg(char *s,byte dth,byte dtl,int idt) {
+  Serial.print(" <<");
+  Serial.print(s);
+  Serial.print(":");
+  Serial.print(dth);
+  Serial.print(",");
+  Serial.print(dtl);
+  Serial.print(",");
+  Serial.print(idt);
+  Serial.println(">> ");
+}
+
 void dataConv(char *rdt) {
   //extern SLT5006DATA sltdata;
   byte dth,dtl;
@@ -16,33 +28,32 @@ void dataConv(char *rdt) {
   dth = (*(rdt+4))&0xff;
   dtl = (*(rdt+3))&0xff;
   idt = dth*0x100+dtl;
+  dataConvDebugMsg("temp",dth,dtl,idt);
   sltdata.temp = (float)(idt * 0.0625);
-  // Serial.print(" <<");
-  // Serial.print(dth);
-  // Serial.print(",");
-  // Serial.print(dtl);
-  // Serial.print(",");
-  // Serial.print(idt);
-  // Serial.print(">> ");
   dth = (*(rdt+6))&0xff;
   dtl = (*(rdt+5))&0xff;
   idt = dth*0x100+dtl;
+  dataConvDebugMsg("ec_bulk",dth,dtl,idt);
   sltdata.ec_bulk = (float)(idt * 0.001);
   dth = (*(rdt+8))&0xff;
   dtl = (*(rdt+7))&0xff;
   idt = dth*0x100+dtl;
+  dataConvDebugMsg("vwc_rock",dth,dtl,idt);
   sltdata.vwc_rock = (float)(idt * 0.1);
   dth = (*(rdt+10))&0xff;
   dtl = (*(rdt+9))&0xff;
   idt = dth*0x100+dtl;
+  dataConvDebugMsg("vwc",dth,dtl,idt);
   sltdata.vwc = (float)(idt * 0.1);
   dth = (*(rdt+12))&0xff;
   dtl = (*(rdt+11))&0xff;
   idt = dth*0x100+dtl;
+  dataConvDebugMsg("vwc_cocobulk",dth,dtl,idt);
   sltdata.vwc_coco = (float)(idt * 0.1);
   dth = (*(rdt+16))&0xff;
   dtl = (*(rdt+15))&0xff;
   idt = dth*0x100+dtl;
+  dataConvDebugMsg("ec_pore",dth,dtl,idt);
   sltdata.ec_pore = (float)(idt * 0.001);
 }
 
@@ -132,7 +143,7 @@ void byteArrayToHexStringSoft(const byte* byteArray, int length) {
   MySerial.println();
 }
 
-void rx_data(void) {
+void rx_data(int dataConv_Flag) {
 // SoftwareSerialからの応答を受信
   unsigned long startTime = millis();
   const long timeout = 500; // タイムアウト1秒
@@ -147,10 +158,11 @@ void rx_data(void) {
     }
   }
   if (receivedBytes > 0) {
-    //Serial.print(F("Receive from SoftwareSerial: "));
-    //byteArrayToHexString(receiveData, receivedBytes);
-    //Serial.print(F("DATA="));
-    dataConv(receiveData);
+    Serial.print(F("Receive from SoftwareSerial: "));
+    byteArrayToHexString(receiveData, receivedBytes);
+    if (dataConv_Flag!=0) {
+      dataConv(receiveData);
+    }
     //Serial.println(sltdata.temp);
   } else {
     Serial.println(F("No data from SoftwareSerial"));
@@ -163,10 +175,9 @@ void slt5006_setup() {
 
   byte check_ver[]    = {0x01,0x00,0x07,0xc2,0x61};
   MySerial.begin(9600); // 接続するデバイスのボーレートに合わせて設定
-  Serial.println(F("Initialize SoftwareSerial"));
   delay(100);
   MySerial.write(check_ver,5);
-  rx_data();
+  rx_data(0);
 }
 
 void slt5006_loop() {
@@ -177,13 +188,13 @@ void slt5006_loop() {
 
   MySerial.write(start_mesure,6);
   //  byteArrayToHexString(start_mesure,6);
-  rx_data();
+  rx_data(0);
   delay(20);
   MySerial.write(check_mesure,5);
   //  byteArrayToHexString(check_mesure,5);
-  rx_data();
+  rx_data(0);
   delay(20);
   MySerial.write(read_result,5);
   //  byteArrayToHexString(read_result,5);
-  rx_data();
+  rx_data(1);
 }
