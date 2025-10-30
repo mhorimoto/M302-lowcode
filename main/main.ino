@@ -5,7 +5,7 @@
 //  Release on 
 //  
 ///////////////////////////////////////////////////////////////////
-#define VERSION "M302 V2.30D"
+#define VERSION "M302 V2.30D2"
 
 #include "M302.h"
 
@@ -96,6 +96,7 @@ void setup(void) {
         Serial.println(F(VERSION));
         delay(50);
     }
+    useSerial = true;
     Ethernet.init(W5500SS);
     delay(300);
     wdt_reset();

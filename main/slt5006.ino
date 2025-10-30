@@ -143,19 +143,29 @@ void byteArrayToHexStringSoft(const byte* byteArray, int length) {
   MySerial.println();
 }
 
-void rx_data(int dataConv_Flag) {
+int rx_data(int dataConv_Flag,int CompleteCheck) {
 // SoftwareSerialからの応答を受信
   unsigned long startTime = millis();
   const long timeout = 500; // タイムアウト1秒
   byte receiveData[64];
   int receivedBytes = 0;
-
+  int ret;
+  
   //delay(100);
   // SoftwareSerialからデータが来るのを待つ
   while (millis() - startTime < timeout && receivedBytes < sizeof(receiveData)) {
     if (MySerial.available()) {
       receiveData[receivedBytes++] = MySerial.read();
     }
+  }
+  if (CompleteCheck==1) {
+     if (receiveData[3]==1) {
+     	ret = 0;
+     } else {
+        ret = 2;
+     }
+  } else {
+     ret = 0;
   }
   if (receivedBytes > 0) {
     Serial.print(F("Receive from SoftwareSerial: "));
@@ -167,17 +177,19 @@ void rx_data(int dataConv_Flag) {
   } else {
     Serial.println(F("No data from SoftwareSerial"));
   }
+  return(ret);
 }
 
 void slt5006_setup() {
   // 標準シリアルポート（USB経由でPCと通信）
   // SoftwareSerialポート（別のデバイスと通信）
 
+  int r;
   byte check_ver[]    = {0x01,0x00,0x07,0xc2,0x61};
   MySerial.begin(9600); // 接続するデバイスのボーレートに合わせて設定
   delay(100);
   MySerial.write(check_ver,5);
-  rx_data(0);
+  r = rx_data(0,0);
 }
 
 void slt5006_loop() {
@@ -185,16 +197,19 @@ void slt5006_loop() {
   byte check_mesure[] = {0x01,0x08,0x01,0x00,0xe6};
   byte read_result[]  = {0x01,0x13,0x10,0xfc,0x2c};
   extern SLT5006DATA sltdata;
-
+  int r;
+  
   MySerial.write(start_mesure,6);
   //  byteArrayToHexString(start_mesure,6);
-  rx_data(0);
+  r = rx_data(0,0);
   delay(20);
-  MySerial.write(check_mesure,5);
-  //  byteArrayToHexString(check_mesure,5);
-  rx_data(0);
-  delay(20);
+  do {
+    MySerial.write(check_mesure,5);
+    //  byteArrayToHexString(check_mesure,5);
+    r = rx_data(0,1);
+    delay(20);
+  } while(r==2);
   MySerial.write(read_result,5);
   //  byteArrayToHexString(read_result,5);
-  rx_data(1);
+  r = rx_data(1,0);
 }
