@@ -6,7 +6,7 @@
 //  
 ///////////////////////////////////////////////////////////////////
 
-const char VERSION[16] PROGMEM = "M302 V2.30";
+#define VERSION "M302 V2.40"
 
 #include "M302.h"
 
@@ -90,11 +90,11 @@ void setup(void) {
     if (digitalRead(4)==HIGH) { // 通常運転
         useSerial = false;
         Serial.begin(9600);
-        Serial.println(VERSION);
+        Serial.println(F(VERSION));
     } else {
         useSerial = true;
-        Serial.begin(19200);
-        Serial.println(VERSION);
+        Serial.begin(115200);
+        Serial.println(F(VERSION));
         delay(50);
     }
     Ethernet.init(W5500SS);
@@ -181,44 +181,6 @@ void loop() {
   recv16528port();
   wdt_reset();
     
-  // unsigned long currentMillis = millis();
-  // if (currentMillis - previousMillis >= interval) { // 1秒カウント
-  //   previousMillis = currentMillis;
-  //   period1sec = true; // 1秒ごとにフラグを立てる
-  //   count10sec++;
-  //   if (count10sec > 9) {
-  //     period10sec = true;
-  //     count10sec = 0;
-  //   } else {
-  //     period10sec = false;
-  //   }
-  //   count60sec++;
-  //   if (count60sec > 59) {
-  //     period60sec = true;
-  //     count60sec = 0;
-  //   } else {
-  //     period60sec = false;
-  //   }
-  // }
-
-  // // 10 sec interval
-  // if (period10sec) {
-  //   UserEvery10Seconds();
-  //   period10sec=false;
-  //   wdt_reset();
-  // }
-  // // 1 min interval
-  // if (period60sec) {
-  //       UserEveryMinute();
-  //       period60sec = false;
-  //       wdt_reset();
-  //   }
-  //   //1 sec interval
-  //   if (period1sec) {
-  //       period1sec = false;
-  //       UserEverySecond();
-  //   }
-  // 10 sec interval
   if (period10sec==1) {
     UserEvery10Seconds();
     period10sec=0;
@@ -299,7 +261,6 @@ void UserEverySecond(void) {
     volatile byte a=0 ;
     char val[7];
     char *xmlDT PROGMEM = CCMFMT;
-    Serial.println("UserEverySecond");
     cndVal &= 0xfffffffe;            // Clear setup completed flag
     if (aaa) {
         digitalWrite(LED2,HIGH);

@@ -17,13 +17,6 @@ void dataConv(char *rdt) {
   dtl = (*(rdt+3))&0xff;
   idt = dth*0x100+dtl;
   sltdata.temp = (float)(idt * 0.0625);
-  // Serial.print(" <<");
-  // Serial.print(dth);
-  // Serial.print(",");
-  // Serial.print(dtl);
-  // Serial.print(",");
-  // Serial.print(idt);
-  // Serial.print(">> ");
   dth = (*(rdt+6))&0xff;
   dtl = (*(rdt+5))&0xff;
   idt = dth*0x100+dtl;
@@ -132,7 +125,7 @@ void byteArrayToHexStringSoft(const byte* byteArray, int length) {
   MySerial.println();
 }
 
-void rx_data(void) {
+void rx_data(int dataConv_Flag) {
 // SoftwareSerialからの応答を受信
   unsigned long startTime = millis();
   const long timeout = 500; // タイムアウト1秒
@@ -147,11 +140,9 @@ void rx_data(void) {
     }
   }
   if (receivedBytes > 0) {
-    //Serial.print(F("Receive from SoftwareSerial: "));
-    //byteArrayToHexString(receiveData, receivedBytes);
-    //Serial.print(F("DATA="));
-    dataConv(receiveData);
-    //Serial.println(sltdata.temp);
+    if (dataConv_Flag!=0) {
+      dataConv(receiveData);
+    }
   } else {
     Serial.println(F("No data from SoftwareSerial"));
   }
@@ -163,10 +154,9 @@ void slt5006_setup() {
 
   byte check_ver[]    = {0x01,0x00,0x07,0xc2,0x61};
   MySerial.begin(9600); // 接続するデバイスのボーレートに合わせて設定
-  Serial.println(F("Initialize SoftwareSerial"));
-  delay(100);
+  delay(50);
   MySerial.write(check_ver,5);
-  rx_data();
+  rx_data(0);
 }
 
 void slt5006_loop() {
@@ -177,13 +167,13 @@ void slt5006_loop() {
 
   MySerial.write(start_mesure,6);
   //  byteArrayToHexString(start_mesure,6);
-  rx_data();
+  rx_data(0);
   delay(20);
   MySerial.write(check_mesure,5);
   //  byteArrayToHexString(check_mesure,5);
-  rx_data();
+  rx_data(0);
   delay(20);
   MySerial.write(read_result,5);
   //  byteArrayToHexString(read_result,5);
-  rx_data();
+  rx_data(1);
 }
