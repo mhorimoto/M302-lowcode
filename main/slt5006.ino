@@ -9,10 +9,8 @@ SoftwareSerial MySerial(A5, A4); // RX, TX
 // Data
 SLT5006DATA  sltdata;
 
-void dataConvDebugMsg(char *s,byte dth,byte dtl,int idt) {
+void dataConvDebugMsg(byte dth,byte dtl,int idt) {
   Serial.print(" <<");
-  Serial.print(s);
-  Serial.print(":");
   Serial.print(dth);
   Serial.print(",");
   Serial.print(dtl);
@@ -21,40 +19,57 @@ void dataConvDebugMsg(char *s,byte dth,byte dtl,int idt) {
   Serial.println(">> ");
 }
 
-void dataConv(char *rdt) {
-  //extern SLT5006DATA sltdata;
+float _dataConvEle(char *rdt,int h,int l,float f) {
   byte dth,dtl;
   int idt;
-  dth = (*(rdt+4))&0xff;
-  dtl = (*(rdt+3))&0xff;
+  dth = (*(rdt+h))&0xff;
+  dtl = (*(rdt+l))&0xff;
   idt = dth*0x100+dtl;
-  dataConvDebugMsg("temp",dth,dtl,idt);
-  sltdata.temp = (float)(idt * 0.0625);
-  dth = (*(rdt+6))&0xff;
-  dtl = (*(rdt+5))&0xff;
-  idt = dth*0x100+dtl;
-  dataConvDebugMsg("ec_bulk",dth,dtl,idt);
-  sltdata.ec_bulk = (float)(idt * 0.001);
-  dth = (*(rdt+8))&0xff;
-  dtl = (*(rdt+7))&0xff;
-  idt = dth*0x100+dtl;
-  dataConvDebugMsg("vwc_rock",dth,dtl,idt);
-  sltdata.vwc_rock = (float)(idt * 0.1);
-  dth = (*(rdt+10))&0xff;
-  dtl = (*(rdt+9))&0xff;
-  idt = dth*0x100+dtl;
-  dataConvDebugMsg("vwc",dth,dtl,idt);
-  sltdata.vwc = (float)(idt * 0.1);
-  dth = (*(rdt+12))&0xff;
-  dtl = (*(rdt+11))&0xff;
-  idt = dth*0x100+dtl;
-  dataConvDebugMsg("vwc_cocobulk",dth,dtl,idt);
-  sltdata.vwc_coco = (float)(idt * 0.1);
-  dth = (*(rdt+16))&0xff;
-  dtl = (*(rdt+15))&0xff;
-  idt = dth*0x100+dtl;
-  dataConvDebugMsg("ec_pore",dth,dtl,idt);
-  sltdata.ec_pore = (float)(idt * 0.001);
+  dataConvDebugMsg(dth,dtl,idt);
+  return( (float)(idt * f) );
+}
+
+void dataConv(char *rdt) {
+  //extern SLT5006DATA sltdata;
+  float _dataConvEle(char *,int,int,float);
+  byte dth,dtl;
+  int idt;
+  //  dth = (*(rdt+4))&0xff;
+  //  dtl = (*(rdt+3))&0xff;
+  //  idt = dth*0x100+dtl;
+  //  dataConvDebugMsg("temp",dth,dtl,idt);
+  //  sltdata.temp = (float)(idt * 0.0625);
+  sltdata.temp = _dataConvEle(rdt,4,3,0.0625);
+  //  dth = (*(rdt+6))&0xff;
+  //  dtl = (*(rdt+5))&0xff;
+  //  idt = dth*0x100+dtl;
+  //  dataConvDebugMsg("ec_bulk",dth,dtl,idt);
+  //  sltdata.ec_bulk = (float)(idt * 0.001);
+  sltdata.ec_bulk = _dataConvEle(rdt,6,5,0.001);
+  //  dth = (*(rdt+8))&0xff;
+  //  dtl = (*(rdt+7))&0xff;
+  //  idt = dth*0x100+dtl;
+  //  dataConvDebugMsg("vwc_rock",dth,dtl,idt);
+  //  sltdata.vwc_rock = (float)(idt * 0.1);
+  sltdata.vwc_rock = _dataConvEle(rdt,8,7,0.1);
+  //  dth = (*(rdt+10))&0xff;
+  //  dtl = (*(rdt+9))&0xff;
+  //  idt = dth*0x100+dtl;
+  //  dataConvDebugMsg("vwc",dth,dtl,idt);
+  //  sltdata.vwc = (float)(idt * 0.1);
+  sltdata.vwc = _dataConvEle(rdt,10,9,0.1);
+  //  dth = (*(rdt+12))&0xff;
+  //  dtl = (*(rdt+11))&0xff;
+  //  idt = dth*0x100+dtl;
+  //  dataConvDebugMsg("vwc_cocobulk",dth,dtl,idt);
+  //  sltdata.vwc_coco = (float)(idt * 0.1);
+  sltdata.vwc_coco = _dataConvEle(rdt,12,11,0.1);
+  //  dth = (*(rdt+16))&0xff;
+  //  dtl = (*(rdt+15))&0xff;
+  //  idt = dth*0x100+dtl;
+  //  dataConvDebugMsg("ec_pore",dth,dtl,idt);
+  //  sltdata.ec_pore = (float)(idt * 0.001);
+  sltdata.ec_pore = _dataConvEle(rdt,16,15,0.001);
 }
 
 /**
@@ -144,6 +159,7 @@ void byteArrayToHexStringSoft(const byte* byteArray, int length) {
 }
 
 int rx_data(int dataConv_Flag,int CompleteCheck) {
+  extern unsigned long cndVal;
 // SoftwareSerialからの応答を受信
   unsigned long startTime = millis();
   const long timeout = 500; // タイムアウト1秒
@@ -160,12 +176,12 @@ int rx_data(int dataConv_Flag,int CompleteCheck) {
   }
   if (CompleteCheck==1) {
      if (receiveData[3]==1) {
-     	ret = 0;
+       ret = 0;
      } else {
-        ret = 2;
+       ret = 2;
      }
   } else {
-     ret = 0;
+    ret = 0;
   }
   if (receivedBytes > 0) {
     Serial.print(F("Receive from SoftwareSerial: "));
@@ -176,6 +192,7 @@ int rx_data(int dataConv_Flag,int CompleteCheck) {
     //Serial.println(sltdata.temp);
   } else {
     Serial.println(F("No data from SoftwareSerial"));
+    cndVal = 0x20000900;
   }
   return(ret);
 }

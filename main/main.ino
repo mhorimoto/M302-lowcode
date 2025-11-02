@@ -5,7 +5,7 @@
 //  Release on 
 //  
 ///////////////////////////////////////////////////////////////////
-#define VERSION "M302 V2.30D2"
+#define VERSION "M302 V2.30D4"
 
 #include "M302.h"
 
@@ -238,15 +238,28 @@ void configure_wdt(void) {
     //  8 seconds: 0b100001
 }
 
+void replaceSpaceWithNull(char *t) {
+    if (!t) return;  // NULLポインタ保護
+    while (*t) {
+        if (*t == 0x20) {
+            *t = 0x00;
+            break;
+        }
+        t++;
+    }
+}
+
 void uecsSendData(int id,char *xmlDT,char *tval,int z) {
     byte room,region,priority;
     int  order,i,a;
     char name[20],dname[21],strIP[17];
+    void replaceSpaceWithNull(char *);
     extern stM302_t st_m302;
     
     a = id * LC_SEND_REC_SIZE + LC_SEND_START;
     if (EEPROM.read(a+LC_SEND_VALID)!=0x01) return;
-    
+
+    replaceSpaceWithNull(tval);
     EEPROM.get(a+LC_SEND_ROOM,room);
     EEPROM.get(a+LC_SEND_REGION,region);
     EEPROM.get(a+LC_SEND_ORDER,order);
@@ -262,7 +275,7 @@ void uecsSendData(int id,char *xmlDT,char *tval,int z) {
 void UserEverySecond(void) {
     volatile bool aaa;
     volatile byte a=0 ;
-    char val[7];
+    char val[12];
     char *xmlDT PROGMEM = CCMFMT;
     cndVal &= 0xfffffffe;            // Clear setup completed flag
     if (aaa) {
@@ -272,7 +285,7 @@ void UserEverySecond(void) {
         digitalWrite(LED2,LOW);
         aaa=true;
     }
-    sprintf(val,"%u",cndVal);
+    sprintf(val,"%lu",cndVal);
     uecsSendData(0,xmlDT,val,0);     // cnd
     wdt_reset();
 }
