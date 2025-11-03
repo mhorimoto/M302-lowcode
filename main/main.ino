@@ -5,24 +5,15 @@
 //  Release on 
 //  
 ///////////////////////////////////////////////////////////////////
-#define VERSION "M302 V2.30D6"
+#define VERSION "M302 V3.00"
 
 #include "M302.h"
+#include <SLT5006.h>
+#include <avr/wdt.h>
 
 #ifndef W5500SS
 #define W5500SS 10
 #endif
-
-uint8_t mcusr_mirror __attribute__ ((section (".noinit")));
-void get_mcusr(void)     \
-__attribute__((naked)) \
-__attribute__((section(".init3")));
-void get_mcusr(void) {
-    mcusr_mirror = MCUSR;
-    MCUSR = 0;
-    wdt_disable();
-}
-
 
 #define  delayMillis 5000UL // 5sec
 #define  LED2        3
@@ -32,22 +23,14 @@ unsigned long cndVal;   // CCM cnd Value
 char          val[16];
 bool          useSerial = false;
 
-//extern void lcdout(int,int,int);
-
 /////////////////////////////////////
 // Hardware Define
 /////////////////////////////////////
 
-stM302_t          st_m302;
-
+stM302_t    st_m302;
+SLT5006     slt(A5,A4);
 IPAddress   broadcastIP,networkADDR;
 EthernetUDP Udp16520,Udp16521,Udp16528,Udp16529;
-
-// volatile bool period1sec =  false;
-// volatile bool period10sec = false;
-// volatile bool period60sec = false;
-// volatile int  count10sec = 0;
-// volatile int  count60sec = 0;
 
 volatile int period1sec = 0;
 volatile int period10sec = 0;
@@ -72,7 +55,8 @@ void setup(void) {
   pinMode(9,OUTPUT);
     
   cndVal = 0L;    // Reset cnd value
-  configure_wdt();
+  wdt_enable(WDTO_8S);
+  //  configure_wdt();
   EEPROM.get(LC_UECS_ID,uecsid);
   EEPROM.get(LC_MAC,st_m302.mac);
   if (EEPROM.read(FIX_DHCP_FLAG)==0) {
@@ -84,7 +68,6 @@ void setup(void) {
       st_m302.dns[i]    = EEPROM.read(FIXED_DNS+i);
     }
   }
-  
   wdt_reset();
   if (digitalRead(4)==HIGH) { // 通常運転
     useSerial = false;
@@ -94,9 +77,8 @@ void setup(void) {
     useSerial = true;
     Serial.begin(115200);
     Serial.println(F(VERSION));
-    delay(50);
   }
-  useSerial = true;
+  delay(50);
   Ethernet.init(W5500SS);
   delay(300);
   wdt_reset();
@@ -110,7 +92,6 @@ void setup(void) {
   if (er==0) {
     if (useSerial) {
       Serial.println(F("DHCP Failed"));
-      Serial.println(F("Set Static IP"));
     }
   } else {
     st_m302.ip = Ethernet.localIP();
@@ -132,13 +113,9 @@ void setup(void) {
   //
   //**********************************
 
-  slt5006_setup();
-  
+  slt.begin();  // SLT5006初期化
   wdt_reset();
   uecsSendData(0,xmlDT,"395264",0);     // start cnd
-  if (useSerial) {
-    Serial.println("STARTED");
-  }
   delay(100);
   //
   // Setup Timer1 Interrupt
@@ -150,22 +127,6 @@ void setup(void) {
   TIMSK1 |= (1 << OCIE1A);
 }
 
-unsigned short crc16(int size,byte* data) {
-  unsigned short crc = 0xFFFF;
-  int i,j;
-  for (i=0;i<size;i++) {
-    crc ^= data[i];
-    for (j=0;j<8;j++) {
-      if (crc & 0x0001) {
-        crc = (crc >> 1) ^ 0xA001;
-      } else {
-        crc >>= 1;
-      }
-    }
-  }
-  return crc;
-}
-
 float sens_ana(int aport,int map_low,int map_high,float slope) {
     int sval,vol;
     float r;
@@ -173,6 +134,38 @@ float sens_ana(int aport,int map_low,int map_high,float slope) {
     vol  = map(sval,0,1023,map_low,map_high);
     r    = vol * slope;
     return r;
+}
+
+void ope_slt5006(void) {
+  char *xmlDT PROGMEM = CCMFMT;
+  if (slt.readSensor()) {
+    // 温度送信
+    dtostrf(slt.getTemp(), -6, 3, val);
+    uecsSendData(1, xmlDT, val, 0);
+    
+    // EC Bulk送信
+    dtostrf(slt.getECBulk(), -6, 3, val);
+    uecsSendData(2, xmlDT, val, 0);
+    
+    // VWC Rock送信
+    dtostrf(slt.getVWCRock(), -5, 1, val);
+    uecsSendData(3, xmlDT, val, 0);
+    
+    // VWC送信
+    dtostrf(slt.getVWC(), -5, 1, val);
+    uecsSendData(4, xmlDT, val, 0);
+    
+    // VWC Coco送信
+    dtostrf(slt.getVWCCoco(), -5, 1, val);
+    uecsSendData(5, xmlDT, val, 0);
+    
+    // EC Pore送信
+    dtostrf(slt.getECPore(), -6, 3, val);
+    uecsSendData(6, xmlDT, val, 0);
+    cndVal = 0;
+  } else {
+    cndVal = 0x20000900;
+  }
 }
 
 /////////////////////////////////
@@ -218,26 +211,6 @@ ISR(TIMER1_COMPA_vect) {
   }
 }
 
-void configure_wdt(void) {
-    cli();                           // disable interrupts for changing the registers
-    MCUSR = 0;                       // reset status register flags
-    // Put timer in interrupt-only mode:
-    WDTCSR |= 0b00011000;            // Set WDCE (5th from left) and WDE (4th from left) to enter config mode,
-    // using bitwise OR assignment (leaves other bits unchanged).
-    WDTCSR =  0b00001000 | 0b100001; // clr WDIE: interrupt enabled
-    // set WDE: reset disabled
-    // and set delay interval (right side of bar) to 8 seconds
-    sei();                           // re-enable interrupts
-    // reminder of the definitions for the time before firing
-    // delay interval patterns:
-    //  16 ms:     0b000000
-    //  500 ms:    0b000101
-    //  1 second:  0b000110
-    //  2 seconds: 0b000111
-    //  4 seconds: 0b100000
-    //  8 seconds: 0b100001
-}
-
 void replaceSpaceWithNull(char *t) {
   if (!t) return;  // NULLポインタ保護
   while (*t) {
@@ -274,7 +247,6 @@ void uecsSendData(int id,char *xmlDT,char *tval,int z) {
 
 void UserEverySecond(void) {
   volatile bool aaa;
-  volatile byte a=0 ;
   char lval[12];
   char *xmlDT PROGMEM = CCMFMT;
   cndVal &= 0xfffffffe;            // Clear setup completed flag
@@ -291,19 +263,13 @@ void UserEverySecond(void) {
 }
 
 void UserEvery10Seconds(void) {
-
-  slt5006_loop();
+  void ope_slt5006(void);
+  ope_slt5006();
   wdt_reset();
 }
 
 void UserEveryMinute(void) {
   char *xmlDT PROGMEM = CCMFMT;
-  Serial.println("UserEveryMinute");
-
-    //  extern void lcdout(int,int,int);
-    //  extern void getM252(int,bool);
-    
-    //  getM252(1,true);
   wdt_reset();
 }
 
