@@ -4,8 +4,23 @@
 //  Copyright (c) 2025 Masafumi Horimoto
 //  Release on 
 ///////////////////////////////////////////////////////////////////
-
-const char VERSION[16] PROGMEM = "M302 V3.xx";
+//
+//  This is a program for outdoor weather observation at T-House
+//  in Miyazaki Prefecture.
+//  The configuration is as follows:
+//  - SHT-40 (Akizuki) for temperature and humidity observation
+//  - Solar radiation measurement
+//
+//  The SHT-40 is connected via I2C.
+//  The solar radiation sensor is connected via ADC.
+//  The solar radiation sensor outputs an analog voltage between 0 and 1V,
+//  representing solar radiation between 0 and 1kW/m^2.
+//
+//  The main board uses the M302N2.
+//
+//////////////////////////////////////////////////////////////////
+  
+const char VERSION[16] PROGMEM = "M302N2 V3.00";
 
 #include "M302.h"
 
@@ -68,6 +83,7 @@ void setup(void) {
   int i,er;
   const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
   extern unsigned short crc16(int,byte *);
+  extern void recv16528port(void);
     
   pinMode(LED1,OUTPUT);
   digitalWrite(LED1,LOW);
@@ -142,19 +158,19 @@ void setup(void) {
   //**********************************
   sht4x.begin(Wire,SHT40_I2C_ADDR_44);
   if ( sht4x.softReset() != 0 ) {
-    Serial.println(F("NO SHT4x"));
     while (1) {
-      uecsSendData(0,xmlDT,"67108865",0);     // NO SHT cnd
+      uecsSendData(0,xmlDT,"0x20000400",0);     // NO SHT cnd
+      recv16528port();
       digitalWrite(LED1,HIGH);
-      delay(500);
+      delay(100);
       digitalWrite(LED1,LOW);
-      delay(500);
+      delay(150);
     }
   }
 
   delay(10);
   wdt_reset();
-  uecsSendData(0,xmlDT,"395264",0);     // start cnd
+  uecsSendData(0,xmlDT,"0x60800",0);     // start cnd
   delay(100);    
   wdt_reset();
   //
@@ -187,7 +203,7 @@ float sens_ana(int aport,int map_low,int map_high,float slope) {
   int sval,vol;
   float r;
   sval = analogRead(aport);
-  vol  = map(sval,0,1023,map_low,map_high);
+  vol  = map(constrain(sval,0,1023),0,1023,map_low,map_high);
   r    = vol * slope;
   return r;
 }
@@ -291,7 +307,7 @@ void UserEverySecond(void) {
         digitalWrite(LED1,LOW);
         aaa=true;
     }
-    sprintf(val,"%u",cndVal);
+    sprintf(val,"%lu",cndVal);
     uecsSendData(0,xmlDT,val,0);     // cnd
     wdt_reset();
 }
@@ -306,7 +322,7 @@ void UserEvery10Seconds(void) {
 
 void UserEveryMinute(void) {
   char *xmlDT PROGMEM = CCMFMT;
-  Serial.println("UserEveryMinute");
+  //  Serial.println("UserEveryMinute");
   wdt_reset();
 }
 
@@ -321,17 +337,16 @@ void ope_SHT4(int TempId,int HumidId) {
   dtostrf(aHumidity,-6,2,val);
   truncate_at_first_space(7,val) ;
   uecsSendData(HumidId,xmlDT,val,0);   // Humid
-
   wdt_reset();
 }
 
 void ope_Radiation(int ccmid) {
   char *xmlDT PROGMEM = CCMFMT;
   float wrad;
-  wrad = sens_ana(ADC_IN1,0,1023,1);
+  wrad = sens_ana(ADC_IN1,0,5000,1.2);
   sprintf(val,"%d",int(wrad));
-  //  dtostrf(wrad,-5,3,val);
   uecsSendData(ccmid,xmlDT,val,0);
+  wdt_reset();
 }
 
 void ope_CO2(int ccmid) {

@@ -59,6 +59,7 @@ typedef struct stM302 {
   int cidr;
 } stM302_t ;
 
+#define LC_SEND_TABLE_SIZE  15    // CCM max count (records)
 #define LC_SEND_START       0x80  // CCM for data sending (for example cnd.aMC)
 #define LC_SEND_REC_SIZE    0x30  // reserve to 0x2f step by 0x30
 #define   LC_SEND_VALID     0x00  // (00) Valid Flag (0x01:valid, 0xff:invalid)
