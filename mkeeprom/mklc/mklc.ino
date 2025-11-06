@@ -5,12 +5,12 @@
 
 #define INPUT_LINE_SIZE  30
 
-char *pgname = "M302 mklc V1.30 ";
+char *pgname = "M302 mklc V1.40 ";
 char inputbuf[INPUT_LINE_SIZE],*ptr_inputbuf;
 int  cnt;
 
 const int BUFFER_SIZE = 64;
-char inputBuffer[BUFFER_SIZE];
+char inputBuffer[BUFFER_SIZE],lbf[81];
 int bufferIndex = 0;
 
 
@@ -65,6 +65,9 @@ void parseCommand(char* input) {
     extern void listCommand(void);
     extern void setCommand(char *,int,int);
     extern void clearpage(char *);
+    extern void cmnd_dump(String ,int);
+    extern void cmnd_setbyte(String ,int);
+    extern void cmnd_fill(String ,int);
     extern void help(void);
     
     // トークン分解
@@ -82,6 +85,17 @@ void parseCommand(char* input) {
     //    clearpage(page);
     } else if (strcmp(token, "help") == 0) {
         help();
+    } else if (strcmp(token, "dump") == 0) {
+        String p = String(strtok(NULL, " "));
+        cmnd_dump(p, -1);
+    } else if (strcmp(token, "setb") == 0) {
+        String p = String(strtok(NULL, "\n"));
+        Serial.print("Set Byte Command with param: ");
+        Serial.println(p);
+        cmnd_setbyte(p, -1);
+    } else if (strcmp(token, "fill") == 0) {
+        String p = String(strtok(NULL, " "));
+        cmnd_fill(p, -1);
     } else {
         Serial.print("Unknown command: ");
         Serial.println(token);
@@ -162,7 +176,4 @@ void handleGetCommand() {
         Serial.println("Usage: get <target>");
     }
 }
-
-
-
 #endif

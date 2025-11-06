@@ -12,7 +12,7 @@ all:
 
 mklc: mklc/mklc.touch
 
-mklc/mklc.touch: mklc/mklc.ino mklc/listCommand.ino mklc/setCommand.ino mklc/clearpage.ino mklc/help.ino
+mklc/mklc.touch: mklc/mklc.ino mklc/listCommand.ino mklc/setCommand.ino mklc/clearpage.ino mklc/help.ino mklc/cmnd_dump.ino mklc/bytemap.ino mklc/cmnd_setbyte.ino
 	arduino-cli compile -b arduino:avr:${BOARD} mklc
 	touch mklc/mklc.touch
 
