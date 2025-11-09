@@ -2,7 +2,7 @@
 // M302-lowcode
 //  MIT License
 //  Copyright (c) 2025 Masafumi Horimoto
-//  Release on 
+//  Release on 2025/11/10
 ///////////////////////////////////////////////////////////////////
 //
 //  This is a program for outdoor weather observation at T-House
@@ -20,7 +20,7 @@
 //
 //////////////////////////////////////////////////////////////////
   
-const char VERSION[16] PROGMEM = "M302N2 V3.00";
+const char VERSION[16] PROGMEM = "M302N2 V3.01";
 
 #include "M302.h"
 
@@ -58,8 +58,6 @@ SensirionI2cSht4x sht4x;
 SLT5006           slt(UART_RX,UART_TX); // SLT5006 sensor
 Adafruit_ADS1115  ads;
 
-bool ads_flag = true;
-
 IPAddress   broadcastIP,networkADDR;
 EthernetUDP Udp16520,Udp16521,Udp16528,Udp16529;
 
@@ -86,10 +84,11 @@ void UserEveryMinute(void);
 void setup(void) {
     char *xmlDT PROGMEM = CCMFMT;
     int i,er;
-    const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
-//    extern unsigned short crc16(int,byte *);
+    char version_info[17];
+
+    //const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
     extern void recv16528port(void);
-    
+    writeVersionToEEPROM();
     pinMode(LED1,OUTPUT);
     digitalWrite(LED1,LOW);
     pinMode(PORT_D2,INPUT_PULLUP);
@@ -117,16 +116,6 @@ void setup(void) {
     }
     
     wdt_reset();
-    if (digitalRead(4)==HIGH) { // 通常運転
-        useSerial = false;
-        Serial.begin(19200);
-        Serial.println(VERSION);
-    } else {
-        useSerial = true;
-        Serial.begin(19200);
-        Serial.println(VERSION);
-        delay(50);
-    }
     Ethernet.init(W5500SS);
     delay(300);
     wdt_reset();
@@ -134,14 +123,17 @@ void setup(void) {
         er = Ethernet.begin(st_m302.mac);
         if (er==0) {
             st_m302.dhcpflag = false;
+            while(1) {
+                blinkLED(LED1,850,150,1);
+            }
         }
     } else {
         Ethernet.begin(st_m302.mac,st_m302.set_ip,st_m302.dns,st_m302.gw,st_m302.subnet);
         er = 1;
     }
     if (er==0) {
-        if (useSerial) {
-            Serial.println(F("DHCP Failed"));
+        while (1) {
+            blinkLED(LED1,1500,500,1);
         }
     } else {
         st_m302.ip = Ethernet.localIP();
@@ -166,10 +158,7 @@ void setup(void) {
         while (1) {
             uecsSendData(0,xmlDT,"0x20000400",0);     // NO SHT cnd
             recv16528port();
-            digitalWrite(LED1,HIGH);
-            delay(100);
-            digitalWrite(LED1,LOW);
-            delay(150);
+            blinkLED(LED1,100,150,4);
         }
     }
     delay(10);
@@ -178,14 +167,10 @@ void setup(void) {
     ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
     delay(10);
     if (!ads.begin()) {
-        ads_flag = false;
         while(1) {
             uecsSendData(0,xmlDT,"0x20000B00",0);     // NO ADS1115 cnd
             recv16528port();
-            digitalWrite(LED1,HIGH);
-            delay(50);
-            digitalWrite(LED1,LOW);
-            delay(100);
+            blinkLED(LED1,50,200,4);
         }
     }
     delay(10);
@@ -228,13 +213,11 @@ void loop() {
     if (period10sec==1) {
         UserEvery10Seconds();
         period10sec=0;
-        wdt_reset();
     }
     // 1 min interval
     if (period60sec==1) {
         UserEveryMinute();
         period60sec = 0;
-        wdt_reset();
     }
 }
 
@@ -408,11 +391,16 @@ void ope_PPFD(int ccmid) {
     char *xmlDT PROGMEM = CCMFMT;
     int16_t adc0;
     char tval[10];
+    int   i_radiation;
     float radvolts,radiation;
     adc0 = ads.readADC_SingleEnded(0);
     radvolts = ads.computeVolts(adc0) * 1000.0;
     radiation= radvolts * 10.0;
-    sprintf(tval,"%d",int(radiation));  // Radiation μmol/m^2*sec
+    i_radiation = int(radiation);
+    if (i_radiation < 0) {
+        i_radiation = 0;
+    }
+    sprintf(tval,"%d",i_radiation);  // Radiation μmol/m^2*sec
     uecsSendData(ccmid,xmlDT,tval,0);
     wdt_reset();
 }
@@ -428,5 +416,23 @@ void truncate_at_first_space(int n,char v[]) {
             v[i] = '\0';
             break;
         }
+    }
+}
+void blinkLED(int led,int on_time,int off_time,int n) {
+    for (int i=0;i<n;i++) {
+        digitalWrite(led,HIGH);
+        delay(on_time);
+        digitalWrite(led,LOW);
+        delay(off_time);
+    }
+}
+
+void writeVersionToEEPROM() {
+    const int base = VERSION_INFO;  // 開始アドレス
+    // 最大15文字 + 終端(0) を想定（VERSION[16]）
+    for (int i = 0; i < 16; i++) {
+        uint8_t c = pgm_read_byte(&VERSION[i]);      // PROGMEM から1バイト読む
+        EEPROM.update(base + i, c);                  // 変更があるときだけ書く
+        if (c == 0) break;                           // 終端に達したら終了
     }
 }

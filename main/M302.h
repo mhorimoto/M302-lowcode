@@ -64,7 +64,7 @@ typedef struct stM302 {
 #define   LC_SEND_UNIT      0x1c  // (28-37) char[10] Unit Name
 #define   LC_SEND_FUNC      0x28  // (38)  Function Number (1-254)
 #define   LC_SEND_PARAM     0x29  // (39-3f) byte[6] Parameter Name
-
+#define   VERSION_INFO     0x3f0  // Version Info (16 bytes limit)
 typedef struct uecsM302Send {
     byte valid;        // 0x00
     byte room;         // 0x01
