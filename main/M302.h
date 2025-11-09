@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <stdio.h>
 #include <SPI.h>
 #include <Ethernet2.h>
@@ -5,11 +6,12 @@
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>
 #include <EEPROM.h>
+#include <SoftwareSerial.h> // SoftwareSerialライブラリをインクルード
+#include <SLT5006.h>
 
 #ifndef NO_I2C
-#include "LiquidCrystal_I2C.h"
 #include <SensirionI2cSht4x.h>
-/* #include <Adafruit_ADS1X15.h> */
+#include <Adafruit_ADS1X15.h>
 #include <Wire.h>
 #endif
 
@@ -20,17 +22,6 @@
 
 #define UECS_PORT  16520
 #define CCMFMT "<?xml version=\"1.0\"?><UECS ver=\"1.00-E10\"><DATA type=\"%s\" room=\"%d\" region=\"%d\" order=\"%d\" priority=\"%d\">%s</DATA><IP>%s</IP></UECS>";
-
-
-typedef  struct {
-  float temp;
-  float ec_bulk;
-  float vwc_rock;
-  float vwc;
-  float vwc_coco;
-  float ec_pore;
-} SLT5006DATA ;
-extern SLT5006DATA sltdata;
 
 /*** EEPROM LOWCORE ASSIGN ***/
 #define LC_UECS_ID        0x00
@@ -112,6 +103,7 @@ typedef struct uecsM302Send {
 #define FUNC_IMG_CA0012 8
 #define FUNC_SLT5006    9
 #define FUNC_M252      10
+#define FUNC_ADS1115   11
 
 /*** Mode via httpd ***/
 
