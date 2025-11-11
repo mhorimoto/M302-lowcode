@@ -20,7 +20,7 @@
 //
 //////////////////////////////////////////////////////////////////
   
-const char VERSION[16] PROGMEM = "M302N2 V3.01";
+const char VERSION[16] PROGMEM = "M302N2 D3.10";
 
 #include "M302.h"
 
@@ -99,7 +99,7 @@ void setup(void) {
     pinMode(PORT_D7,INPUT_PULLUP);
     pinMode(ADC_IN1,INPUT);
     pinMode(ADC_IN2,INPUT);
-
+    Serial.begin(115200);  // for Debug
     Wire.begin();
     cndVal = 0L;    // Reset cnd value
     configure_wdt();
@@ -303,9 +303,11 @@ void UserEvery10Seconds(void) {
     void ope_PPFD(int);
     char *xmlDT PROGMEM = CCMFMT;
     ope_SHT4(1,2);
-    wdt_reset();
+    delay(50);
     ope_CO2(3);
+    delay(50);
     ope_SLT5006(4);
+    delay(10);
     ope_PPFD(10);
     wdt_reset();
 }
@@ -352,39 +354,48 @@ void ope_SLT5006(int baseid) {
     char *xmlDT PROGMEM = CCMFMT;
     float fval;
     // SLT5006 data read
-    slt.readSensor();
+    do {
+      slt.readSensor();
+            Serial.print(slt.getRCode());
+            Serial.print(" ");
+      delay(20);
+    } while(slt.getRCode()==2);
     // Temperature
     fval = slt.getTemp();
     dtostrf(fval,-6,2,val);
     truncate_at_first_space(7,val) ;
     uecsSendData(baseid,xmlDT,val,0);   // Temp
+    delay(10);
     // Bulk EC
     fval = slt.getECBulk();
     dtostrf(fval,-6,2,val);
     truncate_at_first_space(7,val) ;
     uecsSendData(baseid+1,xmlDT,val,0);   // Bulk EC
+    delay(10);
     // Rock VWC
     fval = slt.getVWCRock();
     dtostrf(fval,-6,2,val);
     truncate_at_first_space(7,val) ;
     uecsSendData(baseid+2,xmlDT,val,0);   // Rock VWC
-    wdt_reset();
+    delay(10);
     // VWC
     fval = slt.getVWC();
     dtostrf(fval,-6,2,val);
     truncate_at_first_space(7,val) ;
-    uecsSendData(baseid+3,xmlDT,val,0);   // Coco VWC
+    uecsSendData(baseid+3,xmlDT,val,0);   // VWC
+    delay(10);
     // Coco VWC
     fval = slt.getVWCCoco();
     dtostrf(fval,-6,2,val);
     truncate_at_first_space(7,val) ;
     uecsSendData(baseid+4,xmlDT,val,0);   // Coco VWC
+    delay(10);
+    wdt_reset();
     // Pore EC
     fval = slt.getECPore();
     dtostrf(fval,-6,2,val);
     truncate_at_first_space(7,val) ;
     uecsSendData(baseid+5,xmlDT,val,0);   // Pore EC
-    wdt_reset();
 }
 
 void ope_PPFD(int ccmid) {
@@ -402,7 +413,6 @@ void ope_PPFD(int ccmid) {
     }
     sprintf(tval,"%d",i_radiation);  // Radiation μmol/m^2*sec
     uecsSendData(ccmid,xmlDT,tval,0);
-    wdt_reset();
 }
 void truncate_at_first_space(int n,char v[]) {
     int i;
