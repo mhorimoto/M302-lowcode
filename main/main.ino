@@ -20,7 +20,7 @@
 //
 //////////////////////////////////////////////////////////////////
   
-const char VERSION[16] PROGMEM = "M302N2 D3.10";
+const char VERSION[16] PROGMEM = "M302N2 V3.10";
 
 #include "M302.h"
 
