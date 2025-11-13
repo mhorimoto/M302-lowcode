@@ -8,6 +8,9 @@
 *.kicad_pcb-bak
 *.sch-bak
 *~
+eeprom/eeprom.touch
+main/main.touch
+
 _autosave-*
 *.tmp
 *-save.pro
