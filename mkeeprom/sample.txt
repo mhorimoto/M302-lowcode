@@ -1,3 +1,4 @@
+set ccm 0 root 45
 set ccm 1 room 45
 set ccm 1 region 5
 set ccm 1 order 1
