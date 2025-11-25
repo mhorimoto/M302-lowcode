@@ -20,7 +20,7 @@
 //
 //////////////////////////////////////////////////////////////////
   
-const char VERSION[16] PROGMEM = "M302N2 V3.10";
+const char VERSION[16] PROGMEM = "M302N2 V3.20";
 
 #include "M302.h"
 
@@ -153,27 +153,27 @@ void setup(void) {
     //  Initialize of Sensor devices
     //
     //**********************************
-    sht4x.begin(Wire,SHT40_I2C_ADDR_44);
-    if ( sht4x.softReset() != 0 ) {
-        while (1) {
-            uecsSendData(0,xmlDT,"0x20000400",0);     // NO SHT cnd
-            recv16528port();
-            blinkLED(LED1,100,150,4);
-        }
-    }
-    delay(10);
+// DEVEL    sht4x.begin(Wire,SHT40_I2C_ADDR_44);
+// DEVEL    if ( sht4x.softReset() != 0 ) {
+// DEVEL        while (1) {
+// DEVEL            uecsSendData(0,xmlDT,"0x20000400",0);     // NO SHT cnd
+// DEVEL            recv16528port();
+// DEVEL            blinkLED(LED1,100,150,4);
+// DEVEL        }
+// DEVEL    }
+// DEVEL    delay(10);
     slt.begin();
-    delay(10);
-    ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
-    delay(10);
-    if (!ads.begin()) {
-        while(1) {
-            uecsSendData(0,xmlDT,"0x20000B00",0);     // NO ADS1115 cnd
-            recv16528port();
-            blinkLED(LED1,50,200,4);
-        }
-    }
-    delay(10);
+// DEVEL    delay(10);
+// DEVEL    ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
+// DEVEL    delay(10);
+// DEVEL    if (!ads.begin()) {
+// DEVEL        while(1) {
+// DEVEL            uecsSendData(0,xmlDT,"0x20000B00",0);     // NO ADS1115 cnd
+// DEVEL            recv16528port();
+// DEVEL            blinkLED(LED1,50,200,4);
+// DEVEL        }
+// DEVEL    }
+// DEVEL    delay(10);
     //
     uecsSendData(0,xmlDT,"0x60800",0);     // start cnd
     delay(100);    
@@ -302,13 +302,13 @@ void UserEvery10Seconds(void) {
     void ope_CO2(int);
     void ope_PPFD(int);
     char *xmlDT PROGMEM = CCMFMT;
-    ope_SHT4(1,2);
-    delay(50);
-    ope_CO2(3);
-    delay(50);
+// DEVEL    ope_SHT4(1,2);
+// DEVEL    delay(50);
+// DEVEL    ope_CO2(3);
+// DEVEL    delay(50);
     ope_SLT5006(4);
     delay(10);
-    ope_PPFD(10);
+// DEVEL    ope_PPFD(10);
     wdt_reset();
 }
 
