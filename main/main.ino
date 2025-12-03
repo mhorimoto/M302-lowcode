@@ -20,7 +20,7 @@
 //
 //////////////////////////////////////////////////////////////////
   
-const char VERSION[16] PROGMEM = "M302N2 V3.20";
+const char VERSION[16] PROGMEM = "M302N2 V3.22SLT";
 
 #include "M302.h"
 
@@ -99,7 +99,7 @@ void setup(void) {
     pinMode(PORT_D7,INPUT_PULLUP);
     pinMode(ADC_IN1,INPUT);
     pinMode(ADC_IN2,INPUT);
-    Serial.begin(115200);  // for Debug
+    //Serial.begin(115200);  // for Debug
     Wire.begin();
     cndVal = 0L;    // Reset cnd value
     configure_wdt();
@@ -356,8 +356,8 @@ void ope_SLT5006(int baseid) {
     // SLT5006 data read
     do {
       slt.readSensor();
-            Serial.print(slt.getRCode());
-            Serial.print(" ");
+            //Serial.print(slt.getRCode());
+            //Serial.print(" ");
       delay(20);
     } while(slt.getRCode()==2);
     // Temperature
