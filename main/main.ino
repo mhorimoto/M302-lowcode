@@ -14,10 +14,10 @@
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>
 #include <EEPROM.h>
-#include "LiquidCrystal_I2C.h"
+#include <LiquidCrystal_I2C.h>
+#include <SensirionI2cSht4x.h>
 #include <Wire.h>
 #include <DS18B20.h>
-
 
 char    text[40];
 
@@ -37,8 +37,12 @@ void get_mcusr(void) {
 #define  pCND        0x80
 #define  pRADIATION  0xa0
 #define  delayMillis 5000UL // 5sec
+#ifdef   NO_ERROR
+#undef   NO_ERROR
+#endif
+#define  NO_ERROR 0
 
-const char VERSION[16] PROGMEM = "PSYV-1.0.0";
+const char VERSION[16] PROGMEM = "PSYV-1.0.1";
 
 char uecsid[6], uecstext[180],strIP[16],linebuf[80];
 byte lineptr = 0;
@@ -53,6 +57,7 @@ uint8_t  regs[14];
 DS18B20   ds(6);
 LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 char lcdtext[6][17];
+SensirionI2cSht4x sht4x;
 
 byte macaddr[6];
 IPAddress localIP,broadcastIP,subnetmaskIP,remoteIP;
@@ -71,6 +76,12 @@ void setup(void) {
   const char *ids PROGMEM = "%s:%02X%02X%02X%02X%02X%02X";
   extern void lcdout(int,int,int);
   
+  Wire.begin();
+  sht4x.begin(Wire, SHT40_I2C_ADDR_44);
+  sht4x.softReset();
+  shta4x_heaterOff();
+  shta4x_setResolution(SHT4X_RESOLUTION_12BIT_14BIT );
+
   cndVal = 0L;    // Reset cnd value
   lcd.init();
   lcd.backlight();
