@@ -79,9 +79,7 @@ void setup(void) {
   Wire.begin();
   sht4x.begin(Wire, SHT40_I2C_ADDR_44);
   sht4x.softReset();
-  shta4x_heaterOff();
-  shta4x_setResolution(SHT4X_RESOLUTION_12BIT_14BIT );
-
+  
   cndVal = 0L;    // Reset cnd value
   lcd.init();
   lcd.backlight();
