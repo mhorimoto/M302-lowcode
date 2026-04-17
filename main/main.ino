@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////
 // M302-lowcode
 //  MIT License
-//  Copyright (c) 2025 Masafumi Horimoto
-//  Release on 2025/11/10
+//  Copyright (c) 2026 Masafumi Horimoto
+//  Release on 2026/04/17
 ///////////////////////////////////////////////////////////////////
 //
 //  This is a program for outdoor weather observation at T-House
@@ -10,7 +10,9 @@
 //  The configuration is as follows:
 //  - SHT-40 (Akizuki) for temperature and humidity observation
 //  - Solar radiation measurement
-//
+//  - SLT5006 (SENSTEM) for soil moisture and EC measurement
+//  - CO2 measurement using an analog sensor
+//  - PPFD measurement using an ADS1115 and a photodiode
 //  The SHT-40 is connected via I2C.
 //  The solar radiation sensor is connected via ADC.
 //  The solar radiation sensor outputs an analog voltage between 0 and 1V,

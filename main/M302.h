@@ -12,6 +12,7 @@
 #ifndef NO_I2C
 #include <SensirionI2cSht4x.h>
 #include <Adafruit_ADS1X15.h>
+#include <Adafruit_ADT7410.h>
 #include <Wire.h>
 #endif
 
