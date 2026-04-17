@@ -9,6 +9,7 @@
 #ifndef NO_I2C
 #include "LiquidCrystal_I2C.h"
 #include <SensirionI2cSht4x.h>
+#include <Adafruit_ADT7410.h>
 /* #include <Adafruit_ADS1X15.h> */
 #include <Wire.h>
 #endif
@@ -112,6 +113,10 @@ typedef struct uecsM302Send {
 #define FUNC_IMG_CA0012 8
 #define FUNC_SLT5006    9
 #define FUNC_M252      10
+#define FUNC_ADS1115   11
+#define FUNC_ADT7410   12
+#define FUNC_RADIATION  13
+#define FUNC_CO2        14
 
 /*** Mode via httpd ***/
 

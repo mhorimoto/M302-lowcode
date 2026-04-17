@@ -1,0 +1,16 @@
+# .clang-format
+BasedOnStyle: LLVM
+
+# 中カッコの設定：行末に付着させる (Attach)
+BreakBeforeBraces: Attach
+
+# インデントの設定（今回のindent調整に合わせる）
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+# その他の推奨設定（Arduino/C++コードを見やすくする）
+AllowShortBlocksOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+ColumnLimit: 100
+
