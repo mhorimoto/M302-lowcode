@@ -20,7 +20,7 @@
 //
 //////////////////////////////////////////////////////////////////
 
-const char VERSION[16] PROGMEM = "M302N2H V3.12";
+const char VERSION[16] PROGMEM = "M302N2H V3.14";
 
 #include "M302.h"
 
@@ -194,10 +194,10 @@ void setup(void) {
         sensorFlags &= ~SENSOR_ADT7410; // ADT7410 not found
     } else {
         sensorFlags |= SENSOR_ADT7410;
+        delay(200);
+        adt7410.setResolution(ADT7410_16BIT);
+        delay(10);
     }
-    delay(200);
-    adt7410.setResolution(ADT7410_16BIT);
-    delay(10);
     wdt_reset();
     uecsSendData(0, xmlDT, "0x60800", 0); // start cnd
     delay(100);
@@ -346,8 +346,8 @@ void UserEvery10Seconds(void) {
     void ope_SHT(int, int);
     char *xmlDT PROGMEM = CCMFMT;
     ope_SHT4(1, 2);
-    ope_Radiation(3);
-    ope_ADT7410(4);
+    //ope_Radiation(3);
+    //ope_ADT7410(4);
     wdt_reset();
 }
 
