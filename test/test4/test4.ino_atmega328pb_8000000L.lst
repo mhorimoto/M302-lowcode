@@ -1,0 +1,1861 @@
+
+/home/horimoto/.cache/arduino/sketches/DDEFFCF16138456E4C52C354725D2147/test4.ino.elf:     file format elf32-avr
+
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+__vectors():
+../../../../crt1/gcrt1.S:65
+   0:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__ctors_end>
+../../../../crt1/gcrt1.S:67
+   4:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:68
+   8:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:69
+   c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:70
+  10:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:71
+  14:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:72
+  18:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:73
+  1c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:74
+  20:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:75
+  24:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:76
+  28:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:77
+  2c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:78
+  30:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:79
+  34:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:80
+  38:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:81
+  3c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:82
+  40:	0c 94 1c 02 	jmp	0x438	; 0x438 <__vector_16>
+../../../../crt1/gcrt1.S:83
+  44:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:84
+  48:	0c 94 8c 02 	jmp	0x518	; 0x518 <__vector_18>
+../../../../crt1/gcrt1.S:85
+  4c:	0c 94 66 02 	jmp	0x4cc	; 0x4cc <__vector_19>
+../../../../crt1/gcrt1.S:86
+  50:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:87
+  54:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:88
+  58:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:89
+  5c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:90
+  60:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:91
+  64:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:92
+  68:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:93
+  6c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:94
+  70:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:95
+  74:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:96
+  78:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:97
+  7c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:98
+  80:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:99
+  84:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:100
+  88:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:101
+  8c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:102
+  90:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:103
+  94:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:104
+  98:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:105
+  9c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:106
+  a0:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:107
+  a4:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:108
+  a8:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:109
+  ac:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+../../../../crt1/gcrt1.S:110
+  b0:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+
+000000b4 <__ctors_start>:
+__trampolines_start():
+  b4:	9d 03       	fmulsu	r17, r21
+
+000000b6 <__ctors_end>:
+__dtors_end():
+../../../../crt1/gcrt1.S:230
+  b6:	11 24       	eor	r1, r1
+../../../../crt1/gcrt1.S:231
+  b8:	1f be       	out	0x3f, r1	; 63
+../../../../crt1/gcrt1.S:232
+  ba:	cf ef       	ldi	r28, 0xFF	; 255
+../../../../crt1/gcrt1.S:241
+  bc:	d8 e0       	ldi	r29, 0x08	; 8
+../../../../crt1/gcrt1.S:242
+  be:	de bf       	out	0x3e, r29	; 62
+../../../../crt1/gcrt1.S:244
+  c0:	cd bf       	out	0x3d, r28	; 61
+
+000000c2 <__do_copy_data>:
+__do_copy_data():
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2409
+  c2:	11 e0       	ldi	r17, 0x01	; 1
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2410
+  c4:	a0 e0       	ldi	r26, 0x00	; 0
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2411
+  c6:	b1 e0       	ldi	r27, 0x01	; 1
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2412
+  c8:	e8 ee       	ldi	r30, 0xE8	; 232
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2413
+  ca:	f7 e0       	ldi	r31, 0x07	; 7
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2414
+  cc:	02 c0       	rjmp	.+4      	; 0xd2 <__do_copy_data+0x10>
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2417
+  ce:	05 90       	lpm	r0, Z+
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2422
+  d0:	0d 92       	st	X+, r0
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2424
+  d2:	ae 33       	cpi	r26, 0x3E	; 62
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2425
+  d4:	b1 07       	cpc	r27, r17
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2426
+  d6:	d9 f7       	brne	.-10     	; 0xce <__do_copy_data+0xc>
+
+000000d8 <__do_clear_bss>:
+__do_clear_bss():
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2441
+  d8:	22 e0       	ldi	r18, 0x02	; 2
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2442
+  da:	ae e3       	ldi	r26, 0x3E	; 62
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2443
+  dc:	b1 e0       	ldi	r27, 0x01	; 1
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2444
+  de:	01 c0       	rjmp	.+2      	; 0xe2 <.do_clear_bss_start>
+
+000000e0 <.do_clear_bss_loop>:
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2446
+  e0:	1d 92       	st	X+, r1
+
+000000e2 <.do_clear_bss_start>:
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2448
+  e2:	a2 30       	cpi	r26, 0x02	; 2
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2449
+  e4:	b2 07       	cpc	r27, r18
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2450
+  e6:	e1 f7       	brne	.-8      	; 0xe0 <.do_clear_bss_loop>
+
+000000e8 <__do_global_ctors>:
+__do_global_ctors():
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2466
+  e8:	10 e0       	ldi	r17, 0x00	; 0
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2467
+  ea:	cb e5       	ldi	r28, 0x5B	; 91
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2468
+  ec:	d0 e0       	ldi	r29, 0x00	; 0
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2472
+  ee:	04 c0       	rjmp	.+8      	; 0xf8 <__do_global_ctors+0x10>
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2474
+  f0:	21 97       	sbiw	r28, 0x01	; 1
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2480
+  f2:	fe 01       	movw	r30, r28
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2481
+  f4:	0e 94 ec 03 	call	0x7d8	; 0x7d8 <__tablejump2__>
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2483
+  f8:	ca 35       	cpi	r28, 0x5A	; 90
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2484
+  fa:	d1 07       	cpc	r29, r17
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2489
+  fc:	c9 f7       	brne	.-14     	; 0xf0 <__do_global_ctors+0x8>
+../../../../crt1/gcrt1.S:314
+  fe:	0e 94 be 02 	call	0x57c	; 0x57c <main>
+../../../../crt1/gcrt1.S:315
+ 102:	0c 94 f2 03 	jmp	0x7e4	; 0x7e4 <_exit>
+
+00000106 <__bad_interrupt>:
+__vector_38():
+../../../../crt1/gcrt1.S:209
+ 106:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000010a <Print::write(unsigned char const*, unsigned int)>:
+write():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:35
+
+// Public Methods //////////////////////////////////////////////////////////////
+
+/* default implementation: may be overridden */
+size_t Print::write(const uint8_t *buffer, size_t size)
+{
+ 10a:	af 92       	push	r10
+ 10c:	bf 92       	push	r11
+ 10e:	cf 92       	push	r12
+ 110:	df 92       	push	r13
+ 112:	ef 92       	push	r14
+ 114:	ff 92       	push	r15
+ 116:	0f 93       	push	r16
+ 118:	1f 93       	push	r17
+ 11a:	cf 93       	push	r28
+ 11c:	df 93       	push	r29
+ 11e:	6c 01       	movw	r12, r24
+ 120:	7b 01       	movw	r14, r22
+ 122:	8b 01       	movw	r16, r22
+ 124:	04 0f       	add	r16, r20
+ 126:	15 1f       	adc	r17, r21
+ 128:	eb 01       	movw	r28, r22
+ 12a:	5e 01       	movw	r10, r28
+ 12c:	ae 18       	sub	r10, r14
+ 12e:	bf 08       	sbc	r11, r15
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:37
+  size_t n = 0;
+  while (size--) {
+ 130:	c0 17       	cp	r28, r16
+ 132:	d1 07       	cpc	r29, r17
+ 134:	59 f0       	breq	.+22     	; 0x14c <Print::write(unsigned char const*, unsigned int)+0x42>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:38
+    if (write(*buffer++)) n++;
+ 136:	69 91       	ld	r22, Y+
+ 138:	d6 01       	movw	r26, r12
+ 13a:	ed 91       	ld	r30, X+
+ 13c:	fc 91       	ld	r31, X
+ 13e:	01 90       	ld	r0, Z+
+ 140:	f0 81       	ld	r31, Z
+ 142:	e0 2d       	mov	r30, r0
+ 144:	c6 01       	movw	r24, r12
+ 146:	09 95       	icall
+ 148:	89 2b       	or	r24, r25
+ 14a:	79 f7       	brne	.-34     	; 0x12a <Print::write(unsigned char const*, unsigned int)+0x20>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:42
+    else break;
+  }
+  return n;
+}
+ 14c:	c5 01       	movw	r24, r10
+ 14e:	df 91       	pop	r29
+ 150:	cf 91       	pop	r28
+ 152:	1f 91       	pop	r17
+ 154:	0f 91       	pop	r16
+ 156:	ff 90       	pop	r15
+ 158:	ef 90       	pop	r14
+ 15a:	df 90       	pop	r13
+ 15c:	cf 90       	pop	r12
+ 15e:	bf 90       	pop	r11
+ 160:	af 90       	pop	r10
+ 162:	08 95       	ret
+
+00000164 <HardwareSerial::availableForWrite()>:
+availableForWrite():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:195
+{
+  tx_buffer_index_t head;
+  tx_buffer_index_t tail;
+
+  TX_BUFFER_ATOMIC {
+    head = _tx_buffer_head;
+ 164:	fc 01       	movw	r30, r24
+ 166:	53 8d       	ldd	r21, Z+27	; 0x1b
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:196
+    tail = _tx_buffer_tail;
+ 168:	44 8d       	ldd	r20, Z+28	; 0x1c
+ 16a:	25 2f       	mov	r18, r21
+ 16c:	30 e0       	ldi	r19, 0x00	; 0
+ 16e:	84 2f       	mov	r24, r20
+ 170:	90 e0       	ldi	r25, 0x00	; 0
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:198
+  }
+  if (head >= tail) return SERIAL_TX_BUFFER_SIZE - 1 - head + tail;
+ 172:	82 1b       	sub	r24, r18
+ 174:	93 0b       	sbc	r25, r19
+ 176:	54 17       	cp	r21, r20
+ 178:	10 f0       	brcs	.+4      	; 0x17e <HardwareSerial::availableForWrite()+0x1a>
+ 17a:	cf 96       	adiw	r24, 0x3f	; 63
+ 17c:	08 95       	ret
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:199
+  return tail - head - 1;
+ 17e:	01 97       	sbiw	r24, 0x01	; 1
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:200
+}
+ 180:	08 95       	ret
+
+00000182 <HardwareSerial::read()>:
+read():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:178
+    return _rx_buffer[_rx_buffer_tail];
+  }
+}
+
+int HardwareSerial::read(void)
+{
+ 182:	fc 01       	movw	r30, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:180
+  // if the head isn't ahead of the tail, we don't have any characters
+  if (_rx_buffer_head == _rx_buffer_tail) {
+ 184:	91 8d       	ldd	r25, Z+25	; 0x19
+ 186:	82 8d       	ldd	r24, Z+26	; 0x1a
+ 188:	98 17       	cp	r25, r24
+ 18a:	61 f0       	breq	.+24     	; 0x1a4 <HardwareSerial::read()+0x22>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:183
+    return -1;
+  } else {
+    unsigned char c = _rx_buffer[_rx_buffer_tail];
+ 18c:	a2 8d       	ldd	r26, Z+26	; 0x1a
+ 18e:	ae 0f       	add	r26, r30
+ 190:	bf 2f       	mov	r27, r31
+ 192:	b1 1d       	adc	r27, r1
+ 194:	5d 96       	adiw	r26, 0x1d	; 29
+ 196:	8c 91       	ld	r24, X
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:184
+    _rx_buffer_tail = (rx_buffer_index_t)(_rx_buffer_tail + 1) % SERIAL_RX_BUFFER_SIZE;
+ 198:	92 8d       	ldd	r25, Z+26	; 0x1a
+ 19a:	9f 5f       	subi	r25, 0xFF	; 255
+ 19c:	9f 73       	andi	r25, 0x3F	; 63
+ 19e:	92 8f       	std	Z+26, r25	; 0x1a
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:185
+    return c;
+ 1a0:	90 e0       	ldi	r25, 0x00	; 0
+ 1a2:	08 95       	ret
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:181
+
+int HardwareSerial::read(void)
+{
+  // if the head isn't ahead of the tail, we don't have any characters
+  if (_rx_buffer_head == _rx_buffer_tail) {
+    return -1;
+ 1a4:	8f ef       	ldi	r24, 0xFF	; 255
+ 1a6:	9f ef       	ldi	r25, 0xFF	; 255
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:187
+  } else {
+    unsigned char c = _rx_buffer[_rx_buffer_tail];
+    _rx_buffer_tail = (rx_buffer_index_t)(_rx_buffer_tail + 1) % SERIAL_RX_BUFFER_SIZE;
+    return c;
+  }
+}
+ 1a8:	08 95       	ret
+
+000001aa <HardwareSerial::peek()>:
+peek():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:169
+{
+  return ((unsigned int)(SERIAL_RX_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail)) % SERIAL_RX_BUFFER_SIZE;
+}
+
+int HardwareSerial::peek(void)
+{
+ 1aa:	fc 01       	movw	r30, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:170
+  if (_rx_buffer_head == _rx_buffer_tail) {
+ 1ac:	91 8d       	ldd	r25, Z+25	; 0x19
+ 1ae:	82 8d       	ldd	r24, Z+26	; 0x1a
+ 1b0:	98 17       	cp	r25, r24
+ 1b2:	31 f0       	breq	.+12     	; 0x1c0 <HardwareSerial::peek()+0x16>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:173
+    return -1;
+  } else {
+    return _rx_buffer[_rx_buffer_tail];
+ 1b4:	82 8d       	ldd	r24, Z+26	; 0x1a
+ 1b6:	e8 0f       	add	r30, r24
+ 1b8:	f1 1d       	adc	r31, r1
+ 1ba:	85 8d       	ldd	r24, Z+29	; 0x1d
+ 1bc:	90 e0       	ldi	r25, 0x00	; 0
+ 1be:	08 95       	ret
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:171
+}
+
+int HardwareSerial::peek(void)
+{
+  if (_rx_buffer_head == _rx_buffer_tail) {
+    return -1;
+ 1c0:	8f ef       	ldi	r24, 0xFF	; 255
+ 1c2:	9f ef       	ldi	r25, 0xFF	; 255
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:175
+  } else {
+    return _rx_buffer[_rx_buffer_tail];
+  }
+}
+ 1c4:	08 95       	ret
+
+000001c6 <HardwareSerial::available()>:
+available():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:164
+  // clear any received data
+  _rx_buffer_head = _rx_buffer_tail;
+}
+
+int HardwareSerial::available(void)
+{
+ 1c6:	fc 01       	movw	r30, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:165
+  return ((unsigned int)(SERIAL_RX_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail)) % SERIAL_RX_BUFFER_SIZE;
+ 1c8:	91 8d       	ldd	r25, Z+25	; 0x19
+ 1ca:	22 8d       	ldd	r18, Z+26	; 0x1a
+ 1cc:	89 2f       	mov	r24, r25
+ 1ce:	90 e0       	ldi	r25, 0x00	; 0
+ 1d0:	80 5c       	subi	r24, 0xC0	; 192
+ 1d2:	9f 4f       	sbci	r25, 0xFF	; 255
+ 1d4:	82 1b       	sub	r24, r18
+ 1d6:	91 09       	sbc	r25, r1
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:166
+}
+ 1d8:	8f 73       	andi	r24, 0x3F	; 63
+ 1da:	99 27       	eor	r25, r25
+ 1dc:	08 95       	ret
+
+000001de <Serial0_available()>:
+Serial0_available():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial0.cpp:76
+#endif
+
+// Function that can be weakly referenced by serialEventRun to prevent
+// pulling in this file if it's not otherwise used.
+bool Serial0_available() {
+  return Serial.available();
+ 1de:	85 e6       	ldi	r24, 0x65	; 101
+ 1e0:	91 e0       	ldi	r25, 0x01	; 1
+ 1e2:	0e 94 e3 00 	call	0x1c6	; 0x1c6 <HardwareSerial::available()>
+ 1e6:	21 e0       	ldi	r18, 0x01	; 1
+ 1e8:	89 2b       	or	r24, r25
+ 1ea:	09 f4       	brne	.+2      	; 0x1ee <Serial0_available()+0x10>
+ 1ec:	20 e0       	ldi	r18, 0x00	; 0
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial0.cpp:77
+}
+ 1ee:	82 2f       	mov	r24, r18
+ 1f0:	08 95       	ret
+
+000001f2 <HardwareSerial::_tx_udr_empty_irq()>:
+_tx_udr_empty_irq():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:90
+#endif
+
+// Actual interrupt handlers //////////////////////////////////////////////////////////////
+
+void HardwareSerial::_tx_udr_empty_irq(void)
+{
+ 1f2:	fc 01       	movw	r30, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:93
+  // If interrupts are enabled, there must be more data in the output
+  // buffer. Send the next byte
+  unsigned char c = _tx_buffer[_tx_buffer_tail];
+ 1f4:	a4 8d       	ldd	r26, Z+28	; 0x1c
+ 1f6:	a8 0f       	add	r26, r24
+ 1f8:	b9 2f       	mov	r27, r25
+ 1fa:	b1 1d       	adc	r27, r1
+ 1fc:	a3 5a       	subi	r26, 0xA3	; 163
+ 1fe:	bf 4f       	sbci	r27, 0xFF	; 255
+ 200:	2c 91       	ld	r18, X
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:94
+  _tx_buffer_tail = (_tx_buffer_tail + 1) % SERIAL_TX_BUFFER_SIZE;
+ 202:	84 8d       	ldd	r24, Z+28	; 0x1c
+ 204:	90 e0       	ldi	r25, 0x00	; 0
+ 206:	01 96       	adiw	r24, 0x01	; 1
+ 208:	8f 73       	andi	r24, 0x3F	; 63
+ 20a:	99 27       	eor	r25, r25
+ 20c:	84 8f       	std	Z+28, r24	; 0x1c
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:96
+
+  *_udr = c;
+ 20e:	a6 89       	ldd	r26, Z+22	; 0x16
+ 210:	b7 89       	ldd	r27, Z+23	; 0x17
+ 212:	2c 93       	st	X, r18
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:104
+  // location". This makes sure flush() won't return until the bytes
+  // actually got written. Other r/w bits are preserved, and zeroes
+  // written to the rest.
+
+  #ifdef MPCM0
+    *_ucsra = ((*_ucsra) & ((1 << U2X0) | (1 << MPCM0))) | (1 << TXC0);
+ 214:	a0 89       	ldd	r26, Z+16	; 0x10
+ 216:	b1 89       	ldd	r27, Z+17	; 0x11
+ 218:	8c 91       	ld	r24, X
+ 21a:	83 70       	andi	r24, 0x03	; 3
+ 21c:	80 64       	ori	r24, 0x40	; 64
+ 21e:	8c 93       	st	X, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:109
+  #else
+    *_ucsra = ((*_ucsra) & ((1 << U2X0) | (1 << TXC0)));
+  #endif
+
+  if (_tx_buffer_head == _tx_buffer_tail) {
+ 220:	93 8d       	ldd	r25, Z+27	; 0x1b
+ 222:	84 8d       	ldd	r24, Z+28	; 0x1c
+ 224:	98 13       	cpse	r25, r24
+ 226:	06 c0       	rjmp	.+12     	; 0x234 <HardwareSerial::_tx_udr_empty_irq()+0x42>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:111
+    // Buffer empty, so disable interrupts
+    *_ucsrb &= ~_BV(UDRIE0);
+ 228:	02 88       	ldd	r0, Z+18	; 0x12
+ 22a:	f3 89       	ldd	r31, Z+19	; 0x13
+ 22c:	e0 2d       	mov	r30, r0
+ 22e:	80 81       	ld	r24, Z
+ 230:	8f 7d       	andi	r24, 0xDF	; 223
+ 232:	80 83       	st	Z, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:113
+  }
+}
+ 234:	08 95       	ret
+
+00000236 <HardwareSerial::write(unsigned char)>:
+write():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:223
+  // If we get here, nothing is queued anymore (DRIE is disabled) and
+  // the hardware finished tranmission (TXC is set).
+}
+
+size_t HardwareSerial::write(uint8_t c)
+{
+ 236:	ef 92       	push	r14
+ 238:	ff 92       	push	r15
+ 23a:	0f 93       	push	r16
+ 23c:	1f 93       	push	r17
+ 23e:	cf 93       	push	r28
+ 240:	df 93       	push	r29
+ 242:	ec 01       	movw	r28, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:224
+  _written = true;
+ 244:	81 e0       	ldi	r24, 0x01	; 1
+ 246:	88 8f       	std	Y+24, r24	; 0x18
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:229
+  // If the buffer and the data register is empty, just write the byte
+  // to the data register and be done. This shortcut helps
+  // significantly improve the effective datarate at high (>
+  // 500kbit/s) bitrates, where interrupt overhead becomes a slowdown.
+  if (_tx_buffer_head == _tx_buffer_tail && bit_is_set(*_ucsra, UDRE0)) {
+ 248:	9b 8d       	ldd	r25, Y+27	; 0x1b
+ 24a:	8c 8d       	ldd	r24, Y+28	; 0x1c
+ 24c:	98 13       	cpse	r25, r24
+ 24e:	1a c0       	rjmp	.+52     	; 0x284 <HardwareSerial::write(unsigned char)+0x4e>
+ 250:	e8 89       	ldd	r30, Y+16	; 0x10
+ 252:	f9 89       	ldd	r31, Y+17	; 0x11
+ 254:	80 81       	ld	r24, Z
+ 256:	85 ff       	sbrs	r24, 5
+ 258:	15 c0       	rjmp	.+42     	; 0x284 <HardwareSerial::write(unsigned char)+0x4e>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:238
+    // So writing UDR must happen first.
+    // Writing UDR and clearing TC must be done atomically, otherwise
+    // interrupts might delay the TXC clear so the byte written to UDR
+    // is transmitted (setting TXC) before clearing TXC. Then TXC will
+    // be cleared when no bytes are left, causing flush() to hang
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+ 25a:	9f b7       	in	r25, 0x3f	; 63
+__iCliRetVal():
+/home/horimoto/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include/util/atomic.h:50
+    return 1;
+}
+
+static __inline__ uint8_t __iCliRetVal(void)
+{
+    cli();
+ 25c:	f8 94       	cli
+write():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:239
+      *_udr = c;
+ 25e:	ee 89       	ldd	r30, Y+22	; 0x16
+ 260:	ff 89       	ldd	r31, Y+23	; 0x17
+ 262:	60 83       	st	Z, r22
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:241
+      #ifdef MPCM0
+        *_ucsra = ((*_ucsra) & ((1 << U2X0) | (1 << MPCM0))) | (1 << TXC0);
+ 264:	e8 89       	ldd	r30, Y+16	; 0x10
+ 266:	f9 89       	ldd	r31, Y+17	; 0x11
+ 268:	80 81       	ld	r24, Z
+ 26a:	83 70       	andi	r24, 0x03	; 3
+ 26c:	80 64       	ori	r24, 0x40	; 64
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:271
+  // make atomic to prevent execution of ISR between setting the
+  // head pointer and setting the interrupt flag resulting in buffer
+  // retransmission
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    _tx_buffer_head = i;
+    *_ucsrb |= _BV(UDRIE0);
+ 26e:	80 83       	st	Z, r24
+__iRestore():
+/home/horimoto/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include/util/atomic.h:70
+    (void)__s;
+}
+
+static __inline__ void __iRestore(const  uint8_t *__s)
+{
+    SREG = *__s;
+ 270:	9f bf       	out	0x3f, r25	; 63
+write():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:275
+  }
+  
+  return 1;
+}
+ 272:	81 e0       	ldi	r24, 0x01	; 1
+ 274:	90 e0       	ldi	r25, 0x00	; 0
+ 276:	df 91       	pop	r29
+ 278:	cf 91       	pop	r28
+ 27a:	1f 91       	pop	r17
+ 27c:	0f 91       	pop	r16
+ 27e:	ff 90       	pop	r15
+ 280:	ef 90       	pop	r14
+ 282:	08 95       	ret
+ 284:	f6 2e       	mov	r15, r22
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:248
+        *_ucsra = ((*_ucsra) & ((1 << U2X0) | (1 << TXC0)));
+      #endif
+    }
+    return 1;
+  }
+  tx_buffer_index_t i = (_tx_buffer_head + 1) % SERIAL_TX_BUFFER_SIZE;
+ 286:	0b 8d       	ldd	r16, Y+27	; 0x1b
+ 288:	10 e0       	ldi	r17, 0x00	; 0
+ 28a:	0f 5f       	subi	r16, 0xFF	; 255
+ 28c:	1f 4f       	sbci	r17, 0xFF	; 255
+ 28e:	0f 73       	andi	r16, 0x3F	; 63
+ 290:	11 27       	eor	r17, r17
+ 292:	e0 2e       	mov	r14, r16
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:252
+
+  // If the output buffer is full, there's nothing for it other than to 
+  // wait for the interrupt handler to empty it a bit
+  while (i == _tx_buffer_tail) {
+ 294:	8c 8d       	ldd	r24, Y+28	; 0x1c
+ 296:	8e 11       	cpse	r24, r14
+ 298:	0c c0       	rjmp	.+24     	; 0x2b2 <HardwareSerial::write(unsigned char)+0x7c>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:253
+    if (bit_is_clear(SREG, SREG_I)) {
+ 29a:	0f b6       	in	r0, 0x3f	; 63
+ 29c:	07 fc       	sbrc	r0, 7
+ 29e:	fa cf       	rjmp	.-12     	; 0x294 <HardwareSerial::write(unsigned char)+0x5e>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:258
+      // Interrupts are disabled, so we'll have to poll the data
+      // register empty flag ourselves. If it is set, pretend an
+      // interrupt has happened and call the handler to free up
+      // space for us.
+      if(bit_is_set(*_ucsra, UDRE0))
+ 2a0:	e8 89       	ldd	r30, Y+16	; 0x10
+ 2a2:	f9 89       	ldd	r31, Y+17	; 0x11
+ 2a4:	80 81       	ld	r24, Z
+ 2a6:	85 ff       	sbrs	r24, 5
+ 2a8:	f5 cf       	rjmp	.-22     	; 0x294 <HardwareSerial::write(unsigned char)+0x5e>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:259
+        _tx_udr_empty_irq();
+ 2aa:	ce 01       	movw	r24, r28
+ 2ac:	0e 94 f9 00 	call	0x1f2	; 0x1f2 <HardwareSerial::_tx_udr_empty_irq()>
+ 2b0:	f1 cf       	rjmp	.-30     	; 0x294 <HardwareSerial::write(unsigned char)+0x5e>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:265
+    } else {
+      // nop, the interrupt handler will free up space for us
+    }
+  }
+
+  _tx_buffer[_tx_buffer_head] = c;
+ 2b2:	eb 8d       	ldd	r30, Y+27	; 0x1b
+ 2b4:	ec 0f       	add	r30, r28
+ 2b6:	fd 2f       	mov	r31, r29
+ 2b8:	f1 1d       	adc	r31, r1
+ 2ba:	e3 5a       	subi	r30, 0xA3	; 163
+ 2bc:	ff 4f       	sbci	r31, 0xFF	; 255
+ 2be:	f0 82       	st	Z, r15
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:269
+  // make atomic to prevent execution of ISR between setting the
+  // head pointer and setting the interrupt flag resulting in buffer
+  // retransmission
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+ 2c0:	9f b7       	in	r25, 0x3f	; 63
+__iCliRetVal():
+/home/horimoto/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include/util/atomic.h:50
+    return 1;
+}
+
+static __inline__ uint8_t __iCliRetVal(void)
+{
+    cli();
+ 2c2:	f8 94       	cli
+write():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:270
+    _tx_buffer_head = i;
+ 2c4:	0b 8f       	std	Y+27, r16	; 0x1b
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:271
+    *_ucsrb |= _BV(UDRIE0);
+ 2c6:	ea 89       	ldd	r30, Y+18	; 0x12
+ 2c8:	fb 89       	ldd	r31, Y+19	; 0x13
+ 2ca:	80 81       	ld	r24, Z
+ 2cc:	80 62       	ori	r24, 0x20	; 32
+ 2ce:	cf cf       	rjmp	.-98     	; 0x26e <HardwareSerial::write(unsigned char)+0x38>
+
+000002d0 <HardwareSerial::flush()>:
+flush():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:203
+  if (head >= tail) return SERIAL_TX_BUFFER_SIZE - 1 - head + tail;
+  return tail - head - 1;
+}
+
+void HardwareSerial::flush()
+{
+ 2d0:	cf 93       	push	r28
+ 2d2:	df 93       	push	r29
+ 2d4:	ec 01       	movw	r28, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:207
+  // If we have never written a byte, no need to flush. This special
+  // case is needed since there is no way to force the TXC (transmit
+  // complete) bit to 1 during initialization
+  if (!_written)
+ 2d6:	88 8d       	ldd	r24, Y+24	; 0x18
+ 2d8:	88 23       	and	r24, r24
+ 2da:	b9 f0       	breq	.+46     	; 0x30a <HardwareSerial::flush()+0x3a>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:210
+    return;
+
+  while (bit_is_set(*_ucsrb, UDRIE0) || bit_is_clear(*_ucsra, TXC0)) {
+ 2dc:	aa 89       	ldd	r26, Y+18	; 0x12
+ 2de:	bb 89       	ldd	r27, Y+19	; 0x13
+ 2e0:	e8 89       	ldd	r30, Y+16	; 0x10
+ 2e2:	f9 89       	ldd	r31, Y+17	; 0x11
+ 2e4:	8c 91       	ld	r24, X
+ 2e6:	85 fd       	sbrc	r24, 5
+ 2e8:	03 c0       	rjmp	.+6      	; 0x2f0 <HardwareSerial::flush()+0x20>
+ 2ea:	80 81       	ld	r24, Z
+ 2ec:	86 fd       	sbrc	r24, 6
+ 2ee:	0d c0       	rjmp	.+26     	; 0x30a <HardwareSerial::flush()+0x3a>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:211
+    if (bit_is_clear(SREG, SREG_I) && bit_is_set(*_ucsrb, UDRIE0))
+ 2f0:	0f b6       	in	r0, 0x3f	; 63
+ 2f2:	07 fc       	sbrc	r0, 7
+ 2f4:	f7 cf       	rjmp	.-18     	; 0x2e4 <HardwareSerial::flush()+0x14>
+ 2f6:	8c 91       	ld	r24, X
+ 2f8:	85 ff       	sbrs	r24, 5
+ 2fa:	f2 cf       	rjmp	.-28     	; 0x2e0 <HardwareSerial::flush()+0x10>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:215
+      // Interrupts are globally disabled, but the DR empty
+      // interrupt should be enabled, so poll the DR empty flag to
+      // prevent deadlock
+      if (bit_is_set(*_ucsra, UDRE0))
+ 2fc:	80 81       	ld	r24, Z
+ 2fe:	85 ff       	sbrs	r24, 5
+ 300:	ed cf       	rjmp	.-38     	; 0x2dc <HardwareSerial::flush()+0xc>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:216
+        _tx_udr_empty_irq();
+ 302:	ce 01       	movw	r24, r28
+ 304:	0e 94 f9 00 	call	0x1f2	; 0x1f2 <HardwareSerial::_tx_udr_empty_irq()>
+ 308:	e9 cf       	rjmp	.-46     	; 0x2dc <HardwareSerial::flush()+0xc>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:220
+  }
+  // If we get here, nothing is queued anymore (DRIE is disabled) and
+  // the hardware finished tranmission (TXC is set).
+}
+ 30a:	df 91       	pop	r29
+ 30c:	cf 91       	pop	r28
+ 30e:	08 95       	ret
+
+00000310 <serialEventRun()>:
+serialEventRun():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:67
+#endif
+
+void serialEventRun(void)
+{
+#if defined(HAVE_HWSERIAL0)
+  if (Serial0_available && serialEvent && Serial0_available()) serialEvent();
+ 310:	80 e0       	ldi	r24, 0x00	; 0
+ 312:	90 e0       	ldi	r25, 0x00	; 0
+ 314:	89 2b       	or	r24, r25
+ 316:	29 f0       	breq	.+10     	; 0x322 <serialEventRun()+0x12>
+ 318:	0e 94 ef 00 	call	0x1de	; 0x1de <Serial0_available()>
+ 31c:	81 11       	cpse	r24, r1
+ 31e:	0e 94 00 00 	call	0	; 0x0 <__vectors>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:70
+#endif
+#if defined(HAVE_HWSERIAL1)
+  if (Serial1_available && serialEvent1 && Serial1_available()) serialEvent1();
+ 322:	80 e0       	ldi	r24, 0x00	; 0
+ 324:	90 e0       	ldi	r25, 0x00	; 0
+ 326:	89 2b       	or	r24, r25
+ 328:	49 f0       	breq	.+18     	; 0x33c <serialEventRun()+0x2c>
+ 32a:	80 e0       	ldi	r24, 0x00	; 0
+ 32c:	90 e0       	ldi	r25, 0x00	; 0
+ 32e:	89 2b       	or	r24, r25
+ 330:	29 f0       	breq	.+10     	; 0x33c <serialEventRun()+0x2c>
+ 332:	0e 94 00 00 	call	0	; 0x0 <__vectors>
+ 336:	81 11       	cpse	r24, r1
+ 338:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:78
+  if (Serial2_available && serialEvent2 && Serial2_available()) serialEvent2();
+#endif
+#if defined(HAVE_HWSERIAL3)
+  if (Serial3_available && serialEvent3 && Serial3_available()) serialEvent3();
+#endif
+}
+ 33c:	08 95       	ret
+
+0000033e <Print::write(char const*) [clone .part.2] [clone .constprop.16]>:
+_ZN5Print5writeEPKc.part.2():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.h:54
+    void clearWriteError() { setWriteError(0); }
+
+    virtual size_t write(uint8_t) = 0;
+    size_t write(const char *str) {
+      if (str == NULL) return 0;
+      return write((const uint8_t *)str, strlen(str));
+ 33e:	fc 01       	movw	r30, r24
+ 340:	01 90       	ld	r0, Z+
+ 342:	00 20       	and	r0, r0
+ 344:	e9 f7       	brne	.-6      	; 0x340 <Print::write(char const*) [clone .part.2] [clone .constprop.16]+0x2>
+ 346:	31 97       	sbiw	r30, 0x01	; 1
+ 348:	af 01       	movw	r20, r30
+ 34a:	48 1b       	sub	r20, r24
+ 34c:	59 0b       	sbc	r21, r25
+ 34e:	bc 01       	movw	r22, r24
+ 350:	85 e6       	ldi	r24, 0x65	; 101
+ 352:	91 e0       	ldi	r25, 0x01	; 1
+ 354:	0c 94 85 00 	jmp	0x10a	; 0x10a <Print::write(unsigned char const*, unsigned int)>
+
+00000358 <Print::printNumber(unsigned long, unsigned char) [clone .constprop.12]>:
+printNumber():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:232
+  return vfprintf_P(&f, (const char *)format, ap);
+}
+
+// Private Methods /////////////////////////////////////////////////////////////
+
+size_t Print::printNumber(unsigned long n, uint8_t base)
+ 358:	8f 92       	push	r8
+ 35a:	9f 92       	push	r9
+ 35c:	af 92       	push	r10
+ 35e:	bf 92       	push	r11
+ 360:	0f 93       	push	r16
+ 362:	1f 93       	push	r17
+ 364:	cf 93       	push	r28
+ 366:	df 93       	push	r29
+ 368:	cd b7       	in	r28, 0x3d	; 61
+ 36a:	de b7       	in	r29, 0x3e	; 62
+ 36c:	a1 97       	sbiw	r28, 0x21	; 33
+ 36e:	0f b6       	in	r0, 0x3f	; 63
+ 370:	f8 94       	cli
+ 372:	de bf       	out	0x3e, r29	; 62
+ 374:	0f be       	out	0x3f, r0	; 63
+ 376:	cd bf       	out	0x3d, r28	; 61
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:237
+{
+  char buf[8 * sizeof(long) + 1]; // Assumes 8-bit chars plus zero byte.
+  char *str = &buf[sizeof(buf) - 1];
+
+  *str = '\0';
+ 378:	19 a2       	std	Y+33, r1	; 0x21
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:240
+
+  // prevent crash if called with base == 1
+  if (base < 2) base = 10;
+ 37a:	42 30       	cpi	r20, 0x02	; 2
+ 37c:	08 f4       	brcc	.+2      	; 0x380 <Print::printNumber(unsigned long, unsigned char) [clone .constprop.12]+0x28>
+ 37e:	4a e0       	ldi	r20, 0x0A	; 10
+ 380:	8e 01       	movw	r16, r28
+ 382:	0f 5d       	subi	r16, 0xDF	; 223
+ 384:	1f 4f       	sbci	r17, 0xFF	; 255
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:243
+
+  do {
+    char c = n % base;
+ 386:	84 2e       	mov	r8, r20
+ 388:	91 2c       	mov	r9, r1
+ 38a:	b1 2c       	mov	r11, r1
+ 38c:	a1 2c       	mov	r10, r1
+ 38e:	a5 01       	movw	r20, r10
+ 390:	94 01       	movw	r18, r8
+ 392:	0e 94 ca 03 	call	0x794	; 0x794 <__udivmodsi4>
+ 396:	e6 2f       	mov	r30, r22
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:244
+    n /= base;
+ 398:	b9 01       	movw	r22, r18
+ 39a:	ca 01       	movw	r24, r20
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:246
+
+    *--str = c < 10 ? c + '0' : c + 'A' - 10;
+ 39c:	ea 30       	cpi	r30, 0x0A	; 10
+ 39e:	f4 f4       	brge	.+60     	; 0x3dc <Print::printNumber(unsigned long, unsigned char) [clone .constprop.12]+0x84>
+ 3a0:	e0 5d       	subi	r30, 0xD0	; 208
+ 3a2:	d8 01       	movw	r26, r16
+ 3a4:	ee 93       	st	-X, r30
+ 3a6:	8d 01       	movw	r16, r26
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:247
+  } while(n);
+ 3a8:	23 2b       	or	r18, r19
+ 3aa:	24 2b       	or	r18, r20
+ 3ac:	25 2b       	or	r18, r21
+ 3ae:	79 f7       	brne	.-34     	; 0x38e <Print::printNumber(unsigned long, unsigned char) [clone .constprop.12]+0x36>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.h:53
+    int getWriteError() { return write_error; }
+    void clearWriteError() { setWriteError(0); }
+
+    virtual size_t write(uint8_t) = 0;
+    size_t write(const char *str) {
+      if (str == NULL) return 0;
+ 3b0:	90 e0       	ldi	r25, 0x00	; 0
+ 3b2:	80 e0       	ldi	r24, 0x00	; 0
+write():
+ 3b4:	10 97       	sbiw	r26, 0x00	; 0
+ 3b6:	19 f0       	breq	.+6      	; 0x3be <Print::printNumber(unsigned long, unsigned char) [clone .constprop.12]+0x66>
+ 3b8:	cd 01       	movw	r24, r26
+ 3ba:	0e 94 9f 01 	call	0x33e	; 0x33e <Print::write(char const*) [clone .part.2] [clone .constprop.16]>
+printNumber():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:250
+
+  return write(str);
+}
+ 3be:	a1 96       	adiw	r28, 0x21	; 33
+ 3c0:	0f b6       	in	r0, 0x3f	; 63
+ 3c2:	f8 94       	cli
+ 3c4:	de bf       	out	0x3e, r29	; 62
+ 3c6:	0f be       	out	0x3f, r0	; 63
+ 3c8:	cd bf       	out	0x3d, r28	; 61
+ 3ca:	df 91       	pop	r29
+ 3cc:	cf 91       	pop	r28
+ 3ce:	1f 91       	pop	r17
+ 3d0:	0f 91       	pop	r16
+ 3d2:	bf 90       	pop	r11
+ 3d4:	af 90       	pop	r10
+ 3d6:	9f 90       	pop	r9
+ 3d8:	8f 90       	pop	r8
+ 3da:	08 95       	ret
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:246
+
+  do {
+    char c = n % base;
+    n /= base;
+
+    *--str = c < 10 ? c + '0' : c + 'A' - 10;
+ 3dc:	e9 5c       	subi	r30, 0xC9	; 201
+ 3de:	e1 cf       	rjmp	.-62     	; 0x3a2 <Print::printNumber(unsigned long, unsigned char) [clone .constprop.12]+0x4a>
+
+000003e0 <Print::print(long, int) [clone .constprop.9]>:
+print():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:87
+size_t Print::print(unsigned int n, int base)
+{
+  return print((unsigned long) n, base);
+}
+
+size_t Print::print(long n, int base)
+ 3e0:	cf 92       	push	r12
+ 3e2:	df 92       	push	r13
+ 3e4:	ef 92       	push	r14
+ 3e6:	ff 92       	push	r15
+ 3e8:	cf 93       	push	r28
+ 3ea:	df 93       	push	r29
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:92
+{
+  if (base == 0) {
+    return write(n);
+  } else if (base == 10) {
+    if (n < 0) {
+ 3ec:	97 ff       	sbrs	r25, 7
+ 3ee:	1b c0       	rjmp	.+54     	; 0x426 <__EEPROM_REGION_LENGTH__+0x26>
+ 3f0:	6b 01       	movw	r12, r22
+ 3f2:	7c 01       	movw	r14, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:69
+  return write(str);
+}
+
+size_t Print::print(char c)
+{
+  return write(c);
+ 3f4:	6d e2       	ldi	r22, 0x2D	; 45
+ 3f6:	85 e6       	ldi	r24, 0x65	; 101
+ 3f8:	91 e0       	ldi	r25, 0x01	; 1
+ 3fa:	0e 94 1b 01 	call	0x236	; 0x236 <HardwareSerial::write(unsigned char)>
+ 3fe:	ec 01       	movw	r28, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:94
+  if (base == 0) {
+    return write(n);
+  } else if (base == 10) {
+    if (n < 0) {
+      int t = print('-');
+      n = -n;
+ 400:	66 27       	eor	r22, r22
+ 402:	77 27       	eor	r23, r23
+ 404:	cb 01       	movw	r24, r22
+ 406:	6c 19       	sub	r22, r12
+ 408:	7d 09       	sbc	r23, r13
+ 40a:	8e 09       	sbc	r24, r14
+ 40c:	9f 09       	sbc	r25, r15
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:95
+      return printNumber(n, 10) + t;
+ 40e:	4a e0       	ldi	r20, 0x0A	; 10
+ 410:	0e 94 ac 01 	call	0x358	; 0x358 <Print::printNumber(unsigned long, unsigned char) [clone .constprop.12]>
+ 414:	8c 0f       	add	r24, r28
+ 416:	9d 1f       	adc	r25, r29
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:101
+    }
+    return printNumber(n, 10);
+  } else {
+    return printNumber(n, base);
+  }
+}
+ 418:	df 91       	pop	r29
+ 41a:	cf 91       	pop	r28
+ 41c:	ff 90       	pop	r15
+ 41e:	ef 90       	pop	r14
+ 420:	df 90       	pop	r13
+ 422:	cf 90       	pop	r12
+ 424:	08 95       	ret
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:97
+    if (n < 0) {
+      int t = print('-');
+      n = -n;
+      return printNumber(n, 10) + t;
+    }
+    return printNumber(n, 10);
+ 426:	4a e0       	ldi	r20, 0x0A	; 10
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:101
+  } else {
+    return printNumber(n, base);
+  }
+}
+ 428:	df 91       	pop	r29
+ 42a:	cf 91       	pop	r28
+ 42c:	ff 90       	pop	r15
+ 42e:	ef 90       	pop	r14
+ 430:	df 90       	pop	r13
+ 432:	cf 90       	pop	r12
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:97
+    if (n < 0) {
+      int t = print('-');
+      n = -n;
+      return printNumber(n, 10) + t;
+    }
+    return printNumber(n, 10);
+ 434:	0c 94 ac 01 	jmp	0x358	; 0x358 <Print::printNumber(unsigned long, unsigned char) [clone .constprop.12]>
+
+00000438 <__vector_16>:
+__vector_16():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:159
+#if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
+ISR(TIM0_OVF_vect)
+#else
+ISR(TIMER0_OVF_vect)
+#endif
+{
+ 438:	1f 92       	push	r1
+ 43a:	0f 92       	push	r0
+ 43c:	0f b6       	in	r0, 0x3f	; 63
+ 43e:	0f 92       	push	r0
+ 440:	11 24       	eor	r1, r1
+ 442:	2f 93       	push	r18
+ 444:	3f 93       	push	r19
+ 446:	8f 93       	push	r24
+ 448:	9f 93       	push	r25
+ 44a:	af 93       	push	r26
+ 44c:	bf 93       	push	r27
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:167
+  static unsigned char timer0_exact = 0;
+#endif
+
+  // copy these to local variables so they can be stored in registers
+  // (volatile variables must be read from memory on every access, so this saves time)
+  unsigned long m = timer0_millis;
+ 44e:	80 91 61 01 	lds	r24, 0x0161	; 0x800161 <timer0_millis>
+ 452:	90 91 62 01 	lds	r25, 0x0162	; 0x800162 <timer0_millis+0x1>
+ 456:	a0 91 63 01 	lds	r26, 0x0163	; 0x800163 <timer0_millis+0x2>
+ 45a:	b0 91 64 01 	lds	r27, 0x0164	; 0x800164 <timer0_millis+0x3>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:168
+  unsigned char f = timer0_fract;
+ 45e:	30 91 60 01 	lds	r19, 0x0160	; 0x800160 <timer0_fract>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:170
+
+  f += FRACT_INC FRACT_INC_PLUS;
+ 462:	26 e0       	ldi	r18, 0x06	; 6
+ 464:	23 0f       	add	r18, r19
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:200
+    ++f;
+  }
+#endif
+#endif // CORRECT_EXACT_MILLIS
+
+  if (f >= FRACT_MAX) {
+ 466:	2d 37       	cpi	r18, 0x7D	; 125
+ 468:	68 f1       	brcs	.+90     	; 0x4c4 <__vector_16+0x8c>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:201
+    f -= FRACT_MAX;
+ 46a:	29 e8       	ldi	r18, 0x89	; 137
+ 46c:	23 0f       	add	r18, r19
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:202
+    m += MILLIS_INC + 1;
+ 46e:	03 96       	adiw	r24, 0x03	; 3
+ 470:	a1 1d       	adc	r26, r1
+ 472:	b1 1d       	adc	r27, r1
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:208
+  }
+  else {
+    m += MILLIS_INC;
+  }
+
+  timer0_fract = f;
+ 474:	20 93 60 01 	sts	0x0160, r18	; 0x800160 <timer0_fract>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:209
+  timer0_millis = m;
+ 478:	80 93 61 01 	sts	0x0161, r24	; 0x800161 <timer0_millis>
+ 47c:	90 93 62 01 	sts	0x0162, r25	; 0x800162 <timer0_millis+0x1>
+ 480:	a0 93 63 01 	sts	0x0163, r26	; 0x800163 <timer0_millis+0x2>
+ 484:	b0 93 64 01 	sts	0x0164, r27	; 0x800164 <timer0_millis+0x3>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:211
+#ifndef CORRECT_EXACT_MICROS
+  timer0_overflow_count++;
+ 488:	80 91 5c 01 	lds	r24, 0x015C	; 0x80015c <timer0_overflow_count>
+ 48c:	90 91 5d 01 	lds	r25, 0x015D	; 0x80015d <timer0_overflow_count+0x1>
+ 490:	a0 91 5e 01 	lds	r26, 0x015E	; 0x80015e <timer0_overflow_count+0x2>
+ 494:	b0 91 5f 01 	lds	r27, 0x015F	; 0x80015f <timer0_overflow_count+0x3>
+ 498:	01 96       	adiw	r24, 0x01	; 1
+ 49a:	a1 1d       	adc	r26, r1
+ 49c:	b1 1d       	adc	r27, r1
+ 49e:	80 93 5c 01 	sts	0x015C, r24	; 0x80015c <timer0_overflow_count>
+ 4a2:	90 93 5d 01 	sts	0x015D, r25	; 0x80015d <timer0_overflow_count+0x1>
+ 4a6:	a0 93 5e 01 	sts	0x015E, r26	; 0x80015e <timer0_overflow_count+0x2>
+ 4aa:	b0 93 5f 01 	sts	0x015F, r27	; 0x80015f <timer0_overflow_count+0x3>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:213
+#endif
+}
+ 4ae:	bf 91       	pop	r27
+ 4b0:	af 91       	pop	r26
+ 4b2:	9f 91       	pop	r25
+ 4b4:	8f 91       	pop	r24
+ 4b6:	3f 91       	pop	r19
+ 4b8:	2f 91       	pop	r18
+ 4ba:	0f 90       	pop	r0
+ 4bc:	0f be       	out	0x3f, r0	; 63
+ 4be:	0f 90       	pop	r0
+ 4c0:	1f 90       	pop	r1
+ 4c2:	18 95       	reti
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:205
+  if (f >= FRACT_MAX) {
+    f -= FRACT_MAX;
+    m += MILLIS_INC + 1;
+  }
+  else {
+    m += MILLIS_INC;
+ 4c4:	02 96       	adiw	r24, 0x02	; 2
+ 4c6:	a1 1d       	adc	r26, r1
+ 4c8:	b1 1d       	adc	r27, r1
+ 4ca:	d4 cf       	rjmp	.-88     	; 0x474 <__vector_16+0x3c>
+
+000004cc <__vector_19>:
+__vector_19():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial0.cpp:63
+#elif defined(USART0_UDRE_vect)
+ISR(USART0_UDRE_vect)
+#else
+  #error "Don't know what the Data Register Empty vector is called for Serial"
+#endif
+{
+ 4cc:	1f 92       	push	r1
+ 4ce:	0f 92       	push	r0
+ 4d0:	0f b6       	in	r0, 0x3f	; 63
+ 4d2:	0f 92       	push	r0
+ 4d4:	11 24       	eor	r1, r1
+ 4d6:	2f 93       	push	r18
+ 4d8:	3f 93       	push	r19
+ 4da:	4f 93       	push	r20
+ 4dc:	5f 93       	push	r21
+ 4de:	6f 93       	push	r22
+ 4e0:	7f 93       	push	r23
+ 4e2:	8f 93       	push	r24
+ 4e4:	9f 93       	push	r25
+ 4e6:	af 93       	push	r26
+ 4e8:	bf 93       	push	r27
+ 4ea:	ef 93       	push	r30
+ 4ec:	ff 93       	push	r31
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial0.cpp:64
+  Serial._tx_udr_empty_irq();
+ 4ee:	85 e6       	ldi	r24, 0x65	; 101
+ 4f0:	91 e0       	ldi	r25, 0x01	; 1
+ 4f2:	0e 94 f9 00 	call	0x1f2	; 0x1f2 <HardwareSerial::_tx_udr_empty_irq()>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial0.cpp:65
+}
+ 4f6:	ff 91       	pop	r31
+ 4f8:	ef 91       	pop	r30
+ 4fa:	bf 91       	pop	r27
+ 4fc:	af 91       	pop	r26
+ 4fe:	9f 91       	pop	r25
+ 500:	8f 91       	pop	r24
+ 502:	7f 91       	pop	r23
+ 504:	6f 91       	pop	r22
+ 506:	5f 91       	pop	r21
+ 508:	4f 91       	pop	r20
+ 50a:	3f 91       	pop	r19
+ 50c:	2f 91       	pop	r18
+ 50e:	0f 90       	pop	r0
+ 510:	0f be       	out	0x3f, r0	; 63
+ 512:	0f 90       	pop	r0
+ 514:	1f 90       	pop	r1
+ 516:	18 95       	reti
+
+00000518 <__vector_18>:
+__vector_18():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial0.cpp:50
+#elif defined(USART_RX_vect)
+  ISR(USART_RX_vect)
+#else
+  #error "Don't know what the Data Received vector is called for Serial"
+#endif
+  {
+ 518:	1f 92       	push	r1
+ 51a:	0f 92       	push	r0
+ 51c:	0f b6       	in	r0, 0x3f	; 63
+ 51e:	0f 92       	push	r0
+ 520:	11 24       	eor	r1, r1
+ 522:	2f 93       	push	r18
+ 524:	8f 93       	push	r24
+ 526:	9f 93       	push	r25
+ 528:	ef 93       	push	r30
+ 52a:	ff 93       	push	r31
+_rx_complete_irq():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial_private.h:100
+
+// Actual interrupt handlers //////////////////////////////////////////////////////////////
+
+void HardwareSerial::_rx_complete_irq(void)
+{
+  if (bit_is_clear(*_ucsra, UPE0)) {
+ 52c:	e0 91 75 01 	lds	r30, 0x0175	; 0x800175 <Serial+0x10>
+ 530:	f0 91 76 01 	lds	r31, 0x0176	; 0x800176 <Serial+0x11>
+ 534:	80 81       	ld	r24, Z
+ 536:	e0 91 7b 01 	lds	r30, 0x017B	; 0x80017b <Serial+0x16>
+ 53a:	f0 91 7c 01 	lds	r31, 0x017C	; 0x80017c <Serial+0x17>
+ 53e:	82 fd       	sbrc	r24, 2
+ 540:	1b c0       	rjmp	.+54     	; 0x578 <__vector_18+0x60>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial_private.h:103
+    // No Parity error, read byte and store it in the buffer if there is
+    // room
+    unsigned char c = *_udr;
+ 542:	90 81       	ld	r25, Z
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial_private.h:104
+    rx_buffer_index_t i = (unsigned int)(_rx_buffer_head + 1) % SERIAL_RX_BUFFER_SIZE;
+ 544:	80 91 7e 01 	lds	r24, 0x017E	; 0x80017e <Serial+0x19>
+ 548:	8f 5f       	subi	r24, 0xFF	; 255
+ 54a:	8f 73       	andi	r24, 0x3F	; 63
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial_private.h:110
+
+    // if we should be storing the received character into the location
+    // just before the tail (meaning that the head would advance to the
+    // current location of the tail), we're about to overflow the buffer
+    // and so we don't write the character or advance the head.
+    if (i != _rx_buffer_tail) {
+ 54c:	20 91 7f 01 	lds	r18, 0x017F	; 0x80017f <Serial+0x1a>
+ 550:	82 17       	cp	r24, r18
+ 552:	41 f0       	breq	.+16     	; 0x564 <__vector_18+0x4c>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial_private.h:111
+      _rx_buffer[_rx_buffer_head] = c;
+ 554:	e0 91 7e 01 	lds	r30, 0x017E	; 0x80017e <Serial+0x19>
+ 558:	f0 e0       	ldi	r31, 0x00	; 0
+ 55a:	eb 59       	subi	r30, 0x9B	; 155
+ 55c:	fe 4f       	sbci	r31, 0xFE	; 254
+ 55e:	95 8f       	std	Z+29, r25	; 0x1d
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial_private.h:112
+      _rx_buffer_head = i;
+ 560:	80 93 7e 01 	sts	0x017E, r24	; 0x80017e <Serial+0x19>
+__vector_18():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial0.cpp:52
+    Serial._rx_complete_irq();
+  }
+ 564:	ff 91       	pop	r31
+ 566:	ef 91       	pop	r30
+ 568:	9f 91       	pop	r25
+ 56a:	8f 91       	pop	r24
+ 56c:	2f 91       	pop	r18
+ 56e:	0f 90       	pop	r0
+ 570:	0f be       	out	0x3f, r0	; 63
+ 572:	0f 90       	pop	r0
+ 574:	1f 90       	pop	r1
+ 576:	18 95       	reti
+_rx_complete_irq():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial_private.h:116
+    }
+  } else {
+    // Parity error, read byte but discard it
+    *_udr;
+ 578:	80 81       	ld	r24, Z
+ 57a:	f4 cf       	rjmp	.-24     	; 0x564 <__vector_18+0x4c>
+
+0000057c <main>:
+init():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:945
+
+void init()
+{
+  // this needs to be called before setup() or some functions won't
+  // work there
+  sei();
+ 57c:	78 94       	sei
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:957
+
+  // On the ATmega168, timer 0 is also used for fast hardware pwm
+  // (using phase-correct PWM would mean that timer 0 overflowed half as often
+  // resulting in different millis() behavior on the ATmega8 and ATmega168)
+#if defined(TCCR0A) && defined(WGM01)
+  TCCR0A |= _BV(WGM01) | _BV(WGM00);
+ 57e:	84 b5       	in	r24, 0x24	; 36
+ 580:	83 60       	ori	r24, 0x03	; 3
+ 582:	84 bd       	out	0x24, r24	; 36
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:972
+  #if defined(WGM00) && defined(WGM01) // The ATmega8 doesn't have WGM00 and WGM01
+    TCCR0 |= _BV(WGM01) | _BV(WGM00);
+  #endif
+#elif defined(TCCR0B) && defined(CS01) && defined(CS00)
+  // This combination is for the standard 168/328/640/1280/1281/2560/2561
+  TCCR0B |= _BV(CS01) | _BV(CS00);
+ 584:	85 b5       	in	r24, 0x25	; 37
+ 586:	83 60       	ori	r24, 0x03	; 3
+ 588:	85 bd       	out	0x25, r24	; 37
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:984
+
+// Enable timer 0 overflow interrupt
+#if defined(TIMSK) && defined(TOIE0)
+  TIMSK |= _BV(TOIE0);
+#elif defined(TIMSK0) && defined(TOIE0)
+  TIMSK0 |= _BV(TOIE0);
+ 58a:	80 91 6e 00 	lds	r24, 0x006E	; 0x80006e <__TEXT_REGION_LENGTH__+0x7f806e>
+ 58e:	81 60       	ori	r24, 0x01	; 1
+ 590:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7f806e>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:995
+// this is better for motors as it ensures an even waveform
+// note, however, that fast pwm mode can achieve a frequency of up
+// 8 MHz (with a 16 MHz clock) at 50% duty cycle
+
+#if defined(TCCR1B) && defined(CS11) && defined(CS10)
+  TCCR1B = _BV(CS11); // Set timer 1 prescale factor to 64
+ 594:	92 e0       	ldi	r25, 0x02	; 2
+ 596:	90 93 81 00 	sts	0x0081, r25	; 0x800081 <__TEXT_REGION_LENGTH__+0x7f8081>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:997
+#if F_CPU >= 8000000L
+  TCCR1B |= _BV(CS10);
+ 59a:	80 91 81 00 	lds	r24, 0x0081	; 0x800081 <__TEXT_REGION_LENGTH__+0x7f8081>
+ 59e:	81 60       	ori	r24, 0x01	; 1
+ 5a0:	80 93 81 00 	sts	0x0081, r24	; 0x800081 <__TEXT_REGION_LENGTH__+0x7f8081>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:1006
+#if F_CPU >= 8000000L
+  TCCR1 |= _BV(CS10);
+#endif
+#endif
+#if defined(TCCR1A) && defined(WGM10)
+  TCCR1A |= _BV(WGM10); // Put timer 1 in 8-bit phase correct pwm mode
+ 5a4:	80 91 80 00 	lds	r24, 0x0080	; 0x800080 <__TEXT_REGION_LENGTH__+0x7f8080>
+ 5a8:	81 60       	ori	r24, 0x01	; 1
+ 5aa:	80 93 80 00 	sts	0x0080, r24	; 0x800080 <__TEXT_REGION_LENGTH__+0x7f8080>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:1013
+
+// Set timer 2 prescale factor to 64
+#if defined(TCCR2) && defined(CS22)
+  TCCR2 |= _BV(CS22);
+#elif defined(TCCR2B) && defined(CS22)
+  TCCR2B |= _BV(CS22);
+ 5ae:	80 91 b1 00 	lds	r24, 0x00B1	; 0x8000b1 <__TEXT_REGION_LENGTH__+0x7f80b1>
+ 5b2:	84 60       	ori	r24, 0x04	; 4
+ 5b4:	80 93 b1 00 	sts	0x00B1, r24	; 0x8000b1 <__TEXT_REGION_LENGTH__+0x7f80b1>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:1022
+
+// Configure timer 2 for phase correct pwm (8-bit)
+#if defined(TCCR2) && defined(WGM20)
+  TCCR2 |= _BV(WGM20);
+#elif defined(TCCR2A) && defined(WGM20)
+  TCCR2A |= _BV(WGM20);
+ 5b8:	80 91 b0 00 	lds	r24, 0x00B0	; 0x8000b0 <__TEXT_REGION_LENGTH__+0x7f80b0>
+ 5bc:	81 60       	ori	r24, 0x01	; 1
+ 5be:	80 93 b0 00 	sts	0x00B0, r24	; 0x8000b0 <__TEXT_REGION_LENGTH__+0x7f80b0>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:1028
+//#else
+  // Timer 2 not finished (may not be present on this CPU)
+#endif
+
+#if defined(TCCR3B) && defined(CS31) && defined(WGM30)
+  TCCR3B |= _BV(CS31) | _BV(CS30); // Set timer 3 prescale factor to 64
+ 5c2:	80 91 91 00 	lds	r24, 0x0091	; 0x800091 <__TEXT_REGION_LENGTH__+0x7f8091>
+ 5c6:	83 60       	ori	r24, 0x03	; 3
+ 5c8:	80 93 91 00 	sts	0x0091, r24	; 0x800091 <__TEXT_REGION_LENGTH__+0x7f8091>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:1029
+  TCCR3A |= _BV(WGM30);            // Put timer 3 in 8-bit phase correct pwm mode
+ 5cc:	80 91 90 00 	lds	r24, 0x0090	; 0x800090 <__TEXT_REGION_LENGTH__+0x7f8090>
+ 5d0:	81 60       	ori	r24, 0x01	; 1
+ 5d2:	80 93 90 00 	sts	0x0090, r24	; 0x800090 <__TEXT_REGION_LENGTH__+0x7f8090>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:1038
+  TCCR4B |= _BV(CS42) | _BV(CS41) | _BV(CS40); // Set timer 4 prescale factor to 64
+  TCCR4D |= _BV(WGM40);                        // Put timer 4 in phase- and frequency-correct PWM mode
+  TCCR4A |= _BV(PWM4A);                        // Enable PWM mode for comparator OCR4A
+  TCCR4C |= _BV(PWM4D);                        // Enable PWM mode for comparator OCR4D
+#elif defined(TCCR4B) && defined(CS41) && defined(WGM40)
+  TCCR4B |= _BV(CS41) | _BV(CS40); // Set timer 4 prescale factor to 64
+ 5d6:	80 91 a1 00 	lds	r24, 0x00A1	; 0x8000a1 <__TEXT_REGION_LENGTH__+0x7f80a1>
+ 5da:	83 60       	ori	r24, 0x03	; 3
+ 5dc:	80 93 a1 00 	sts	0x00A1, r24	; 0x8000a1 <__TEXT_REGION_LENGTH__+0x7f80a1>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:1039
+  TCCR4A |= _BV(WGM40);            // Put timer 4 in 8-bit phase correct pwm mode
+ 5e0:	80 91 a0 00 	lds	r24, 0x00A0	; 0x8000a0 <__TEXT_REGION_LENGTH__+0x7f80a0>
+ 5e4:	81 60       	ori	r24, 0x01	; 1
+ 5e6:	80 93 a0 00 	sts	0x00A0, r24	; 0x8000a0 <__TEXT_REGION_LENGTH__+0x7f80a0>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:1052
+#if defined(ADCSRA)
+  // set a2d prescaler so we are inside the desired 50-200 KHz range.
+  #if F_CPU >= 16000000 // 16 MHz / 128 = 125 KHz
+    ADCSRA = _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0) | _BV(ADEN);
+  #elif F_CPU >= 8000000 // 8 MHz / 64 = 125 KHz
+    ADCSRA = _BV(ADPS2) | _BV(ADPS1) | _BV(ADEN);
+ 5ea:	86 e8       	ldi	r24, 0x86	; 134
+ 5ec:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__TEXT_REGION_LENGTH__+0x7f807a>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/wiring.c:1070
+  // here so they can be used as normal digital i/o; they will be
+  // reconnected in Serial.begin()
+#if defined(UCSRB)
+  UCSRB = 0;
+#elif defined(UCSR0B)
+  UCSR0B = 0;
+ 5f0:	10 92 c1 00 	sts	0x00C1, r1	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7f80c1>
+begin():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:121
+
+void HardwareSerial::begin(unsigned long baud, byte config)
+{
+  // Try u2x mode first
+  uint16_t baud_setting = (F_CPU / 4 / baud - 1) / 2;
+  *_ucsra = 1 << U2X0;
+ 5f4:	e0 91 75 01 	lds	r30, 0x0175	; 0x800175 <Serial+0x10>
+ 5f8:	f0 91 76 01 	lds	r31, 0x0176	; 0x800176 <Serial+0x11>
+ 5fc:	90 83       	st	Z, r25
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:135
+    *_ucsra = 0;
+    baud_setting = (F_CPU / 8 / baud - 1) / 2;
+  }
+
+  // assign the baud_setting, a.k.a. ubrr (USART Baud Rate Register)
+  *_ubrrh = baud_setting >> 8;
+ 5fe:	e0 91 71 01 	lds	r30, 0x0171	; 0x800171 <Serial+0xc>
+ 602:	f0 91 72 01 	lds	r31, 0x0172	; 0x800172 <Serial+0xd>
+ 606:	10 82       	st	Z, r1
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:136
+  *_ubrrl = baud_setting;
+ 608:	e0 91 73 01 	lds	r30, 0x0173	; 0x800173 <Serial+0xe>
+ 60c:	f0 91 74 01 	lds	r31, 0x0174	; 0x800174 <Serial+0xf>
+ 610:	80 e1       	ldi	r24, 0x10	; 16
+ 612:	80 83       	st	Z, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:138
+
+  _written = false;
+ 614:	10 92 7d 01 	sts	0x017D, r1	; 0x80017d <Serial+0x18>
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:146
+#if defined(__AVR_ATmega8__) || defined(__AVR_ATmega8515__) || defined(__AVR_ATmega162__) \
+|| defined(__AVR_ATmega8535__) || defined(__AVR_ATmega16__)|| defined(__AVR_ATmega32__)   \
+|| defined(__AVR_ATmega162__)
+  config |= 0x80; // select UCSRC register (shared with UBRRH)
+#endif
+  *_ucsrc = config;
+ 618:	e0 91 79 01 	lds	r30, 0x0179	; 0x800179 <Serial+0x14>
+ 61c:	f0 91 7a 01 	lds	r31, 0x017A	; 0x80017a <Serial+0x15>
+ 620:	86 e0       	ldi	r24, 0x06	; 6
+ 622:	80 83       	st	Z, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:148
+  
+  *_ucsrb |= _BV(RXEN0) | _BV(TXEN0) | _BV(RXCIE0);
+ 624:	e0 91 77 01 	lds	r30, 0x0177	; 0x800177 <Serial+0x12>
+ 628:	f0 91 78 01 	lds	r31, 0x0178	; 0x800178 <Serial+0x13>
+ 62c:	80 81       	ld	r24, Z
+ 62e:	88 69       	ori	r24, 0x98	; 152
+ 630:	80 83       	st	Z, r24
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial.cpp:149
+  *_ucsrb &= ~_BV(UDRIE0);
+ 632:	e0 91 77 01 	lds	r30, 0x0177	; 0x800177 <Serial+0x12>
+ 636:	f0 91 78 01 	lds	r31, 0x0178	; 0x800178 <Serial+0x13>
+ 63a:	80 81       	ld	r24, Z
+ 63c:	8f 7d       	andi	r24, 0xDF	; 223
+ 63e:	80 83       	st	Z, r24
+ 640:	0e e3       	ldi	r16, 0x3E	; 62
+ 642:	11 e0       	ldi	r17, 0x01	; 1
+ 644:	f8 01       	movw	r30, r16
+ 646:	30 e0       	ldi	r19, 0x00	; 0
+ 648:	20 e0       	ldi	r18, 0x00	; 0
+ 64a:	50 e0       	ldi	r21, 0x00	; 0
+ 64c:	40 e0       	ldi	r20, 0x00	; 0
+main():
+/home/horimoto/work/M302-lowcode/test/test4/test4.ino:7
+
+void setup() {
+    int i;
+    unsigned int v, l, f;
+    Serial.begin(57600);
+    for (i=0; i<15; i++) {
+ 64e:	90 e0       	ldi	r25, 0x00	; 0
+ 650:	80 e0       	ldi	r24, 0x00	; 0
+setup():
+/home/horimoto/work/M302-lowcode/test/test4/test4.ino:8
+        v = i & 0x0001;
+ 652:	bc 01       	movw	r22, r24
+ 654:	61 70       	andi	r22, 0x01	; 1
+ 656:	77 27       	eor	r23, r23
+/home/horimoto/work/M302-lowcode/test/test4/test4.ino:12
+        l = i;
+        f = i * 2;
+        FSTLB[i] = 0;
+        FSTLB[i] = (f<<8) | (l<<4) | v;
+ 658:	d9 01       	movw	r26, r18
+ 65a:	a4 2b       	or	r26, r20
+ 65c:	b5 2b       	or	r27, r21
+ 65e:	6a 2b       	or	r22, r26
+ 660:	7b 2b       	or	r23, r27
+ 662:	61 93       	st	Z+, r22
+ 664:	71 93       	st	Z+, r23
+/home/horimoto/work/M302-lowcode/test/test4/test4.ino:7
+
+void setup() {
+    int i;
+    unsigned int v, l, f;
+    Serial.begin(57600);
+    for (i=0; i<15; i++) {
+ 666:	01 96       	adiw	r24, 0x01	; 1
+ 668:	40 5f       	subi	r20, 0xF0	; 240
+ 66a:	5f 4f       	sbci	r21, 0xFF	; 255
+ 66c:	3e 5f       	subi	r19, 0xFE	; 254
+ 66e:	8f 30       	cpi	r24, 0x0F	; 15
+ 670:	91 05       	cpc	r25, r1
+ 672:	79 f7       	brne	.-34     	; 0x652 <main+0xd6>
+write():
+ 674:	82 e1       	ldi	r24, 0x12	; 18
+ 676:	91 e0       	ldi	r25, 0x01	; 1
+ 678:	0e 94 9f 01 	call	0x33e	; 0x33e <Print::write(char const*) [clone .part.2] [clone .constprop.16]>
+ 67c:	85 e1       	ldi	r24, 0x15	; 21
+ 67e:	91 e0       	ldi	r25, 0x01	; 1
+ 680:	0e 94 9f 01 	call	0x33e	; 0x33e <Print::write(char const*) [clone .part.2] [clone .constprop.16]>
+ 684:	82 e1       	ldi	r24, 0x12	; 18
+ 686:	91 e0       	ldi	r25, 0x01	; 1
+ 688:	0e 94 9f 01 	call	0x33e	; 0x33e <Print::write(char const*) [clone .part.2] [clone .constprop.16]>
+ 68c:	c1 2c       	mov	r12, r1
+ 68e:	d1 2c       	mov	r13, r1
+ 690:	76 01       	movw	r14, r12
+loop():
+/home/horimoto/work/M302-lowcode/test/test4/test4.ino:22
+
+void loop() {
+    int i;
+    int v,l,f;
+    for (i=0; i<15; i++) {
+        v = FSTLB[i] & 0x0001;
+ 692:	f8 01       	movw	r30, r16
+ 694:	c0 81       	ld	r28, Z
+ 696:	d1 81       	ldd	r29, Z+1	; 0x01
+write():
+ 698:	81 e2       	ldi	r24, 0x21	; 33
+ 69a:	91 e0       	ldi	r25, 0x01	; 1
+ 69c:	0e 94 9f 01 	call	0x33e	; 0x33e <Print::write(char const*) [clone .part.2] [clone .constprop.16]>
+print():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:79
+  return print((unsigned long) b, base);
+}
+
+size_t Print::print(int n, int base)
+{
+  return print((long) n, base);
+ 6a0:	c7 01       	movw	r24, r14
+ 6a2:	b6 01       	movw	r22, r12
+ 6a4:	0e 94 f0 01 	call	0x3e0	; 0x3e0 <Print::print(long, int) [clone .constprop.9]>
+write():
+ 6a8:	88 e2       	ldi	r24, 0x28	; 40
+ 6aa:	91 e0       	ldi	r25, 0x01	; 1
+ 6ac:	0e 94 9f 01 	call	0x33e	; 0x33e <Print::write(char const*) [clone .part.2] [clone .constprop.16]>
+print():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:84
+}
+
+size_t Print::print(unsigned int n, int base)
+{
+  return print((unsigned long) n, base);
+ 6b0:	f8 01       	movw	r30, r16
+ 6b2:	61 91       	ld	r22, Z+
+ 6b4:	71 91       	ld	r23, Z+
+ 6b6:	8f 01       	movw	r16, r30
+ 6b8:	90 e0       	ldi	r25, 0x00	; 0
+ 6ba:	80 e0       	ldi	r24, 0x00	; 0
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:106
+}
+
+size_t Print::print(unsigned long n, int base)
+{
+  if (base == 0) return write(n);
+  else return printNumber(n, base);
+ 6bc:	40 e1       	ldi	r20, 0x10	; 16
+ 6be:	0e 94 ac 01 	call	0x358	; 0x358 <Print::printNumber(unsigned long, unsigned char) [clone .constprop.12]>
+write():
+ 6c2:	8f e2       	ldi	r24, 0x2F	; 47
+ 6c4:	91 e0       	ldi	r25, 0x01	; 1
+ 6c6:	0e 94 9f 01 	call	0x33e	; 0x33e <Print::write(char const*) [clone .part.2] [clone .constprop.16]>
+loop():
+/home/horimoto/work/M302-lowcode/test/test4/test4.ino:22
+ 6ca:	be 01       	movw	r22, r28
+ 6cc:	61 70       	andi	r22, 0x01	; 1
+ 6ce:	77 27       	eor	r23, r23
+print():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:79
+  return print((unsigned long) b, base);
+}
+
+size_t Print::print(int n, int base)
+{
+  return print((long) n, base);
+ 6d0:	07 2e       	mov	r0, r23
+ 6d2:	00 0c       	add	r0, r0
+ 6d4:	88 0b       	sbc	r24, r24
+ 6d6:	99 0b       	sbc	r25, r25
+ 6d8:	0e 94 f0 01 	call	0x3e0	; 0x3e0 <Print::print(long, int) [clone .constprop.9]>
+write():
+ 6dc:	84 e3       	ldi	r24, 0x34	; 52
+ 6de:	91 e0       	ldi	r25, 0x01	; 1
+ 6e0:	0e 94 9f 01 	call	0x33e	; 0x33e <Print::write(char const*) [clone .part.2] [clone .constprop.16]>
+loop():
+/home/horimoto/work/M302-lowcode/test/test4/test4.ino:23
+        l = (FSTLB[i] & 0x00f0) >> 4;
+ 6e4:	be 01       	movw	r22, r28
+ 6e6:	84 e0       	ldi	r24, 0x04	; 4
+ 6e8:	76 95       	lsr	r23
+ 6ea:	67 95       	ror	r22
+ 6ec:	8a 95       	dec	r24
+ 6ee:	e1 f7       	brne	.-8      	; 0x6e8 <main+0x16c>
+ 6f0:	6f 70       	andi	r22, 0x0F	; 15
+ 6f2:	77 27       	eor	r23, r23
+print():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:79
+ 6f4:	07 2e       	mov	r0, r23
+ 6f6:	00 0c       	add	r0, r0
+ 6f8:	88 0b       	sbc	r24, r24
+ 6fa:	99 0b       	sbc	r25, r25
+ 6fc:	0e 94 f0 01 	call	0x3e0	; 0x3e0 <Print::print(long, int) [clone .constprop.9]>
+write():
+ 700:	89 e3       	ldi	r24, 0x39	; 57
+ 702:	91 e0       	ldi	r25, 0x01	; 1
+ 704:	0e 94 9f 01 	call	0x33e	; 0x33e <Print::write(char const*) [clone .part.2] [clone .constprop.16]>
+loop():
+/home/horimoto/work/M302-lowcode/test/test4/test4.ino:24
+        f = (FSTLB[i] & 0xff00) >> 8;
+ 708:	cd 2f       	mov	r28, r29
+ 70a:	dd 27       	eor	r29, r29
+print():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.cpp:79
+ 70c:	be 01       	movw	r22, r28
+ 70e:	90 e0       	ldi	r25, 0x00	; 0
+ 710:	80 e0       	ldi	r24, 0x00	; 0
+ 712:	0e 94 f0 01 	call	0x3e0	; 0x3e0 <Print::print(long, int) [clone .constprop.9]>
+write():
+ 716:	82 e1       	ldi	r24, 0x12	; 18
+ 718:	91 e0       	ldi	r25, 0x01	; 1
+ 71a:	0e 94 9f 01 	call	0x33e	; 0x33e <Print::write(char const*) [clone .part.2] [clone .constprop.16]>
+ 71e:	ff ef       	ldi	r31, 0xFF	; 255
+ 720:	cf 1a       	sub	r12, r31
+ 722:	df 0a       	sbc	r13, r31
+ 724:	ef 0a       	sbc	r14, r31
+ 726:	ff 0a       	sbc	r15, r31
+loop():
+/home/horimoto/work/M302-lowcode/test/test4/test4.ino:21
+}
+
+void loop() {
+    int i;
+    int v,l,f;
+    for (i=0; i<15; i++) {
+ 728:	8f e0       	ldi	r24, 0x0F	; 15
+ 72a:	c8 16       	cp	r12, r24
+ 72c:	d1 04       	cpc	r13, r1
+ 72e:	e1 04       	cpc	r14, r1
+ 730:	f1 04       	cpc	r15, r1
+ 732:	09 f0       	breq	.+2      	; 0x736 <main+0x1ba>
+ 734:	ae cf       	rjmp	.-164    	; 0x692 <main+0x116>
+/home/horimoto/work/M302-lowcode/test/test4/test4.ino:37
+        Serial.print(l);
+        Serial.print("  f=");
+        Serial.println(f);
+    }
+    while(1) {
+        __asm__ __volatile__ ("nop");
+ 736:	00 00       	nop
+ 738:	fe cf       	rjmp	.-4      	; 0x736 <main+0x1ba>
+
+0000073a <_GLOBAL__sub_I___vector_18>:
+_ZN5PrintC2Ev():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Print.h:46
+    size_t printNumber(unsigned long, uint8_t);
+    size_t printFloat(double, uint8_t);
+  protected:
+    void setWriteError(int err = 1) { write_error = err; }
+  public:
+    Print() : write_error(0) {}
+ 73a:	e5 e6       	ldi	r30, 0x65	; 101
+ 73c:	f1 e0       	ldi	r31, 0x01	; 1
+ 73e:	13 82       	std	Z+3, r1	; 0x03
+ 740:	12 82       	std	Z+2, r1	; 0x02
+_ZN6StreamC2Ev():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/Stream.h:63
+  public:
+    virtual int available() = 0;
+    virtual int read() = 0;
+    virtual int peek() = 0;
+
+    Stream() {_timeout=1000;}
+ 742:	88 ee       	ldi	r24, 0xE8	; 232
+ 744:	93 e0       	ldi	r25, 0x03	; 3
+ 746:	a0 e0       	ldi	r26, 0x00	; 0
+ 748:	b0 e0       	ldi	r27, 0x00	; 0
+ 74a:	84 83       	std	Z+4, r24	; 0x04
+ 74c:	95 83       	std	Z+5, r25	; 0x05
+ 74e:	a6 83       	std	Z+6, r26	; 0x06
+ 750:	b7 83       	std	Z+7, r27	; 0x07
+_ZN14HardwareSerialC2EPVhS1_S1_S1_S1_S1_():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial_private.h:92
+  volatile uint8_t *ucsrc, volatile uint8_t *udr) :
+    _ubrrh(ubrrh), _ubrrl(ubrrl),
+    _ucsra(ucsra), _ucsrb(ucsrb), _ucsrc(ucsrc),
+    _udr(udr),
+    _rx_buffer_head(0), _rx_buffer_tail(0),
+    _tx_buffer_head(0), _tx_buffer_tail(0)
+ 752:	84 e0       	ldi	r24, 0x04	; 4
+ 754:	91 e0       	ldi	r25, 0x01	; 1
+ 756:	91 83       	std	Z+1, r25	; 0x01
+ 758:	80 83       	st	Z, r24
+ 75a:	85 ec       	ldi	r24, 0xC5	; 197
+ 75c:	90 e0       	ldi	r25, 0x00	; 0
+ 75e:	95 87       	std	Z+13, r25	; 0x0d
+ 760:	84 87       	std	Z+12, r24	; 0x0c
+ 762:	84 ec       	ldi	r24, 0xC4	; 196
+ 764:	90 e0       	ldi	r25, 0x00	; 0
+ 766:	97 87       	std	Z+15, r25	; 0x0f
+ 768:	86 87       	std	Z+14, r24	; 0x0e
+ 76a:	80 ec       	ldi	r24, 0xC0	; 192
+ 76c:	90 e0       	ldi	r25, 0x00	; 0
+ 76e:	91 8b       	std	Z+17, r25	; 0x11
+ 770:	80 8b       	std	Z+16, r24	; 0x10
+ 772:	81 ec       	ldi	r24, 0xC1	; 193
+ 774:	90 e0       	ldi	r25, 0x00	; 0
+ 776:	93 8b       	std	Z+19, r25	; 0x13
+ 778:	82 8b       	std	Z+18, r24	; 0x12
+ 77a:	82 ec       	ldi	r24, 0xC2	; 194
+ 77c:	90 e0       	ldi	r25, 0x00	; 0
+ 77e:	95 8b       	std	Z+21, r25	; 0x15
+ 780:	84 8b       	std	Z+20, r24	; 0x14
+ 782:	86 ec       	ldi	r24, 0xC6	; 198
+ 784:	90 e0       	ldi	r25, 0x00	; 0
+ 786:	97 8b       	std	Z+23, r25	; 0x17
+ 788:	86 8b       	std	Z+22, r24	; 0x16
+ 78a:	11 8e       	std	Z+25, r1	; 0x19
+ 78c:	12 8e       	std	Z+26, r1	; 0x1a
+ 78e:	13 8e       	std	Z+27, r1	; 0x1b
+ 790:	14 8e       	std	Z+28, r1	; 0x1c
+_GLOBAL__sub_I___vector_18():
+/home/horimoto/.arduino15/packages/MiniCore/hardware/avr/3.1.2/cores/MCUdude_corefiles/HardwareSerial0.cpp:77
+
+// Function that can be weakly referenced by serialEventRun to prevent
+// pulling in this file if it's not otherwise used.
+bool Serial0_available() {
+  return Serial.available();
+}
+ 792:	08 95       	ret
+
+00000794 <__udivmodsi4>:
+__udivmodsi4():
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1638
+ 794:	a1 e2       	ldi	r26, 0x21	; 33
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1639
+ 796:	1a 2e       	mov	r1, r26
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1640
+ 798:	aa 1b       	sub	r26, r26
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1641
+ 79a:	bb 1b       	sub	r27, r27
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1642
+ 79c:	fd 01       	movw	r30, r26
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1644
+ 79e:	0d c0       	rjmp	.+26     	; 0x7ba <__udivmodsi4_ep>
+
+000007a0 <__udivmodsi4_loop>:
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1646
+ 7a0:	aa 1f       	adc	r26, r26
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1647
+ 7a2:	bb 1f       	adc	r27, r27
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1648
+ 7a4:	ee 1f       	adc	r30, r30
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1649
+ 7a6:	ff 1f       	adc	r31, r31
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1650
+ 7a8:	a2 17       	cp	r26, r18
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1651
+ 7aa:	b3 07       	cpc	r27, r19
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1652
+ 7ac:	e4 07       	cpc	r30, r20
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1653
+ 7ae:	f5 07       	cpc	r31, r21
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1654
+ 7b0:	20 f0       	brcs	.+8      	; 0x7ba <__udivmodsi4_ep>
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1655
+ 7b2:	a2 1b       	sub	r26, r18
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1656
+ 7b4:	b3 0b       	sbc	r27, r19
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1657
+ 7b6:	e4 0b       	sbc	r30, r20
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1658
+ 7b8:	f5 0b       	sbc	r31, r21
+
+000007ba <__udivmodsi4_ep>:
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1660
+ 7ba:	66 1f       	adc	r22, r22
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1661
+ 7bc:	77 1f       	adc	r23, r23
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1662
+ 7be:	88 1f       	adc	r24, r24
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1663
+ 7c0:	99 1f       	adc	r25, r25
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1664
+ 7c2:	1a 94       	dec	r1
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1665
+ 7c4:	69 f7       	brne	.-38     	; 0x7a0 <__udivmodsi4_loop>
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1667
+ 7c6:	60 95       	com	r22
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1668
+ 7c8:	70 95       	com	r23
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1669
+ 7ca:	80 95       	com	r24
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1670
+ 7cc:	90 95       	com	r25
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1672
+ 7ce:	9b 01       	movw	r18, r22
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1674
+ 7d0:	ac 01       	movw	r20, r24
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1676
+ 7d2:	bd 01       	movw	r22, r26
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1678
+ 7d4:	cf 01       	movw	r24, r30
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:1680
+ 7d6:	08 95       	ret
+
+000007d8 <__tablejump2__>:
+__tablejump2__():
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2296
+ 7d8:	ee 0f       	add	r30, r30
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2297
+ 7da:	ff 1f       	adc	r31, r31
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2328
+ 7dc:	05 90       	lpm	r0, Z+
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2329
+ 7de:	f4 91       	lpm	r31, Z
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2330
+ 7e0:	e0 2d       	mov	r30, r0
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2331
+ 7e2:	09 94       	ijmp
+
+000007e4 <_exit>:
+exit():
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2278
+ 7e4:	f8 94       	cli
+
+000007e6 <__stop_program>:
+__stop_program():
+/home/jenkins/workspace/avr-gcc-staging/label/debian7-x86_64/gcc-build/avr/avr5/libgcc/../../../../gcc/libgcc/config/avr/lib1funcs.S:2280
+ 7e6:	ff cf       	rjmp	.-2      	; 0x7e6 <__stop_program>
