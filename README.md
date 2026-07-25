@@ -27,7 +27,7 @@ inoソースコードを生成するphpプログラムを含む。
 
 setup()のときにLowCoreのCCMTBLをLoop Searchして Fast Lookup Table (FSTLB) を作ってそれを実行 Loop 時に参照する。
 
-'''
+```
        F E D C B A 9 8 7 6 5 4 3 2 1 0
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 FSTLB |f|f|f|f|f|f|f|f|L|L|L|L|/|/|/|v|
@@ -37,5 +37,8 @@ FSTLB |f|f|f|f|f|f|f|f|L|L|L|L|/|/|/|v|
             |            |           +----- Valid Flag  0:inValid , 1:Valid
             |            +----------------- LLLL Lv Value
             +------------------------------ Function
-'''
+```
+
+### CCMTBLのルール
+
 
