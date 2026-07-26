@@ -6,8 +6,9 @@
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>
 #include <EEPROM.h>
-#include <SoftwareSerial.h> // SoftwareSerialライブラリをインクルード
-#include <SLT5006.h>
+#include <SDI12.h>          // ROS2-U2JP 土壌水分センサー(SDI-12)用
+// SoftwareSerial / SLT5006 は不使用のため除外
+// （SoftwareSerial が残ると SDI-12 と PCINT ISR が衝突するため）
 
 #ifndef NO_I2C
 #include <SensirionI2cSht4x.h>
@@ -105,6 +106,8 @@ typedef struct uecsM302Send {
 #define FUNC_SLT5006    9
 #define FUNC_M252      10
 #define FUNC_ADS1115   11
+#define FUNC_ADT7410   12
+#define FUNC_ROS2U2JP  13
 
 /*** Mode via httpd ***/
 

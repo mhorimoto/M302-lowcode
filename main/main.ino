@@ -10,7 +10,7 @@
 //  The configuration is as follows:
 //  - SHT-40 (Akizuki) for temperature and humidity observation
 //  - Solar radiation measurement
-//  - SLT5006 (SENSTEM) for soil moisture and EC measurement
+//  - ROS2-U2JP (Sensiphia) for soil moisture measurement (SDI-12)
 //  - CO2 measurement using an analog sensor
 //  - PPFD measurement using an ADS1115 and a photodiode
 //  The SHT-40 is connected via I2C.
@@ -21,8 +21,9 @@
 //  The main board uses the M302N2.
 //
 //////////////////////////////////////////////////////////////////
-  
-const char VERSION[16] PROGMEM = "M302N2 V3.10";
+
+//const char VERSION[16] PROGMEM = "M302N2 V3.10";
+const char VERSION[16] PROGMEM = "M302N2 V4.00";
 
 #include "M302.h"
 
@@ -57,7 +58,6 @@ bool          useSerial = false;
 stM302_t          st_m302;
 
 SensirionI2cSht4x sht4x;
-SLT5006           slt(UART_RX,UART_TX); // SLT5006 sensor
 Adafruit_ADS1115  ads;
 
 IPAddress   broadcastIP,networkADDR;
@@ -73,8 +73,9 @@ const unsigned long interval = 1000; // 1秒（1000ms）間隔
 void ope_SHT4(int TempId, int HumidId);
 void ope_Radiation(int ccmid);
 void ope_CO2(int ccmid);
-void ope_SLT5006(int baseid);
 void ope_PPFD(int ccmid);
+void ope_ROS2U2JP(int vwc0id, int vwc1id, int pdid, int tempid, int humidid);
+void ros2_poll(void);
 float sens_ana(int aport, int map_low, int map_high, float slope);
 void truncate_at_first_space(int n, char v[]);
 void configure_wdt(void);
@@ -155,27 +156,25 @@ void setup(void) {
     //  Initialize of Sensor devices
     //
     //**********************************
-    sht4x.begin(Wire,SHT40_I2C_ADDR_44);
-    if ( sht4x.softReset() != 0 ) {
-        while (1) {
-            uecsSendData(0,xmlDT,"0x20000400",0);     // NO SHT cnd
-            recv16528port();
-            blinkLED(LED1,100,150,4);
-        }
-    }
-    delay(10);
-    slt.begin();
-    delay(10);
-    ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
-    delay(10);
-    if (!ads.begin()) {
-        while(1) {
-            uecsSendData(0,xmlDT,"0x20000B00",0);     // NO ADS1115 cnd
-            recv16528port();
-            blinkLED(LED1,50,200,4);
-        }
-    }
-    delay(10);
+    //sht4x.begin(Wire,SHT40_I2C_ADDR_44);
+    //if ( sht4x.softReset() != 0 ) {
+    //    while (1) {
+    //        uecsSendData(0,xmlDT,"0x20000400",0);     // NO SHT cnd
+    //        recv16528port();
+    //        blinkLED(LED1,100,150,4);
+    //    }
+    // }
+    //delay(10);
+    //ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.0078125mV
+    //delay(10);
+    //if (!ads.begin()) {
+    //    while(1) {
+    //        uecsSendData(0,xmlDT,"0x20000B00",0);     // NO ADS1115 cnd
+    //        recv16528port();
+    //        blinkLED(LED1,50,200,4);
+    //    }
+    // }
+    //delay(10);
     //
     uecsSendData(0,xmlDT,"0x60800",0);     // start cnd
     delay(100);    
@@ -202,8 +201,10 @@ float sens_ana(int aport,int map_low,int map_high,float slope) {
 /////////////////////////////////
 void loop() {
     extern void recv16528port(void);
+    extern void ros2_poll(void);
     
     recv16528port();
+    ros2_poll();          // ROS2-U2JP 計測を非ブロッキングで進める
     wdt_reset();
     
     //1 sec interval
@@ -298,20 +299,21 @@ void UserEverySecond(void) {
 }
 
 void UserEvery10Seconds(void) {
-    void ope_SHT4(int,int);
+//    void ope_SHT4(int,int);
 //    void ope_Radiation(int);
-    void ope_SLT5006(int);
-    void ope_CO2(int);
-    void ope_PPFD(int);
+//    void ope_CO2(int);
+//    void ope_PPFD(int);
+    void ope_ROS2U2JP(int,int,int,int,int);
     char *xmlDT PROGMEM = CCMFMT;
-    ope_SHT4(1,2);
-    delay(50);
-    ope_CO2(3);
-    delay(50);
-    ope_SLT5006(4);
+//    ope_SHT4(1,2);
+//    delay(50);
+//    ope_CO2(3);
+//    delay(50);
+    // 引数順: (vwc0id, vwc1id, pdid, tempid, humidid)  -1は送信しない
+    ope_ROS2U2JP(6, 7, 8, 4, 9);   // VWC_0=6(VWC), VWC_1=7(VWC), PD=8(VWC_RAW), TEMP=4(SoilTemp), HUMID=9(Humid)
     delay(10);
-    ope_PPFD(10);
-    wdt_reset();
+//    ope_PPFD(10);
+//    wdt_reset();
 }
 
 void UserEveryMinute(void) {
@@ -352,53 +354,6 @@ void ope_CO2(int ccmid) {
     wdt_reset();
 }
 
-void ope_SLT5006(int baseid) {
-    char *xmlDT PROGMEM = CCMFMT;
-    float fval;
-    // SLT5006 data read
-    do {
-      slt.readSensor();
-            Serial.print(slt.getRCode());
-            Serial.print(" ");
-      delay(20);
-    } while(slt.getRCode()==2);
-    // Temperature
-    fval = slt.getTemp();
-    dtostrf(fval,-6,2,val);
-    truncate_at_first_space(7,val) ;
-    uecsSendData(baseid,xmlDT,val,0);   // Temp
-    delay(10);
-    // Bulk EC
-    fval = slt.getECBulk();
-    dtostrf(fval,-6,2,val);
-    truncate_at_first_space(7,val) ;
-    uecsSendData(baseid+1,xmlDT,val,0);   // Bulk EC
-    delay(10);
-    // Rock VWC
-    fval = slt.getVWCRock();
-    dtostrf(fval,-6,2,val);
-    truncate_at_first_space(7,val) ;
-    uecsSendData(baseid+2,xmlDT,val,0);   // Rock VWC
-    delay(10);
-    // VWC
-    fval = slt.getVWC();
-    dtostrf(fval,-6,2,val);
-    truncate_at_first_space(7,val) ;
-    uecsSendData(baseid+3,xmlDT,val,0);   // VWC
-    delay(10);
-    // Coco VWC
-    fval = slt.getVWCCoco();
-    dtostrf(fval,-6,2,val);
-    truncate_at_first_space(7,val) ;
-    uecsSendData(baseid+4,xmlDT,val,0);   // Coco VWC
-    delay(10);
-    wdt_reset();
-    // Pore EC
-    fval = slt.getECPore();
-    dtostrf(fval,-6,2,val);
-    truncate_at_first_space(7,val) ;
-    uecsSendData(baseid+5,xmlDT,val,0);   // Pore EC
-}
 
 void ope_PPFD(int ccmid) {
     char *xmlDT PROGMEM = CCMFMT;

@@ -12,7 +12,7 @@ all:
 
 main: main/main.touch
 
-main/main.touch: main/main.ino main/recv16528.ino main/M302.h main/bytemap.ino
+main/main.touch: main/main.ino main/recv16528.ino main/M302.h main/bytemap.ino main/ope_ROS2U2JP.ino
 	arduino-cli compile -b arduino:avr:${BOARD} --build-property build.extra_flags=-DW5500SS=${W5500SS} main
 	touch main/main.touch
 
