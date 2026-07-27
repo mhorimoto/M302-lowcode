@@ -117,7 +117,7 @@ static bool ros2_pollLine(char* line, uint8_t lineSize) {
 // -----------------------------------------------------------------------
 // 内部: 1つの計測値を UECS 送信するヘルパ
 //   id < 0 なら送信しない。
-//   valid=false またはエラー特殊値(-100/-200)なら小数1桁でそのまま送る。
+//   valid=false またはエラー特殊値(-100/-200)ならそのまま送る。
 // -----------------------------------------------------------------------
 static void ros2_sendOne(int id, float v, bool valid) {
     if (id < 0) return;
@@ -126,7 +126,7 @@ static void ros2_sendOne(int id, float v, bool valid) {
     extern void truncate_at_first_space(int, char[]);
     char *xmlDT PROGMEM = CCMFMT;
 
-    dtostrf(v, -6, (valid && v > -100.0f) ? 2 : 1, val);
+    dtostrf(v, -6, (valid && v > -100) ? 2 : 1, val);
     truncate_at_first_space(7, val);
     uecsSendData(id, xmlDT, val, 0);
 }
@@ -157,7 +157,7 @@ static void ros2_sendRaw(int id, const char* raw) {
 static void ros2_parseAndSend(const char* dResp) {
     // M2! 応答: [0]=PD, [1]=VWC_0, [2]=VWC_1, [3]=TEMP, [4]=HUMIDITY
     float vals[ROS2_MAX_VALS];
-    for (uint8_t i = 0; i < ROS2_MAX_VALS; i++) vals[i] = -200.0f;
+    for (uint8_t i = 0; i < ROS2_MAX_VALS; i++) vals[i] = -200;
     uint8_t got = 0;
 
     if (strlen(dResp) >= 2 && dResp[0] == ROS2_ADDR) {
